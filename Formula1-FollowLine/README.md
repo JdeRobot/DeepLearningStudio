@@ -49,8 +49,8 @@ For PilotNet, we use our custom datasets:
 ## Running the Code
 
 ```
-source ~/pyenvs/gsoc21/bin/activate
-cd gsoc21code/DL_algorithms/
+source ~/pyenvs/dlstudio/bin/activate
+cd DL_studio/Formula1-FollowLine/
 
 # For PilotNet
 

@@ -9,3 +9,5 @@ __pycache__/
 */*.egg-info
 
 */datasets/
+
+*/test_data/

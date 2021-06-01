@@ -1,0 +1,13 @@
+__pycache__/
+*/__pycache__/
+
+*/log/
+*/logs/
+
+*/trained_models/
+
+*/*.egg-info
+
+*/datasets/
+
+*/test_data/

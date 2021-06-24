@@ -1,0 +1,1 @@
+{"data_dir": ["../datasets/complete_dataset", "../datasets/curves_only"], "base_dir": "24Jun3", "comment": "Selected Augmentations: gaussian, perspective, affine, posterize", "data_augs": ["gaussian", "perspective", "affine", "posterize"], "num_epochs": 150, "lr": 0.003, "test_split": 0.2, "shuffle": true, "batch_size": 256, "save_iter": 50, "print_terminal": true, "seed": 123}

@@ -9,6 +9,7 @@ from torch.utils.tensorboard import SummaryWriter
 from utils.processing import *
 from utils.pilot_net_dataset import PilotNetDataset
 from utils.pilotnet import PilotNet
+from utils.transform_helpers import createTransform
 
 import argparse
 from PIL import Image
@@ -19,15 +20,11 @@ import numpy as np
 def parse_args():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--data_dir", type=str, default='../datasets/PilotNet/complete_dataset', help="Directory to find Data")
-    parser.add_argument("--curve_dir", type=str, default='../datasets/PilotNet/curves_only', help="Directory to find Curves data")
-    parser.add_argument("--model_path", type=str, default='trained_models', help="Directory to store model")
-    parser.add_argument("--log_dir", type=str, default='log', help="Directory to store tensorboard")
+    parser.add_argument("--data_dir", action='append', help="Directory to find Data")
     parser.add_argument("--base_dir", type=str, default='exp_random', help="Directory to save everything")
     parser.add_argument("--comment", type=str, default='Random Experiment', help="Comment to know the experiment")
-
-
-    parser.add_argument("--num_epochs", type=int, default=5, help="Number of Epochs")
+    parser.add_argument("--data_augs", action='append', type=str, default=None, help="Data Augmentations")
+    parser.add_argument("--num_epochs", type=int, default=100, help="Number of Epochs")
     parser.add_argument("--lr", type=float, default=1e-3, help="Learning rate for Policy Net")
     parser.add_argument("--test_split", type=float, default=0.2, help="Train test Split")
     parser.add_argument("--shuffle", type=bool, default=False, help="Shuffle dataset")
@@ -47,10 +44,9 @@ if __name__=="__main__":
 
     # Base Directory
     path_to_data = args.data_dir
-    path_to_data_curves = args.curve_dir
     base_dir = './experiments/'+ args.base_dir + '/'
-    model_save_dir = base_dir + args.model_path
-    log_dir = base_dir + args.log_dir
+    model_save_dir = base_dir + 'trained_models'
+    log_dir = base_dir + 'log'
 
     check_path(base_dir)
     check_path(log_dir)
@@ -60,6 +56,7 @@ if __name__=="__main__":
         json.dump(exp_setup, fp)
 
     # Hyperparameters
+    augmentations = args.data_augs
     num_epochs = args.num_epochs
     batch_size = args.batch_size
     learning_rate = args.lr
@@ -77,13 +74,9 @@ if __name__=="__main__":
     writer = SummaryWriter(log_dir)
 
     # Define data transformations
-    transformations = transforms.Compose([
-                                    transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.2),
-                                    transforms.GaussianBlur(5, sigma=(0.1, 2.0)),
-                                    transforms.ToTensor()
-                                ])
+    transformations = createTransform(augmentations)
     # Load data
-    dataset = PilotNetDataset(path_to_data, path_to_data_curves, transformations)
+    dataset = PilotNetDataset(path_to_data, transformations)
 
     # Creating data indices for training and test splits:
     dataset_size = len(dataset)
@@ -131,7 +124,7 @@ if __name__=="__main__":
 
             # Track the accuracy
             total = labels.size(0)
-            correct = (torch.linalg.norm(outputs - labels) < 0.1).sum().item()
+            correct = (torch.linalg.norm(outputs - labels, axis=0) < 0.1).sum().item()
             current_acc = (correct / total)
 
             if global_iter % save_iter == 0:
@@ -164,6 +157,3 @@ if __name__=="__main__":
 
     # Save the model and plot
     torch.save(pilotModel.state_dict(), model_save_dir + '/pilot_net_model_{}.ckpt'.format(random_seed))
-
-
-        

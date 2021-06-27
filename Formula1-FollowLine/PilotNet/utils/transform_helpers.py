@@ -8,8 +8,8 @@ import numpy as np
 all_augs_dict = {
     'gaussian': transforms.GaussianBlur(5, sigma=(0.1, 2.0)),
     'jitter': transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.2),
-    'perspective':transforms.RandomPerspective(distortion_scale=0.6, p=1.0),
-    'affine':transforms.RandomAffine(degrees=(-15, 15), translate=(0.1, 0.2), scale=(0.85, 0.95)),
+    'perspective':transforms.RandomPerspective(distortion_scale=0.3, p=1.0),
+    'affine':transforms.RandomAffine(degrees=(-10, 10), translate=(0.1, 0.2), scale=(0.9, 1)),
     'posterize':transforms.RandomPosterize(bits=2)
 }
 

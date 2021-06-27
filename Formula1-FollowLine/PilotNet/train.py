@@ -28,7 +28,7 @@ def parse_args():
     parser.add_argument("--lr", type=float, default=1e-3, help="Learning rate for Policy Net")
     parser.add_argument("--test_split", type=float, default=0.2, help="Train test Split")
     parser.add_argument("--shuffle", type=bool, default=False, help="Shuffle dataset")
-    parser.add_argument("--batch_size", type=int, default=256, help="Batch size")
+    parser.add_argument("--batch_size", type=int, default=128, help="Batch size")
     parser.add_argument("--save_iter", type=int, default=50, help="Iterations to save the model")
     parser.add_argument("--print_terminal", type=bool, default=False, help="Print progress in terminal")
     parser.add_argument("--seed", type=int, default=123, help="Seed for reproducing")

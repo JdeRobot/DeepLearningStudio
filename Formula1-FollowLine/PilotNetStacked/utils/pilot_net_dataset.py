@@ -30,7 +30,7 @@ class PilotNetDataset(Dataset):
         self.count = len(self.images)
         
     def __getitem__(self, index):
-        print(self.horizon)
+        
         index = np.clip(index,0,self.count-self.horizon)
 
         all_imgs = []

@@ -1,0 +1,1 @@
+{"data_dir": "../datasets/complete_dataset", "curve_dir": "../datasets/curves_only", "model_path": "trained_models", "log_dir": "log", "base_dir": "06Jun1", "comment": "Initial training on Tamino", "num_epochs": 50, "lr": 0.003, "test_split": 0.2, "shuffle": true, "batch_size": 256, "save_iter": 50, "print_terminal": true, "seed": 123}

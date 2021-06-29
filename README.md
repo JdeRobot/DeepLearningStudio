@@ -9,10 +9,21 @@ This branch contains the deep learning regression and classification models.
 
     ├── DL_algorithms
         |
-        └── PilotNet                                # Pilot Net pytorch implementation
+        |── PilotNet                                # Pilot Net pytorch implementation
+        |   ├── scripts                             # scripts for running experiments 
+        |   ├── utils                               
+        |   |   ├── pilot_net_dataset.py            # Torchvision custom dataset
+        |   |   ├── pilotnet.py                     # CNN for PilotNet
+        |   |   ├── transform_helpers.py            # Data Augmentation
+        |   |   └── processing.py                   # Data collecting, processing and utilities
+        |   └── train.py                            # training code
+        |
+        └── PilotNetStacked                         # Pilot Net Stacked Image implementation
+            ├── scripts                             # scripts for running experiments 
             ├── utils                               
-            |   ├── pilot_net_dataset.py            # Torchvision custom dataset
-            |   ├── pilotnet.py                     # CNN for Deep Pilot
+            |   ├── pilot_net_dataset.py            # Sequentially stacked image dataset
+            |   ├── pilotnet.py                     # Modified Hyperparams 
+            |   ├── transform_helpers.py            # Data Augmentation
             |   └── processing.py                   # Data collecting, processing and utilities
             └── train.py                            # training code
 

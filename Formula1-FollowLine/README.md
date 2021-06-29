@@ -30,11 +30,9 @@ For PilotNet, we use our custom datasets:
 
 -h, --help                            show this help message and exit
 --data_dir            DATA_DIR        Directory to find Data
---curve_dir           CURVE_DIR       Directory to find Curves data
---model_path          MODEL_PATH      Directory to store model
---log_dir             LOG_DIR         Directory to store tensorboard
 --base_dir            BASE_DIR        Directory to save everything
 --comment             COMMENT         Comment to know the experiment
+--data_augs           AUGMENTATIONS   Data augmentations
 --num_epochs          NUM_EPOCHS      Number of Epochs
 --lr                  LR              Learning rate for Policy Net
 --test_split          TEST_SPLIT      Train test Split
@@ -44,31 +42,53 @@ For PilotNet, we use our custom datasets:
 --print_terminal      PRINT_TERMINAL  Print progress in terminal
 --seed                SEED            Seed for reproducing
 
+# For PilotNetStacked, add
+
+--horizon             HORIZON         Stacking horizon to use
+
 ```
 
 ## Running the Code
 
-```
+```bash
 source ~/pyenvs/dlstudio/bin/activate
 cd DL_studio/Formula1-FollowLine/
 
 # For PilotNet
 
 cd PilotNet
-python train.py --data_dir ./datasets/complete_dataset \
-            --curve_dir ./datasets/curves_only \     
-            --model_path trained_models \   
-            --log_dir log \       
-            --base_dir 26May1 \      
-            --comment 'Started with the testing' \      
-            --num_epochs 50 \   
-            --lr 3e-3  \          
-            --test_split 0.2 \   
-            --shuffle True  \     
-            --batch_size 256  \  
-            --save_iter 50  \   
-            --print_terminal True \
-            --seed 123      
+python train.py --data_dir '../datasets/complete_dataset' \
+	    --data_dir '../datasets/curves_only' \
+	    --base_dir 27Jun3 \
+	    --comment 'Selected Augmentations: gaussian, affine' \
+	    --data_augs 'gaussian' \
+	    --data_augs 'affine' \
+	    --num_epochs 150 \
+	    --lr 1e-3 \
+	    --test_split 0.2 \
+	    --shuffle True \
+	    --batch_size 128 \
+	    --save_iter 50 \
+	    --print_terminal True \
+	    --seed 123  
+
+# For PilotNetStacked
+
+cd PilotNetStacked
+python train.py --data_dir '../datasets/complete_dataset' \
+		--data_dir '../datasets/curves_only' \
+		--base_dir 28Jun1 \
+		--comment 'Selected Augmentations: gaussian' \
+		--data_augs 'gaussian' \
+		--num_epochs 150 \
+		--horizon 3 \
+		--lr 1e-3 \
+		--test_split 0.2 \
+		--shuffle True \
+		--batch_size 256 \
+		--save_iter 50 \
+		--print_terminal True \
+		--seed 123
 ```
 
 The results are saved in the `./experiments/` directory and the structure is given below. 

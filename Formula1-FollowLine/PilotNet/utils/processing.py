@@ -49,6 +49,23 @@ def preprocess_data(array, imgs):
         array_flip.append((array[i][0], -array[i][1]))
     new_array = array + array_flip
     new_array_imgs = imgs + flip_imgs
+
+    extreme_case_1_img = []
+    extreme_case_2_img = []
+    extreme_case_1_array = []
+    extreme_case_2_array = []
+
+    for i in tqdm(range(len(new_array_imgs))):
+        if abs(new_array[i][1]) > 2:
+            extreme_case_2_img.append(new_array_imgs[i])
+            extreme_case_2_array.append(new_array[i])
+        elif abs(new_array[i][1]) > 1:
+            extreme_case_1_img.append(new_array_imgs[i])
+            extreme_case_1_array.append(new_array[i])
+
+    new_array += extreme_case_1_array*5 + extreme_case_2_array*10
+    new_array_imgs += extreme_case_1_img*5 + extreme_case_2_img*10
+
     return new_array, new_array_imgs
 
 def normalize(x):

@@ -1,0 +1,1 @@
+{"data_dir": ["../datasets/complete_dataset", "../datasets/curves_only"], "base_dir": "27Jun4", "comment": "Selected Augmentations: gaussian", "data_augs": ["gaussian"], "num_epochs": 150, "lr": 0.001, "test_split": 0.2, "shuffle": true, "batch_size": 128, "save_iter": 50, "print_terminal": true, "seed": 123}

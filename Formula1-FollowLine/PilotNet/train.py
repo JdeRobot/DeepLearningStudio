@@ -11,6 +11,7 @@ from utils.pilot_net_dataset import PilotNetDataset
 from utils.pilotnet import PilotNet
 from utils.transform_helpers import createTransform
 
+import os
 import argparse
 from PIL import Image
 
@@ -96,6 +97,10 @@ if __name__=="__main__":
 
     # Load Model
     pilotModel = PilotNet(dataset.image_shape, dataset.num_labels).to(device)
+
+
+    if os.path.isfile( model_save_dir + '/pilot_net_model_{}.ckpt'.format(random_seed)):
+        pilotModel.load_state_dict(torch.load(model_save_dir + '/pilot_net_model_{}.ckpt'.format(random_seed),map_location=device))
 
     # Loss and optimizer
     criterion = nn.MSELoss()

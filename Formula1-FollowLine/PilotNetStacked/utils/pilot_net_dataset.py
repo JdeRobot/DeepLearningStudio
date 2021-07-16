@@ -3,6 +3,7 @@ from torch.utils.data.dataset import Dataset
 from torchvision import transforms
 from PIL import Image
 from utils.processing import *
+import numpy as np
 
 class PilotNetDataset(Dataset):
     def __init__(self, path_to_data, horizon, transforms=None):
@@ -20,7 +21,7 @@ class PilotNetDataset(Dataset):
             self.images = get_images(all_images, type_image, self.images)        
             self.labels = parse_json(all_data, self.labels)
 
-        self.labels, self.images = preprocess_data(self.labels, self.images)
+        self.labels, self.images = preprocess_data(self.labels, self.images, horizon)
 
         self.transforms = transforms
 
@@ -30,22 +31,24 @@ class PilotNetDataset(Dataset):
         self.count = len(self.images)
         
     def __getitem__(self, index):
-        
-        index = np.clip(index,0,self.count-self.horizon)
 
-        all_imgs = []
+        all_imgs = self.images[index]
+        all_labels = self.labels[index]
+
+        new_set_imgs = []
+        label = all_labels[-1:]
 
         for iter in range(self.horizon):
-            img = self.images[index+iter]
-            label = np.array(self.labels[index])
+            img = all_imgs[iter]
+            label = np.array(all_labels[iter])
             data = Image.fromarray(img)
 
             if self.transforms is not None:
                 data = self.transforms(data)
 
-            all_imgs.append(data)
+            new_set_imgs.append(data)
             
-        set_data = torch.vstack(all_imgs)
+        set_data = torch.vstack(new_set_imgs)
 
         return (set_data, label)
 

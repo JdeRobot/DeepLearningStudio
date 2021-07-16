@@ -5,13 +5,13 @@ import torch.nn as nn
 class PilotNet(nn.Module):
     def __init__(self,
                 image_shape,
-                num_labels,
-                horizon):
+                num_labels):
         super(PilotNet, self).__init__()
 
-        self.img_height = image_shape[0]
-        self.img_width = image_shape[1]
-        self.num_channels = horizon * image_shape[2]
+        horizon = image_shape[0]
+        self.img_height = image_shape[1]
+        self.img_width = image_shape[2]
+        self.num_channels = horizon * image_shape[3]
 
         self.output_size = num_labels
         

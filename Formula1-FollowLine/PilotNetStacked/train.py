@@ -5,7 +5,7 @@ import torchvision
 from torchvision import transforms
 from torch.utils.data import DataLoader, SubsetRandomSampler
 from torch.utils.tensorboard import SummaryWriter
-
+import os
 from utils.processing import *
 from utils.pilot_net_dataset import PilotNetDataset
 from utils.pilotnet import PilotNet
@@ -20,7 +20,7 @@ import numpy as np
 def parse_args():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--data_dir", action='append', type=str, help="Directory to find Data")
+    parser.add_argument("--data_dir", action='append', help="Directory to find Data")
     parser.add_argument("--base_dir", type=str, default='exp_random', help="Directory to save everything")
     parser.add_argument("--comment", type=str, default='Random Experiment', help="Comment to know the experiment")
     parser.add_argument("--data_augs", action='append', type=str, default=None, help="Data Augmentations")
@@ -77,7 +77,6 @@ if __name__=="__main__":
 
     # Define data transformations
     transformations = createTransform(augmentations)
-
     # Load data
     dataset = PilotNetDataset(path_to_data, horizon, transformations)
 
@@ -98,7 +97,12 @@ if __name__=="__main__":
     test_loader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
 
     # Load Model
-    pilotModel = PilotNet(dataset.image_shape, dataset.num_labels, horizon).to(device)
+    pilotModel = PilotNet(dataset.image_shape, dataset.num_labels).to(device)
+    if os.path.isfile( model_save_dir + '/pilot_net_model_{}.ckpt'.format(random_seed)):
+        pilotModel.load_state_dict(torch.load(model_save_dir + '/pilot_net_model_{}.ckpt'.format(random_seed),map_location=device))
+        last_epoch = json.load(open(model_save_dir+'/args.json',))['last_epoch']+1
+    else:
+        last_epoch = 0
 
     # Loss and optimizer
     criterion = nn.MSELoss()
@@ -109,7 +113,7 @@ if __name__=="__main__":
     loss_list = []
     acc_list = []
     global_iter = 0
-    for epoch in range(num_epochs):
+    for epoch in range(last_epoch, num_epochs):
         for i, (images, labels) in enumerate(train_loader):
             
             images = FLOAT(images).to(device)
@@ -143,6 +147,8 @@ if __name__=="__main__":
                 print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}, Accuracy: {:.2f}%'
                     .format(epoch + 1, num_epochs, i + 1, total_step, loss.item(),
                             (correct / total) * 100))
+        with open(model_save_dir+'/args.json', 'w') as fp:
+            json.dump({'last_epoch': epoch}, fp)
 
     # Test the model
     pilotModel.eval()
@@ -160,6 +166,3 @@ if __name__=="__main__":
 
     # Save the model and plot
     torch.save(pilotModel.state_dict(), model_save_dir + '/pilot_net_model_{}.ckpt'.format(random_seed))
-
-
-        

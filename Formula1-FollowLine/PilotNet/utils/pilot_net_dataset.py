@@ -10,7 +10,7 @@ class PilotNetDataset(Dataset):
 
         self.images = []
         self.labels = []
-        type_image = 'cropped'
+        type_image = None #'cropped'
 
         for path in path_to_data:
             all_images, all_data = load_data(path)

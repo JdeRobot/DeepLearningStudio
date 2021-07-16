@@ -1,0 +1,8 @@
+./experiments/14Jul2_graham/ not exist
+Create ./experiments/14Jul2_graham/ success
+./experiments/14Jul2_graham/log not exist
+Create ./experiments/14Jul2_graham/log success
+./experiments/14Jul2_graham/trained_models not exist
+Create ./experiments/14Jul2_graham/trained_models success
+Test Accuracy of the model on the test images: 0.0 %
+Program finished

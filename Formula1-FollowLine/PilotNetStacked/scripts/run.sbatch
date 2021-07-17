@@ -2,8 +2,7 @@
 #SBATCH --account=def-mtaylor3
 #SBATCH -J extreme_stacked
 #SBATCH -o ./slurm/%j.out
-#SBATCH -e ./slurm/%j.err
-#SBATCH --array=2:3
+#SBATCH -e ./slurm/%j.er
 #SBATCH --gres=gpu:p100:2
 #SBATCH --cpus-per-task=6  # maximum CPU cores per GPU request: 6 on Cedar, 16 on Graham.
 #SBATCH --mem=32G
@@ -21,7 +20,7 @@ python train.py --data_dir '/scratch/umishra/complete_dataset' \
         --data_augs 'gaussian' \
         --data_augs 'jitter' \
         --num_epochs 300 \
-        --horizon $SLURM_ARRAY_TASK_ID \
+        --horizon 2 \
         --lr 3e-4 \
         --test_split 0.2 \
         --shuffle True \

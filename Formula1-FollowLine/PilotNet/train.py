@@ -9,9 +9,8 @@ import os
 from utils.processing import *
 from utils.pilot_net_dataset import PilotNetDataset
 from utils.pilotnet import PilotNet
-from utils.transform_helpers import createTransform
+from utils.transform_helper import createTransform
 
-import os
 import argparse
 from PIL import Image
 
@@ -22,6 +21,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--data_dir", action='append', help="Directory to find Data")
+    parser.add_argument("--preprocess", action='append', default=None, help="preprocessing information: choose from crop/nocrop and normal/extreme")
     parser.add_argument("--base_dir", type=str, default='exp_random', help="Directory to save everything")
     parser.add_argument("--comment", type=str, default='Random Experiment', help="Comment to know the experiment")
     parser.add_argument("--data_augs", action='append', type=str, default=None, help="Data Augmentations")
@@ -77,7 +77,7 @@ if __name__=="__main__":
     # Define data transformations
     transformations = createTransform(augmentations)
     # Load data
-    dataset = PilotNetDataset(path_to_data, transformations)
+    dataset = PilotNetDataset(path_to_data, transformations, preprocessing=args.preprocess)
 
     # Creating data indices for training and test splits:
     dataset_size = len(dataset)

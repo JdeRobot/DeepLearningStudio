@@ -1,7 +1,9 @@
 
 for horizon in 2 3 4; do
-	python train.py \
+	python train.py --data_dir '../datasets/complete_dataset' \
 		--data_dir '../datasets/curves_only' \
+		--preprocess 'crop' \
+		--preprocess 'extreme' \
 		--base_dir testcase \
 		--comment 'Selected Augmentations: gaussian' \
 		--data_augs 'gaussian' \

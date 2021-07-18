@@ -39,7 +39,7 @@ def parse_json(data, array):
 
     return array
 
-def preprocess_data(array, imgs, horizon):
+def preprocess_data(array, imgs, horizon, data_type):
     # Data augmentation
     # Take the image and just flip it and negate the measurement
 
@@ -83,8 +83,12 @@ def preprocess_data(array, imgs, horizon):
             extreme_case_0_img.append(list(flip_image_trace.copy()))
             extreme_case_0_array.append(list(flip_array_trace.copy()))
 
-    new_array = extreme_case_0_array + extreme_case_1_array*5 + extreme_case_2_array*10
-    new_array_imgs = extreme_case_0_img + extreme_case_1_img*5 + extreme_case_2_img*10
+    if data_type == 'extreme':
+        new_array = extreme_case_0_array + extreme_case_1_array*5 + extreme_case_2_array*10
+        new_array_imgs = extreme_case_0_img + extreme_case_1_img*5 + extreme_case_2_img*10
+    else:
+        new_array = extreme_case_0_array + extreme_case_1_array + extreme_case_2_array
+        new_array_imgs = extreme_case_0_img + extreme_case_1_img + extreme_case_2_img
 
     return np.array(new_array), np.array(new_array_imgs)
 

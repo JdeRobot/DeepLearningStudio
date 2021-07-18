@@ -4,20 +4,33 @@ from PIL import Image
 from utils.processing import *
 
 class PilotNetDataset(Dataset):
-    def __init__(self, path_to_data, transforms=None):
+    def __init__(self, path_to_data, transforms=None, preprocessing=None):
 
         self.data_path = path_to_data
 
         self.images = []
         self.labels = []
-        type_image = None #'cropped'
+
+        if preprocessing is not None:
+            if 'nocrop' in preprocessing:
+                type_image = None
+            else:
+                type_image = 'cropped'
+            
+            if 'extreme' in preprocessing:
+                data_type = 'extreme'
+            else:
+                data_type = None
+        else:
+            type_image = 'cropped'
+            data_type = None
 
         for path in path_to_data:
             all_images, all_data = load_data(path)
             self.images = get_images(all_images, type_image, self.images)        
             self.labels = parse_json(all_data, self.labels)
 
-        self.labels, self.images = preprocess_data(self.labels, self.images)
+        self.labels, self.images = preprocess_data(self.labels, self.images, data_type)
 
         self.transforms = transforms
 

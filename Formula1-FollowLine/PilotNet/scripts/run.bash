@@ -2,6 +2,8 @@
 
 python train.py --data_dir '../datasets/complete_dataset' \
 	--data_dir '../datasets/curves_only' \
+	--preprocess 'crop' \
+	--preprocess 'extreme' \
 	--base_dir testcase \
 	--comment 'All Augmentations trial v1' \
 	--data_augs 'all' \

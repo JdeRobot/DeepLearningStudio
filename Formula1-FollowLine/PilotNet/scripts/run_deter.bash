@@ -2,6 +2,8 @@
 
 python train.py \
 	--data_dir '../datasets/curves_only' \
+	--preprocess 'crop' \
+	--preprocess 'extreme' \
 	--base_dir testcase \
 	--comment 'Selected Augmentations: gaussian, affine' \
 	--data_augs 'gaussian' \

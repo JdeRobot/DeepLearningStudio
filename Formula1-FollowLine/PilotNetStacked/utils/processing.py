@@ -42,13 +42,6 @@ def parse_json(data, array):
 def preprocess_data(array, imgs, horizon):
     # Data augmentation
     # Take the image and just flip it and negate the measurement
-    # flip_imgs = []
-    # array_flip = []
-    # for i in tqdm(range(len(imgs))):
-    #     flip_imgs.append(cv2.flip(imgs[i], 1))
-    #     array_flip.append((array[i][0], -array[i][1]))
-    # new_array = array + array_flip
-    # new_array_imgs = imgs + flip_imgs
 
     image_trace = deque([], maxlen=horizon)
     array_trace = deque([], maxlen=horizon)

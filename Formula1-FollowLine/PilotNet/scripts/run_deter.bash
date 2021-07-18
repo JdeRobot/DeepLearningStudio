@@ -1,8 +1,8 @@
 #!/bin/bash
 
-python train.py --data_dir '../datasets/complete_dataset' \
-	--data_dir '../datasets/curves_only' \
-	--base_dir 27Jun3 \
+python train.py \
+	--data_dir '/home/utkubuntu/GSoC2021/datasets/curves_only' \
+	--base_dir random \
 	--comment 'Selected Augmentations: gaussian, affine' \
 	--data_augs 'gaussian' \
 	--data_augs 'affine' \
@@ -10,7 +10,7 @@ python train.py --data_dir '../datasets/complete_dataset' \
 	--lr 1e-3 \
 	--test_split 0.2 \
 	--shuffle True \
-	--batch_size 128 \
+	--batch_size 16 \
 	--save_iter 50 \
 	--print_terminal True \
 	--seed 123

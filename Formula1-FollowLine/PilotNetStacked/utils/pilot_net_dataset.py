@@ -38,7 +38,7 @@ class PilotNetDataset(Dataset):
         self.transforms = transforms
 
         self.image_shape = self.images[0].shape
-        self.num_labels = np.array(self.labels[0]).shape[0]
+        self.num_labels = np.array(self.labels[0][0]).shape[0]
 
         self.count = len(self.images)
         

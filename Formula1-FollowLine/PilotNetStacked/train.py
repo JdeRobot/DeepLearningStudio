@@ -122,6 +122,7 @@ if __name__=="__main__":
             
             # Run the forward pass
             outputs = pilotModel(images)
+
             loss = criterion(outputs, labels)
             current_loss = loss.item()
 

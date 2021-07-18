@@ -99,6 +99,9 @@ if __name__=="__main__":
     pilotModel = PilotNet(dataset.image_shape, dataset.num_labels).to(device)
     if os.path.isfile( model_save_dir + '/pilot_net_model_{}.ckpt'.format(random_seed)):
         pilotModel.load_state_dict(torch.load(model_save_dir + '/pilot_net_model_{}.ckpt'.format(random_seed),map_location=device))
+        last_epoch = json.load(open(model_save_dir+'/args.json',))['last_epoch']+1
+    else:
+        last_epoch = 0
 
 
     if os.path.isfile( model_save_dir + '/pilot_net_model_{}.ckpt'.format(random_seed)):
@@ -113,7 +116,7 @@ if __name__=="__main__":
     loss_list = []
     acc_list = []
     global_iter = 0
-    for epoch in range(num_epochs):
+    for epoch in range(last_epoch, num_epochs):
         for i, (images, labels) in enumerate(train_loader):
             
             images = FLOAT(images).to(device)
@@ -147,6 +150,8 @@ if __name__=="__main__":
                 print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}, Accuracy: {:.2f}%'
                     .format(epoch + 1, num_epochs, i + 1, total_step, loss.item(),
                             (correct / total) * 100))
+        with open(model_save_dir+'/args.json', 'w') as fp:
+            json.dump({'last_epoch': epoch}, fp)
 
     # Test the model
     pilotModel.eval()

@@ -1,15 +1,16 @@
 #!/bin/bash
 
-python train.py --data_dir '../datasets/complete_dataset' \
+python train.py \
 	--data_dir '../datasets/curves_only' \
 	--base_dir testcase \
-	--comment 'Random Augmentations trial' \
-	--data_augs 'auto' \
+	--comment 'Selected Augmentations: gaussian, affine' \
+	--data_augs 'gaussian' \
+	--data_augs 'affine' \
 	--num_epochs 150 \
-	--lr 3e-3 \
+	--lr 1e-3 \
 	--test_split 0.2 \
 	--shuffle True \
-	--batch_size 256 \
+	--batch_size 16 \
 	--save_iter 50 \
 	--print_terminal True \
 	--seed 123

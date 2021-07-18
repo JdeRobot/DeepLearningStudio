@@ -59,7 +59,7 @@ cd DL_studio/Formula1-FollowLine/
 cd PilotNet
 python train.py --data_dir '../datasets/complete_dataset' \
 	    --data_dir '../datasets/curves_only' \
-	    --base_dir 27Jun3 \
+	    --base_dir testcase \
 	    --comment 'Selected Augmentations: gaussian, affine' \
 	    --data_augs 'gaussian' \
 	    --data_augs 'affine' \
@@ -77,7 +77,7 @@ python train.py --data_dir '../datasets/complete_dataset' \
 cd PilotNetStacked
 python train.py --data_dir '../datasets/complete_dataset' \
 		--data_dir '../datasets/curves_only' \
-		--base_dir 28Jun1 \
+		--base_dir testcase \
 		--comment 'Selected Augmentations: gaussian' \
 		--data_augs 'gaussian' \
 		--num_epochs 150 \

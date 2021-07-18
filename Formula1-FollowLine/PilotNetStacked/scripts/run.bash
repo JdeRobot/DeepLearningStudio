@@ -1,8 +1,8 @@
 
-for horizon in 2; do
+for horizon in 2 3 4; do
 	python train.py \
 		--data_dir '../datasets/curves_only' \
-		--base_dir random \
+		--base_dir testcase \
 		--comment 'Selected Augmentations: gaussian' \
 		--data_augs 'gaussian' \
 		--num_epochs 150 \

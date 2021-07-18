@@ -5,7 +5,7 @@ import torchvision
 from torchvision import transforms
 from torch.utils.data import DataLoader, SubsetRandomSampler
 from torch.utils.tensorboard import SummaryWriter
-
+import os
 from utils.processing import *
 from utils.pilot_net_dataset import PilotNetDataset
 from utils.pilotnet import PilotNet
@@ -102,10 +102,6 @@ if __name__=="__main__":
         last_epoch = json.load(open(model_save_dir+'/args.json',))['last_epoch']+1
     else:
         last_epoch = 0
-
-
-    if os.path.isfile( model_save_dir + '/pilot_net_model_{}.ckpt'.format(random_seed)):
-        pilotModel.load_state_dict(torch.load(model_save_dir + '/pilot_net_model_{}.ckpt'.format(random_seed),map_location=device))
 
     # Loss and optimizer
     criterion = nn.MSELoss()

@@ -3,7 +3,6 @@ __pycache__/
 
 */log/
 */logs/
-
 */trained_models/
 
 */*.egg-info

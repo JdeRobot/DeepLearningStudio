@@ -22,8 +22,15 @@ def get_images(list_images, type_image, array_imgs):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         if type_image == 'cropped':
             img = img[240:480, 0:640]
-        # img = cv2.resize(img, (int(img.shape[1] / 4), int(img.shape[0] / 4)))
-        img = cv2.resize(img, (int(200), int(66)))
+            # img = cv2.resize(img, (int(img.shape[1] / 4), int(img.shape[0] / 4)))
+            img = cv2.resize(img, (int(200), int(66)))
+        else:
+            target_height = int(66)
+            target_width = int(target_height * img.shape[1]/img.shape[0])
+            img_resized = cv2.resize(img, (target_width, target_height))
+            padding_left = int((200 - target_width)/2)
+            padding_right = 200 - target_width - padding_left
+            img = cv2.copyMakeBorder(img_resized.copy(),0,0,padding_left,padding_right,cv2.BORDER_CONSTANT,value=[0, 0, 0])
         array_imgs.append(img)
 
     return array_imgs

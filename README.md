@@ -1,4 +1,4 @@
-# DeepLearningStudio
+# Deep Learning Studio
 
 ## Information regarding this branch
 

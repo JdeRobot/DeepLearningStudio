@@ -53,7 +53,7 @@ For PilotNet, we use our custom datasets:
 
 ```bash
 source ~/pyenvs/dlstudio/bin/activate
-cd DL_studio/Formula1-FollowLine/
+cd DeepLearningStudio/Formula1-FollowLine/
 
 # For PilotNet
 

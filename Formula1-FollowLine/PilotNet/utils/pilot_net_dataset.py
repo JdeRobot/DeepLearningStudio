@@ -38,15 +38,11 @@ class PilotNetDataset(Dataset):
         self.num_labels = np.array(self.labels[0]).shape[0]
 
         self.count = len(self.images)
-        self.max_V = 13
-        self.max_W = 3
         
     def __getitem__(self, index):
 
         img = self.images[index]
         label = np.array(self.labels[index])
-        #label[0] = label[0]/self.max_V
-        #label[1] = label[1]/self.max_W
         data = Image.fromarray(img)
 
         if self.transforms is not None:

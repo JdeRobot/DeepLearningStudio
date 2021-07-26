@@ -1,4 +1,4 @@
-# DL-Studio
+# DeepLearningStudio
 
 ## Information regarding this branch
 
@@ -38,7 +38,7 @@ python3 -m pip install virtualenv
 virtualenv dlstudio --python=python3
 
 cd ~
-git clone https://github.com/JdeRobot/DL-Studio DL_studio
+git clone https://github.com/JdeRobot/DeepLearningStudio DL_studio
 git checkout pilotnet
 source ~/pyenvs/dlstudio/bin/activate
 python3 -m pip install -r requirements.txt

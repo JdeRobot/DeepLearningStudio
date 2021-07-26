@@ -1,4 +1,4 @@
-# DL-Studio
+# Deep Learning Studio
 
 ## Information regarding this Repository
 
@@ -49,8 +49,8 @@ python3 -m pip install virtualenv
 virtualenv dlstudio --python=python3
 
 cd ~
-git clone https://github.com/JdeRobot/DL-Studio DL_studio
-cd DL_studio
+git clone https://github.com/JdeRobot/DeepLearningStudio DeepLearningStudio
+cd DeepLearningStudio
 source ~/pyenvs/dlstudio/bin/activate
 python3 -m pip install -r requirements.txt
 ```
@@ -89,3 +89,4 @@ python3 -m pip install -r requirements.txt
   publisher={Multidisciplinary Digital Publishing Institute}
 }
 ```
+

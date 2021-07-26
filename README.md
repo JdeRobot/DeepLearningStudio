@@ -7,7 +7,7 @@ This branch contains the deep learning regression and classification models.
 
 ## Structure of the branch
 
-    ├── DL_algorithms
+    ├── Formula1-FollowLine
         |
         |── PilotNet                                # Pilot Net pytorch implementation
         |   ├── scripts                             # scripts for running experiments 
@@ -38,7 +38,7 @@ python3 -m pip install virtualenv
 virtualenv dlstudio --python=python3
 
 cd ~
-git clone https://github.com/JdeRobot/DeepLearningStudio DL_studio
+git clone https://github.com/JdeRobot/DeepLearningStudio DeepLearningStudio
 git checkout pilotnet
 source ~/pyenvs/dlstudio/bin/activate
 python3 -m pip install -r requirements.txt

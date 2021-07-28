@@ -3,7 +3,7 @@ import glob
 import numpy as np
 import cv2
 from tqdm import tqdm
-
+from collections import deque
 
 def load_data(folder):
     name_folder = folder + '/Images/'
@@ -39,17 +39,58 @@ def parse_json(data, array):
 
     return array
 
-def preprocess_data(array, imgs):
+def preprocess_data(array, imgs, horizon, data_type):
     # Data augmentation
     # Take the image and just flip it and negate the measurement
-    flip_imgs = []
-    array_flip = []
+
+    image_trace = deque([], maxlen=horizon)
+    array_trace = deque([], maxlen=horizon)
+
+    flip_image_trace = deque([], maxlen=horizon)
+    flip_array_trace = deque([], maxlen=horizon)
+    
+    for _ in range(horizon):
+        image_trace.append(imgs[0])
+        array_trace.append(array[0])
+        flip_image_trace.append(cv2.flip(imgs[0], 1))
+        flip_array_trace.append((array[0][0], -array[0][1]))
+
+    extreme_case_0_img = []
+    extreme_case_1_img = []
+    extreme_case_2_img = []
+    extreme_case_0_array = []
+    extreme_case_1_array = []
+    extreme_case_2_array = []
+
     for i in tqdm(range(len(imgs))):
-        flip_imgs.append(cv2.flip(imgs[i], 1))
-        array_flip.append((array[i][0], -array[i][1]))
-    new_array = array + array_flip
-    new_array_imgs = imgs + flip_imgs
-    return new_array, new_array_imgs
+        image_trace.append(imgs[i])
+        array_trace.append(array[i])
+        flip_image_trace.append(cv2.flip(imgs[i], 1))
+        flip_array_trace.append((array[i][0], -array[i][1]))
+        if abs(array[i][1]) > 2:
+            extreme_case_2_img.append(list(image_trace.copy()))
+            extreme_case_2_array.append(list(array_trace.copy()))
+            extreme_case_2_img.append(list(flip_image_trace.copy()))
+            extreme_case_2_array.append(list(flip_array_trace.copy()))
+        elif abs(array[i][1]) > 1:
+            extreme_case_1_img.append(list(image_trace.copy()))
+            extreme_case_1_array.append(list(array_trace.copy()))
+            extreme_case_1_img.append(list(flip_image_trace.copy()))
+            extreme_case_1_array.append(list(flip_array_trace.copy()))
+        else:
+            extreme_case_0_img.append(list(image_trace.copy()))
+            extreme_case_0_array.append(list(array_trace.copy()))
+            extreme_case_0_img.append(list(flip_image_trace.copy()))
+            extreme_case_0_array.append(list(flip_array_trace.copy()))
+
+    if data_type == 'extreme':
+        new_array = extreme_case_0_array + extreme_case_1_array*5 + extreme_case_2_array*10
+        new_array_imgs = extreme_case_0_img + extreme_case_1_img*5 + extreme_case_2_img*10
+    else:
+        new_array = extreme_case_0_array + extreme_case_1_array + extreme_case_2_array
+        new_array_imgs = extreme_case_0_img + extreme_case_1_img + extreme_case_2_img
+
+    return np.array(new_array), np.array(new_array_imgs)
 
 def normalize(x):
     x = np.asarray(x)

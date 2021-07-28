@@ -1,31 +1,42 @@
-# DL-Studio
+# Deep Learning Studio
 
-## Information regarding this branch
+## Information regarding this Repository
 
-This branch contains the deep learning regression and classification models.
+This repository contains the deep learning regression and classification models for all robots used in the JdeRobot community.
 
 
 ## Structure of the branch
 
-    ├── DL_algorithms
+    ├── Formula1-FollowLine
+    |   |
+    |   |── PilotNet                                # Pilot Net pytorch implementation
+    |   |   ├── scripts                             # scripts for running experiments 
+    |   |   ├── utils                               
+    |   |   |   ├── pilot_net_dataset.py            # Torchvision custom dataset
+    |   |   |   ├── pilotnet.py                     # CNN for PilotNet
+    |   |   |   ├── transform_helpers.py            # Data Augmentation
+    |   |   |   └── processing.py                   # Data collecting, processing and utilities
+    |   |   └── train.py                            # training code
+    |   |
+    |   └── PilotNetStacked                         # Pilot Net Stacked Image implementation
+    |       ├── scripts                             # scripts for running experiments 
+    |       ├── utils                               
+    |       |   ├── pilot_net_dataset.py            # Sequentially stacked image dataset
+    |       |   ├── pilotnet.py                     # Modified Hyperparams 
+    |       |   ├── transform_helpers.py            # Data Augmentation
+    |       |   └── processing.py                   # Data collecting, processing and utilities
+    |       └── train.py                            # training code
+    |
+    ├── Drone-FollowLine
         |
-        |── PilotNet                                # Pilot Net pytorch implementation
+        |── DeepPilot                               # DeepPilot CNN pytorch implementation
         |   ├── scripts                             # scripts for running experiments 
         |   ├── utils                               
         |   |   ├── pilot_net_dataset.py            # Torchvision custom dataset
-        |   |   ├── pilotnet.py                     # CNN for PilotNet
+        |   |   ├── pilotnet.py                     # CNN for DeepPilot
         |   |   ├── transform_helpers.py            # Data Augmentation
         |   |   └── processing.py                   # Data collecting, processing and utilities
         |   └── train.py                            # training code
-        |
-        └── PilotNetStacked                         # Pilot Net Stacked Image implementation
-            ├── scripts                             # scripts for running experiments 
-            ├── utils                               
-            |   ├── pilot_net_dataset.py            # Sequentially stacked image dataset
-            |   ├── pilotnet.py                     # Modified Hyperparams 
-            |   ├── transform_helpers.py            # Data Augmentation
-            |   └── processing.py                   # Data collecting, processing and utilities
-            └── train.py                            # training code
 
 
 ## Setting up this branch
@@ -38,8 +49,8 @@ python3 -m pip install virtualenv
 virtualenv dlstudio --python=python3
 
 cd ~
-git clone https://github.com/JdeRobot/DL-Studio DL_studio
-git checkout pilotnet
+git clone https://github.com/JdeRobot/DeepLearningStudio DeepLearningStudio
+cd DeepLearningStudio
 source ~/pyenvs/dlstudio/bin/activate
 python3 -m pip install -r requirements.txt
 ```
@@ -63,3 +74,19 @@ python3 -m pip install -r requirements.txt
   year={2017}
 }
 ```
+
+2. Rojas-Perez, L.O., & Martinez-Carranza, J. (2020). DeepPilot: A CNN for Autonomous Drone Racing. Sensors, 20(16), 4524. [https://doi.org/10.3390/s20164524](https://doi.org/10.3390/s20164524)
+
+```
+@article{rojas2020deeppilot,
+  title={DeepPilot: A CNN for Autonomous Drone Racing},
+  author={Rojas-Perez, Leticia Oyuki and Martinez-Carranza, Jose},
+  journal={Sensors},
+  volume={20},
+  number={16},
+  pages={4524},
+  year={2020},
+  publisher={Multidisciplinary Digital Publishing Institute}
+}
+```
+

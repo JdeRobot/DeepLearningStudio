@@ -3,11 +3,11 @@ __pycache__/
 
 */log/
 */logs/
-
 */trained_models/
 
 */*.egg-info
 
 */datasets/
 
-*/test_data/
+**/**/test_data/
+**/**/test.py

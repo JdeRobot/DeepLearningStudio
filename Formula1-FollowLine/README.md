@@ -1,11 +1,12 @@
-# DL Algorithms: Implementation and Baseline
+# Formula1 Followline Algorithms: Implementation and Baseline
 
-It contains some deep learning regression models.
+It contains some deep learning regression models for Formula1 Line Following task.
 
 The models implemented are derived from:
 1. PilotNet for Autonomous Driving with Behaviour Metrics dataset
+2. PilotNetStacked as an extension of PilotNet with stacked images
 
-The DL algorithm is modular and can adapt to various other datasets. 
+The algorithms are modular and can adapt to various other datasets. 
 
 ## Preparing Dataset
 
@@ -30,6 +31,7 @@ For PilotNet, we use our custom datasets:
 
 -h, --help                            show this help message and exit
 --data_dir            DATA_DIR        Directory to find Data
+--preprocess		  PREPROCESSING	  Preprocessing information about cropping and extreme cases 
 --base_dir            BASE_DIR        Directory to save everything
 --comment             COMMENT         Comment to know the experiment
 --data_augs           AUGMENTATIONS   Data augmentations
@@ -52,14 +54,16 @@ For PilotNet, we use our custom datasets:
 
 ```bash
 source ~/pyenvs/dlstudio/bin/activate
-cd DL_studio/Formula1-FollowLine/
+cd DeepLearningStudio/Formula1-FollowLine/
 
 # For PilotNet
 
 cd PilotNet
 python train.py --data_dir '../datasets/complete_dataset' \
 	    --data_dir '../datasets/curves_only' \
-	    --base_dir 27Jun3 \
+		--preprocess 'crop' \
+		--preprocess 'extreme' \
+	    --base_dir testcase \
 	    --comment 'Selected Augmentations: gaussian, affine' \
 	    --data_augs 'gaussian' \
 	    --data_augs 'affine' \
@@ -77,7 +81,9 @@ python train.py --data_dir '../datasets/complete_dataset' \
 cd PilotNetStacked
 python train.py --data_dir '../datasets/complete_dataset' \
 		--data_dir '../datasets/curves_only' \
-		--base_dir 28Jun1 \
+		--preprocess 'crop' \
+		--preprocess 'extreme' \
+		--base_dir testcase \
 		--comment 'Selected Augmentations: gaussian' \
 		--data_augs 'gaussian' \
 		--num_epochs 150 \

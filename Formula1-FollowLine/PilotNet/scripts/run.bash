@@ -2,7 +2,9 @@
 
 python train.py --data_dir '../datasets/complete_dataset' \
 	--data_dir '../datasets/curves_only' \
-	--base_dir 24Jun1 \
+	--preprocess 'crop' \
+	--preprocess 'extreme' \
+	--base_dir testcase \
 	--comment 'All Augmentations trial v1' \
 	--data_augs 'all' \
 	--num_epochs 150 \

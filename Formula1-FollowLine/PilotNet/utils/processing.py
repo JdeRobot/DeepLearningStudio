@@ -22,8 +22,15 @@ def get_images(list_images, type_image, array_imgs):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         if type_image == 'cropped':
             img = img[240:480, 0:640]
-        # img = cv2.resize(img, (int(img.shape[1] / 4), int(img.shape[0] / 4)))
-        img = cv2.resize(img, (int(200), int(66)))
+            # img = cv2.resize(img, (int(img.shape[1] / 4), int(img.shape[0] / 4)))
+            img = cv2.resize(img, (int(200), int(66)))
+        else:
+            target_height = int(66)
+            target_width = int(target_height * img.shape[1]/img.shape[0])
+            img_resized = cv2.resize(img, (target_width, target_height))
+            padding_left = int((200 - target_width)/2)
+            padding_right = 200 - target_width - padding_left
+            img = cv2.copyMakeBorder(img_resized.copy(),0,0,padding_left,padding_right,cv2.BORDER_CONSTANT,value=[0, 0, 0])
         array_imgs.append(img)
 
     return array_imgs
@@ -39,7 +46,7 @@ def parse_json(data, array):
 
     return array
 
-def preprocess_data(array, imgs):
+def preprocess_data(array, imgs, data_type):
     # Data augmentation
     # Take the image and just flip it and negate the measurement
     flip_imgs = []
@@ -49,6 +56,24 @@ def preprocess_data(array, imgs):
         array_flip.append((array[i][0], -array[i][1]))
     new_array = array + array_flip
     new_array_imgs = imgs + flip_imgs
+
+    if data_type == 'extreme':
+        extreme_case_1_img = []
+        extreme_case_2_img = []
+        extreme_case_1_array = []
+        extreme_case_2_array = []
+
+        for i in tqdm(range(len(new_array_imgs))):
+            if abs(new_array[i][1]) > 2:
+                extreme_case_2_img.append(new_array_imgs[i])
+                extreme_case_2_array.append(new_array[i])
+            elif abs(new_array[i][1]) > 1:
+                extreme_case_1_img.append(new_array_imgs[i])
+                extreme_case_1_array.append(new_array[i])
+
+        new_array += extreme_case_1_array*5 + extreme_case_2_array*10
+        new_array_imgs += extreme_case_1_img*5 + extreme_case_2_img*10
+
     return new_array, new_array_imgs
 
 def normalize(x):

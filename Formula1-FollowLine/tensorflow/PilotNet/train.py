@@ -1,6 +1,5 @@
 import os
 import argparse
-import utils.dataset
 import datetime
 import time
 import h5py
@@ -9,7 +8,8 @@ import numpy as np
 
 from sklearn.model_selection import train_test_split
 from matplotlib import pyplot as plt
-from utils.dataset import read_dataset, get_augmentations, DatasetSequence
+from utils.dataset import get_augmentations, DatasetSequence
+from utils.processing import read_dataset
 from utils.pilotnet import pilotnet_model
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard, CSVLogger
 from tensorflow.python.keras.saving import hdf5_format

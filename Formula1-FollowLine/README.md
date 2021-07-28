@@ -6,9 +6,11 @@ The models implemented are derived from:
 1. PilotNet for Autonomous Driving with Behaviour Metrics dataset
 2. PilotNetStacked as an extension of PilotNet with stacked images
 
-The algorithms are modular and can adapt to various other datasets. 
+The algorithms are modular and can adapt to various other datasets. They are both implemented in pytorch and tensorflow.
 
-## Preparing Dataset
+# Pytorch <img src="https://pytorch.org/assets/images/pytorch-logo.png" alt="Pytorch logo" width="50"/> 
+
+## Preparing Dataset 
 
 For PilotNet, we use our custom datasets:
 - Complete dataset: contains images with annotations from different circuits [https://drive.google.com/file/d/1Xdiu69DLj7lKK37F94qrUWsXkVg4ymGv/view?usp=sharing](https://drive.google.com/file/d/1Xdiu69DLj7lKK37F94qrUWsXkVg4ymGv/view?usp=sharing)
@@ -31,7 +33,7 @@ For PilotNet, we use our custom datasets:
 
 -h, --help                            show this help message and exit
 --data_dir            DATA_DIR        Directory to find Data
---preprocess		  PREPROCESSING	  Preprocessing information about cropping and extreme cases 
+--preprocess	      PREPROCESSING   Preprocessing information about cropping and extreme cases 
 --base_dir            BASE_DIR        Directory to save everything
 --comment             COMMENT         Comment to know the experiment
 --data_augs           AUGMENTATIONS   Data augmentations
@@ -54,7 +56,7 @@ For PilotNet, we use our custom datasets:
 
 ```bash
 source ~/pyenvs/dlstudio/bin/activate
-cd DeepLearningStudio/Formula1-FollowLine/
+cd DeepLearningStudio/Formula1-FollowLine/pytorch
 
 # For PilotNet
 
@@ -99,3 +101,50 @@ python train.py --data_dir '../datasets/complete_dataset' \
 
 The results are saved in the `./experiments/` directory and the structure is given below. 
 Tensorboard can be launched with `./experiments/base_dir/log` directory.
+
+
+# Tensorflow <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Tensorflow_logo.svg/1200px-Tensorflow_logo.svg.png" alt="TF logo" width="50"/> 
+
+## Preparing Dataset
+
+The same workflow as for PyTorch is followed, refer to the previous section
+
+## Hyperparameters for the code
+
+```
+# For PilotNet
+
+-h, --help                            show this help message and exit
+--data_dir            DATA_DIR        Directory to find Data
+--preprocess          PREPROCESSING   Preprocessing information about cropping and extreme cases 
+--data_augs           AUGMENTATIONS   Data augmentations
+--num_epochs          NUM_EPOCHS      Number of Epochs
+--learning_rate       LR              Learning rate for Policy Net
+--batch_size          BATCH_SIZE      Batch size
+--img_shape	      IMG_SHAPE	      Image shape
+
+
+```
+
+## Running the Code
+
+```bash
+source ~/pyenvs/dlstudio/bin/activate
+cd DeepLearningStudio/Formula1-FollowLine/tensorflow
+
+# For PilotNet
+
+cd PilotNet
+python train.py --data_dir ../complete_dataset/ \
+	--preprocess crop \
+	--preprocess extreme \
+	--data_augs True \
+	--num_epochs 1 \
+	--batch_size 50 \
+	--learning_rate 0.0001 \
+	--img_shape "200,66,3"
+
+```
+
+The results are saved in  `./` directory and the structure is given below. 
+Tensorboard can be launched with `logs/fit` directory.

@@ -3,6 +3,7 @@ import argparse
 import utils.dataset
 import datetime
 import time
+import h5py
 
 import numpy as np
 
@@ -11,7 +12,8 @@ from matplotlib import pyplot as plt
 from utils.dataset import read_dataset, get_augmentations, DatasetSequence
 from utils.pilotnet import pilotnet_model
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard, CSVLogger
-
+from tensorflow.python.keras.saving import hdf5_format
+    
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -52,8 +54,7 @@ if __name__=="__main__":
 
     images_train, array_annotations_train, images_val, array_annotations_val = read_dataset(path_to_data, type_image, img_shape, data_type)
 
-############################################################## 7 TRAIN ##############################################################
-
+    # Train
     timestr = time.strftime("%Y%m%d-%H%M%S")
     print(timestr)
 
@@ -100,10 +101,10 @@ if __name__=="__main__":
         #workers=2, use_multiprocessing=False,
         callbacks=[tensorboard_callback, earlystopping, cp_callback, csv_logger])
 
-    # Save the model
+    # Save model
     model.save(model_file)
 
-    # Evaluate the model
+    # Evaluate model
     score = model.evaluate(valid_gen, verbose=0)
 
     print('Evaluating')
@@ -111,12 +112,8 @@ if __name__=="__main__":
     print('Test mean squared error: ', score[1])
     print('Test mean absolute error: ', score[2])
 
-    # SAVE METADATA
-    from tensorflow.python.keras.saving import hdf5_format
-    import h5py
-
     model_path = model_file
-    # Save model
+    # Save model metadata
     with h5py.File(model_path, mode='w') as f:
         hdf5_format.save_model_to_hdf5(model, f)
         f.attrs['experiment_name'] = ''

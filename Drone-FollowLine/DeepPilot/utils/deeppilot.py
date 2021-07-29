@@ -52,12 +52,12 @@ class DeepPilot(nn.Module):
         self.fc_r1 = nn.Linear(128 * 3 * 3, 1024)
         self.fc_p1 = nn.Linear(128 * 3 * 3, 1024)
         self.fc_y1 = nn.Linear(128 * 3 * 3, 1024)
-        self.fc_a1 = nn.Linear(128 * 3 * 3, 1024)
+        # self.fc_a1 = nn.Linear(128 * 3 * 3, 1024)
 
         self.fc_r2 = nn.Linear(1024, 1)
         self.fc_p2 = nn.Linear(1024, 1)
         self.fc_y2 = nn.Linear(1024, 1)
-        self.fc_a2 = nn.Linear(1024, 1)
+        # self.fc_a2 = nn.Linear(1024, 1)
 
     def forward(self, img):
 
@@ -150,10 +150,11 @@ class DeepPilot(nn.Module):
         yout = torch.relu(yout)
         yout = self.fc_y2(yout)
 
-        aout = self.fc_a1(out)
-        aout = torch.relu(aout)
-        aout = self.fc_a2(aout)
+        # aout = self.fc_a1(out)
+        # aout = torch.relu(aout)
+        # aout = self.fc_a2(aout)
 
-        out_final = torch.cat((rout, pout, yout, aout), dim=1)
+        # out_final = torch.cat((rout, pout, yout, aout), dim=1)
+        out_final = torch.cat((rout, pout, yout), dim=1)
 
         return out_final

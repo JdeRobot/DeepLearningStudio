@@ -1,3 +1,4 @@
+from numpy.core.shape_base import stack
 from torch.utils.data.dataset import Dataset
 from torchvision import transforms
 from PIL import Image
@@ -8,33 +9,31 @@ class DeepPilotDataset(Dataset):
 
         self.data_path = path_to_data
 
-        # if mode == 'train':
-        #     datatset = getTrainSource(self.data_path + 'train/')
-        # elif mode == 'test':
-        #     datatset = getTestSource(self.data_path + 'test/')
-        # else:
-        #     assert False, 'Mode should be train/test'
         self.images = []
         self.labels = []
+        type_image = []
 
         if preprocessing is not None:
             if 'nocrop' in preprocessing:
-                type_image = None
+                pass
             else:
-                type_image = 'cropped'
+                type_image.append('cropped')
             
             if 'extreme' in preprocessing:
                 data_type = 'extreme'
             else:
                 data_type = None
+
+            if 'stacked' in preprocessing:
+                type_image.append('stacked')
         else:
-            type_image = 'cropped'
+            type_image = ['cropped']
             data_type = None
 
         for path in path_to_data:
-            all_images, all_data = load_data(path)
-            self.images = get_images(all_images, type_image, self.images)        
-            self.labels = parse_json(all_data, self.labels)
+            datatset = getTrainSource(path, type_image)
+            self.images += datatset.images
+            self.labels += datatset.speed
 
         self.labels, self.images = preprocess_data(self.labels, self.images, data_type)
 

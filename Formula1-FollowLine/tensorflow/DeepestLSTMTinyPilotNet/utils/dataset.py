@@ -1,8 +1,13 @@
-from tensorflow.keras.utils import Sequence
-from skimage.io import imread
-from skimage.transform import resize
-import numpy as np
 import math
+
+import numpy as np
+
+from tensorflow.keras.utils import Sequence
+from albumentations import (
+    Compose, HorizontalFlip, RandomBrightnessContrast, 
+    HueSaturationValue, FancyPCA, RandomGamma, GaussNoise,
+    GaussianBlur, ToFloat, Normalize, ColorJitter, ChannelShuffle, Equalize
+)
 
 class DatasetSequence(Sequence):
     def __init__(self, x_set, y_set, batch_size, augmentations):

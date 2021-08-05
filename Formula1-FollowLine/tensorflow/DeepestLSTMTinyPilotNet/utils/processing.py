@@ -76,7 +76,7 @@ def normalize(x):
     return (x - x.min()) / (np.ptp(x))
 
 
-def separate_sequences():
+def separate_sequences(array_imgs, array_annotations):
     # SEPARATE DATASET INTO SEQUENCES TO FIT BATCH SIZES
     # 1
     array_1_img = [] 
@@ -435,7 +435,9 @@ def separate_sequences():
     print(len(array_x))
     print(len(array_y))
     
-def split_dataset():
+    return array_x, array_y
+    
+def split_dataset(array_x, array_y):
     images_train, images_validation, annotations_train, annotations_validation = train_test_split(array_x, array_y, test_size=0.30, random_state=42, shuffle=False)
 
     # Adapt the data
@@ -444,7 +446,9 @@ def split_dataset():
     images_validation = np.stack(images_validation, axis=0)
     annotations_validation = np.stack(annotations_validation, axis=0)
     
-def add_extreme_cases():
+    return images_train, annotations_train, images_validation, annotations_validation
+    
+def add_extreme_cases(array_x, array_y):
     '''
     Look for extreme 50 frames sequences inside every big-sequence
     '''
@@ -526,5 +530,12 @@ def read_dataset(path_to_data, type_image, image_shape, data_type):
     images_curves, array_annotations_curves = flip_images(images_curves, array_annotations_curves)
 
     array_annotations_curves = normalize_annotations(array_annotations_curves)
+    
+    array_imgs = images_complete + images_curves
+    array_annotations = array_annotations_complete + array_annotations_curves
+    
+    array_x, array_y = separate_sequences(array_imgs, array_annotations)
+    array_x, array_y = add_extreme_cases(array_x, array_y)
+    images_train, array_annotations_train, images_val, array_annotations_val = split_dataset(array_x, array_y)
 
     return images_train, array_annotations_train, images_val, array_annotations_val

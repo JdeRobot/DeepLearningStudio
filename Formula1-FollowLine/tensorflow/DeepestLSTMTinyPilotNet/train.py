@@ -52,7 +52,7 @@ if __name__=="__main__":
     else:
         data_type = 'no_extreme'
 
-    images_train, array_annotations_train, images_val, array_annotations_val = read_dataset(path_to_data, type_image, img_shape, data_type)
+    images_train, annotations_train, images_validation, annotations_validation = read_dataset(path_to_data, type_image, img_shape, data_type)
     
     timestr = time.strftime("%Y%m%d-%H%M%S")
     print(timestr)

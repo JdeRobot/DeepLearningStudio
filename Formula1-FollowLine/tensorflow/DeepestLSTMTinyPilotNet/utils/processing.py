@@ -25,6 +25,7 @@ def parse_json(data):
         array.append((float(v), float(w)))
     return array
 
+
 def get_images(list_images, type_image, image_shape):
     array_imgs = []
     for name in list_images:
@@ -37,6 +38,7 @@ def get_images(list_images, type_image, image_shape):
 
     return array_imgs
 
+
 def flip_images(images, array_annotations):
     flipped_images = []
     flipped_annotations = []
@@ -47,6 +49,7 @@ def flip_images(images, array_annotations):
     images += flipped_images
     array_annotations += flipped_annotations
     return images, array_annotations
+
 
 def normalize_annotations(array_annotations):
     array_annotations_v = []
@@ -70,6 +73,7 @@ def normalize_annotations(array_annotations):
         normalized_annotations.append([normalized_X.item(i), normalized_Y.item(i)])
 
     return normalized_annotations
+
 
 def normalize(x):
     x = np.asarray(x)
@@ -180,7 +184,7 @@ def separate_sequences(array_imgs, array_annotations):
 
 
     '''
-    Dataset completo:
+    Complete dataset:
 
     3744-3745
     5066-5067
@@ -195,14 +199,14 @@ def separate_sequences(array_imgs, array_annotations):
     13231-13232
     14107-14108
     15790-15791
-    16732-16762 -> giro total???
+    16732-16762
     16795-16796
     16796-17341
-    Dataset muchas curvas:
+    Curves dataset:
     (17341+...)
     3156-3157
 
-    Cortes: 
+    Cut: 
     1. 0-3700 *
     2. 3745-5045 *
     3. 5067-9717 *
@@ -220,7 +224,7 @@ def separate_sequences(array_imgs, array_annotations):
     15. 16796-17296 *
     16. 17341-20491 *
     17. 20498-22598 *
-    Repetición cortes:
+    Repeated cuts:
     1. 22609-26309 *
     2. 26354-27654 *
     3. 27676-32326 *
@@ -238,8 +242,6 @@ def separate_sequences(array_imgs, array_annotations):
     15. 39405-39905 *
     16. 39950-43100 *
     17. 43107-45207 *
-
-
     '''
 
 
@@ -431,9 +433,6 @@ def separate_sequences(array_imgs, array_annotations):
     array_y.append(array_31_ann)
     array_y.append(array_32_ann)
     array_y.append(array_33_ann)
-
-    print(len(array_x))
-    print(len(array_y))
     
     return array_x, array_y
     
@@ -457,7 +456,6 @@ def add_extreme_cases(array_x, array_y):
     for x, big_sequence_anns in enumerate(array_y):
         new_big_sequence_imgs = []
         new_big_sequence_anns = []
-        print(len(big_sequence_anns))
         for y in range(0, int(len(big_sequence_anns)/50)):
             sequences_imgs = array_x[x][y*50:(y*50)+50]
             sequences_anns = array_y[x][y*50:(y*50)+50]

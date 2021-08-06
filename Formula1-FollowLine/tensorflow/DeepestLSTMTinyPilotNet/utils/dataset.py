@@ -6,7 +6,7 @@ from tensorflow.keras.utils import Sequence
 from albumentations import (
     Compose, HorizontalFlip, RandomBrightnessContrast, 
     HueSaturationValue, FancyPCA, RandomGamma, GaussNoise,
-    GaussianBlur, ToFloat, Normalize, ColorJitter, ChannelShuffle, Equalize
+    GaussianBlur, ToFloat, Normalize, ColorJitter, ChannelShuffle, Equalize, ReplayCompose
 )
 
 class DatasetSequence(Sequence):
@@ -35,7 +35,7 @@ class DatasetSequence(Sequence):
     
 def get_augmentations(data_augs):
     if data_augs:
-        AUGMENTATIONS_TRAIN = Compose([
+        AUGMENTATIONS_TRAIN = ReplayCompose([
             RandomBrightnessContrast(),
             HueSaturationValue(),
             FancyPCA(),
@@ -50,12 +50,12 @@ def get_augmentations(data_augs):
             Normalize()
         ])
     else:
-        AUGMENTATIONS_TRAIN = Compose([
+        AUGMENTATIONS_TRAIN = ReplayCompose([
             Normalize()
         ])
 
 
-    AUGMENTATIONS_TEST = Compose([
+    AUGMENTATIONS_TEST = ReplayCompose([
         Normalize()
     ])
     

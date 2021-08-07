@@ -105,6 +105,10 @@ Tensorboard can be launched with `./experiments/base_dir/log` directory.
 
 # Tensorflow <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Tensorflow_logo.svg/1200px-Tensorflow_logo.svg.png" alt="TF logo" width="50"/> 
 
+The models implemented are derived from:
+1. PilotNet for Autonomous Driving with Behaviour Metrics dataset
+2. DeepestLSTMTinyPilotNet as an extension of PilotNet with ConvLSTM layers.
+
 ## Preparing Dataset
 
 The same workflow as for PyTorch is followed, refer to the previous section
@@ -112,7 +116,7 @@ The same workflow as for PyTorch is followed, refer to the previous section
 ## Hyperparameters for the code
 
 ```
-# For PilotNet
+# For PilotNet or DeepestLSTMTinyPilotNet
 
 -h, --help                            show this help message and exit
 --data_dir            DATA_DIR        Directory to find Data
@@ -143,6 +147,17 @@ python train.py --data_dir ../complete_dataset/ \
 	--batch_size 50 \
 	--learning_rate 0.0001 \
 	--img_shape "200,66,3"
+	
+	
+# For DeepestLSTMTinyPilotNet
+python train.py --data_dir ../complete_dataset/ \
+	--preprocess crop \
+	--preprocess extreme \
+	--data_augs True \
+	--num_epochs 1 \
+	--batch_size 50 \
+	--learning_rate 0.0001 \
+	--img_shape "100,50,3"
 
 ```
 

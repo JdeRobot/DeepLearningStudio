@@ -81,108 +81,10 @@ def normalize(x):
 
 
 def separate_sequences(array_imgs, array_annotations):
+    separated_array_imgs = []
+    separated_array_annotations = []
+    
     # SEPARATE DATASET INTO SEQUENCES TO FIT BATCH SIZES
-    # 1
-    array_1_img = [] 
-    array_1_ann = []
-    # 2
-    array_2_img = [] 
-    array_2_ann = []
-    # 3
-    array_3_img = [] 
-    array_3_ann = []
-    # 4
-    array_4_img = [] 
-    array_4_ann = []
-    # 5
-    array_5_img = [] 
-    array_5_ann = []
-    # 6
-    array_6_img = [] 
-    array_6_ann = []
-    # 7
-    array_7_img = [] 
-    array_7_ann = []
-    # 8
-    array_8_img = [] 
-    array_8_ann = []
-    # 9
-    array_9_img = [] 
-    array_9_ann = []
-    # 10
-    array_10_img = [] 
-    array_10_ann = []
-    # 11
-    array_11_img = [] 
-    array_11_ann = []
-    # 12
-    array_12_img = [] 
-    array_12_ann = []
-    # 13
-    array_13_img = [] 
-    array_13_ann = []
-    # 14
-    array_14_img = [] 
-    array_14_ann = []
-    # 15
-    array_15_img = [] 
-    array_15_ann = []
-    # 16
-    array_16_img = [] 
-    array_16_ann = []
-    # 17
-    array_17_img = [] 
-    array_17_ann = []
-    # 18
-    array_18_img = [] 
-    array_18_ann = []
-    # 19
-    array_19_img = [] 
-    array_19_ann = []
-    # 20
-    array_20_img = [] 
-    array_20_ann = []
-    # 21
-    array_21_img = [] 
-    array_21_ann = []
-    # 22
-    array_22_img = [] 
-    array_22_ann = []
-    # 23
-    array_23_img = [] 
-    array_23_ann = []
-    # 24
-    array_24_img = [] 
-    array_24_ann = []
-    # 25
-    array_25_img = [] 
-    array_25_ann = []
-    # 26
-    array_26_img = [] 
-    array_26_ann = []
-    # 27
-    array_27_img = [] 
-    array_27_ann = []
-    # 28
-    array_28_img = [] 
-    array_28_ann = []
-    # 29
-    array_29_img = [] 
-    array_29_ann = []
-    # 30
-    array_30_img = [] 
-    array_30_ann = []
-    # 31
-    array_31_img = [] 
-    array_31_ann = []
-    # 32
-    array_32_img = [] 
-    array_32_ann = []
-    # 33
-    array_33_img = [] 
-    array_33_ann = []
-
-
     '''
     Complete dataset:
 
@@ -244,197 +146,24 @@ def separate_sequences(array_imgs, array_annotations):
     17. 43107-45207 *
     '''
 
-
-    for i in range(0, 3700):
-        array_1_img.append(array_imgs[i])
-        array_1_ann.append(array_annotations[i])
-    for i in range(3745, 5045):
-        array_2_img.append(array_imgs[i])
-        array_2_ann.append(array_annotations[i])
-    for i in range(5067, 9717):
-        array_3_img.append(array_imgs[i])
-        array_3_ann.append(array_annotations[i])
-    for i in range(9721, 10371):
-        array_4_img.append(array_imgs[i])
-        array_4_ann.append(array_annotations[i])
-    for i in range(10388, 10688):
-        array_5_img.append(array_imgs[i])
-        array_5_ann.append(array_annotations[i])
-    for i in range(10696, 11246):
-        array_6_img.append(array_imgs[i])
-        array_6_ann.append(array_annotations[i])
-    for i in range(11284, 11334):
-        array_7_img.append(array_imgs[i])
-        array_7_ann.append(array_annotations[i])
-    for i in range(11355, 11455):
-        array_8_img.append(array_imgs[i])
-        array_8_ann.append(array_annotations[i])
-    for i in range(11493, 11943):
-        array_9_img.append(array_imgs[i])
-        array_9_ann.append(array_annotations[i])
-    for i in range(11981, 12581):
-        array_10_img.append(array_imgs[i])
-        array_10_ann.append(array_annotations[i])
-    for i in range(12619, 13219):
-        array_11_img.append(array_imgs[i])
-        array_11_ann.append(array_annotations[i])
-    for i in range(13232, 14082):
-        array_12_img.append(array_imgs[i])
-        array_12_ann.append(array_annotations[i])
-    for i in range(14108, 15758):
-        array_13_img.append(array_imgs[i])
-        array_13_ann.append(array_annotations[i])
-    #for i in range(15791, 17296):
-    for i in range(15791, 17291):
-        array_14_img.append(array_imgs[i])
-        array_14_ann.append(array_annotations[i])
-    for i in range(17341, 20491):
-        array_15_img.append(array_imgs[i])
-        array_15_ann.append(array_annotations[i])
-    for i in range(20498, 22598):
-        array_16_img.append(array_imgs[i])
-        array_16_ann.append(array_annotations[i])
-    for i in range(22609, 26309):
-        array_17_img.append(array_imgs[i])
-        array_17_ann.append(array_annotations[i])
-    for i in range(26354, 27654):
-        array_18_img.append(array_imgs[i])
-        array_18_ann.append(array_annotations[i])
-    for i in range(27676, 32326):
-        array_19_img.append(array_imgs[i])
-        array_19_ann.append(array_annotations[i])
-    #for i in range(32330, 32960):
-    for i in range(32330, 32930):
-        array_20_img.append(array_imgs[i])
-        array_20_ann.append(array_annotations[i])
-    for i in range(32997, 33297):
-        array_21_img.append(array_imgs[i])
-        array_21_ann.append(array_annotations[i])
-    for i in range(33305, 33855):
-        array_22_img.append(array_imgs[i])
-        array_22_ann.append(array_annotations[i])
-    for i in range(33893, 33943):
-        array_23_img.append(array_imgs[i])
-        array_23_ann.append(array_annotations[i])
-    for i in range(33964, 34064):
-        array_24_img.append(array_imgs[i])
-        array_24_ann.append(array_annotations[i])
-    for i in range(34102, 34552):
-        array_25_img.append(array_imgs[i])
-        array_25_ann.append(array_annotations[i])
-    for i in range(34590, 35190):
-        array_26_img.append(array_imgs[i])
-        array_26_ann.append(array_annotations[i])
-    for i in range(35228, 35828):
-        array_27_img.append(array_imgs[i])
-        array_27_ann.append(array_annotations[i])
-    for i in range(35841, 36691):
-        array_28_img.append(array_imgs[i])
-        array_28_ann.append(array_annotations[i])
-    for i in range(36717, 38367):
-        array_29_img.append(array_imgs[i])
-        array_29_ann.append(array_annotations[i])
-    for i in range(38400, 39300):
-        array_30_img.append(array_imgs[i])
-        array_30_ann.append(array_annotations[i])
-    for i in range(39405, 39905):
-        array_31_img.append(array_imgs[i])
-        array_31_ann.append(array_annotations[i])
-    for i in range(39950, 43100):
-        array_32_img.append(array_imgs[i])
-        array_32_ann.append(array_annotations[i])
-    #for i in range(43107, 45202):
-    for i in range(43107, 45157):
-        array_33_img.append(array_imgs[i])
-        array_33_ann.append(array_annotations[i])
-
-
-    '''
-    [21, 0, 12, 2, 10, 26, 25, 7, 29, 15, 30, 28, 27, 3, 4, 24, 32, 6, 19, 8, 20, 14, 17, 16, 31, 13, 9, 1, 5, 18, 22, 11, 23]
-    '''
-
-    array_x = []
-    array_x.append(array_1_img)
-    array_x.append(array_2_img)
-    array_x.append(array_3_img)
-    array_x.append(array_4_img)
-    array_x.append(array_5_img)
-    array_x.append(array_6_img)
-    array_x.append(array_7_img)
-    array_x.append(array_8_img)
-    array_x.append(array_9_img)
-    array_x.append(array_10_img)
-    array_x.append(array_11_img)
-    array_x.append(array_12_img)
-    #array_x.append(array_13_img)
-    #array_x.append(array_14_img)
-    array_x.append(array_13_img)
-    array_x.append(array_14_img)
-    array_x.append(array_15_img)
-    array_x.append(array_16_img)
-    array_x.append(array_17_img)
-    array_x.append(array_18_img)
-    array_x.append(array_19_img)
-    array_x.append(array_20_img)
-    array_x.append(array_21_img)
-    array_x.append(array_22_img)
-    array_x.append(array_23_img)
-    array_x.append(array_24_img)
-    array_x.append(array_25_img)
-    array_x.append(array_26_img)
-    array_x.append(array_27_img)
-    array_x.append(array_28_img)
-    #array_x.append(array_29_img)
-    #array_x.append(array_30_img)
-    #array_x.append(array_31_img)
-    array_x.append(array_29_img)
-    array_x.append(array_30_img)
-    array_x.append(array_31_img)
-    array_x.append(array_32_img)
-    array_x.append(array_33_img)
-
-
-    array_y = []
-    array_y.append(array_1_ann)
-    array_y.append(array_2_ann)
-    array_y.append(array_3_ann)
-    array_y.append(array_4_ann)
-    array_y.append(array_5_ann)
-    array_y.append(array_6_ann)
-    array_y.append(array_7_ann)
-    array_y.append(array_8_ann)
-    array_y.append(array_9_ann)
-    array_y.append(array_10_ann)
-    array_y.append(array_11_ann)
-    array_y.append(array_12_ann)
-    #array_y.append(array_13_ann)
-    #array_y.append(array_14_ann)
-    array_y.append(array_13_ann)
-    array_y.append(array_14_ann)
-    array_y.append(array_15_ann)
-    array_y.append(array_16_ann)
-    array_y.append(array_17_ann)
-    array_y.append(array_18_ann)
-    array_y.append(array_19_ann)
-    array_y.append(array_20_ann)
-    array_y.append(array_21_ann)
-    array_y.append(array_22_ann)
-    array_y.append(array_23_ann)
-    array_y.append(array_24_ann)
-    array_y.append(array_25_ann)
-    array_y.append(array_26_ann)
-    array_y.append(array_27_ann)
-    array_y.append(array_28_ann)
-    #array_y.append(array_29_ann)
-    #array_y.append(array_30_ann)
-    #array_y.append(array_31_ann)
-    array_y.append(array_29_ann)
-    array_y.append(array_30_ann)
-    array_y.append(array_31_ann)
-    array_y.append(array_32_ann)
-    array_y.append(array_33_ann)
+    sequences_frames = [[0, 3700], [3745, 5045], [5067, 9717], [9721, 10371], [10388, 10688], [10696, 11246], [11284, 11334], [11355, 11455], [11493, 11943],
+                       [11981, 12581], [12619, 13219], [13232, 14082], [14108, 15758], [15791, 17291], [17341, 20491], [20498, 22598], [22609, 26309], 
+                       [26354, 27654], [27676, 32326], [32330, 32930], [32997, 33297], [33305, 33855], [33893, 33943], [33964, 34064], [34102, 34552], 
+                       [34590, 35190], [35228, 35828], [35841, 36691], [36717, 38367], [38400, 39300], [39405, 39905], [39950, 43100], [43107, 45157]]
     
-    return array_x, array_y
+    
+    for sequence_frames in sequences_frames:
+        array_imgs_sequence = []
+        array_anns_sequence = []
+        for i in range(sequence_frames[0], sequence_frames[1]):
+            array_imgs_sequence.append(array_imgs[i])
+            array_anns_sequence.append(array_annotations[i])
+            
+        separated_array_imgs.append(array_imgs_sequence)
+        separated_array_annotations.append(array_anns_sequence)
+
+    return separated_array_imgs, separated_array_annotations
+    
     
 def split_dataset(array_x, array_y):
     images_train, images_validation, annotations_train, annotations_validation = train_test_split(array_x, array_y, test_size=0.30, random_state=42, shuffle=False)
@@ -447,18 +176,18 @@ def split_dataset(array_x, array_y):
     
     return images_train, annotations_train, images_validation, annotations_validation
     
-def add_extreme_cases(array_x, array_y):
+def add_extreme_cases(array_imgs, array_annotations):
     '''
     Look for extreme 50 frames sequences inside every big-sequence
     '''
-    new_array_x = []
-    new_array_y = []
-    for x, big_sequence_anns in enumerate(array_y):
+    new_array_imgs = []
+    new_array_annotations = []
+    for x, big_sequence_anns in enumerate(array_annotations):
         new_big_sequence_imgs = []
         new_big_sequence_anns = []
         for y in range(0, int(len(big_sequence_anns)/50)):
-            sequences_imgs = array_x[x][y*50:(y*50)+50]
-            sequences_anns = array_y[x][y*50:(y*50)+50]
+            sequences_imgs = array_imgs[x][y*50:(y*50)+50]
+            sequences_anns = array_annotations[x][y*50:(y*50)+50]
             new_big_sequence_imgs+=sequences_imgs
             new_big_sequence_anns+=sequences_anns
             for seq in sequences_anns:
@@ -475,24 +204,22 @@ def add_extreme_cases(array_x, array_y):
                     for i in range(0,1):
                         new_big_sequence_imgs+=sequences_imgs
                         new_big_sequence_anns+=sequences_anns
-        new_array_x.append(new_big_sequence_imgs)
-        new_array_y.append(new_big_sequence_anns)
+        new_array_imgs.append(new_big_sequence_imgs)
+        new_array_annotations.append(new_big_sequence_anns)
 
 
     shown_array_imgs = []
     shown_array_annotations = []
     random_sort = random.sample(range(0, 33), 33)
 
-    new_array_imgs = []
-    new_array_annotations = []
     for numb in random_sort:
-        shown_array_imgs += new_array_x[numb]
-        shown_array_annotations += new_array_y[numb]
+        shown_array_imgs += new_array_imgs[numb]
+        shown_array_annotations += new_array_annotations[numb]
 
-    array_x = shown_array_imgs
-    array_y = shown_array_annotations
+    array_imgs = shown_array_imgs
+    array_annotations = shown_array_annotations
     
-    return array_x, array_y
+    return array_imgs, array_annotations
 
 def read_dataset(path_to_data, type_image, image_shape, data_type):
     print('---- Complete ----')
@@ -532,8 +259,8 @@ def read_dataset(path_to_data, type_image, image_shape, data_type):
     array_imgs = images_complete + images_curves
     array_annotations = array_annotations_complete + array_annotations_curves
     
-    array_x, array_y = separate_sequences(array_imgs, array_annotations)
-    array_x, array_y = add_extreme_cases(array_x, array_y)
-    images_train, array_annotations_train, images_val, array_annotations_val = split_dataset(array_x, array_y)
+    separated_array_imgs, separated_array_annotations = separate_sequences(array_imgs, array_annotations)
+    array_imgs, array_annotations = add_extreme_cases(separated_array_imgs, separated_array_annotations)
+    images_train, array_annotations_train, images_val, array_annotations_val = split_dataset(array_imgs, array_annotations)
 
     return images_train, array_annotations_train, images_val, array_annotations_val

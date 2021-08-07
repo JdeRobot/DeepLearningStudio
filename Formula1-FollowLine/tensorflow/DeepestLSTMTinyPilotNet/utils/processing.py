@@ -260,7 +260,8 @@ def read_dataset(path_to_data, type_image, image_shape, data_type):
     array_annotations = array_annotations_complete + array_annotations_curves
     
     separated_array_imgs, separated_array_annotations = separate_sequences(array_imgs, array_annotations)
-    array_imgs, array_annotations = add_extreme_cases(separated_array_imgs, separated_array_annotations)
+    if data_type == 'extreme':
+        array_imgs, array_annotations = add_extreme_cases(separated_array_imgs, separated_array_annotations)
     images_train, array_annotations_train, images_val, array_annotations_val = split_dataset(array_imgs, array_annotations)
 
     return images_train, array_annotations_train, images_val, array_annotations_val

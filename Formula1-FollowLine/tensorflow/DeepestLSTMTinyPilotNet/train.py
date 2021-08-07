@@ -59,10 +59,8 @@ if __name__=="__main__":
 
     img_shape = (50, 100, 3)
     hparams = {
-        'train_batch_size': 50, 
-        'val_batch_size': 50,
-        'batch_size': 50,
-        'n_epochs': 300, 
+        'batch_size': batch_size,
+        'n_epochs': num_epochs, 
         'checkpoint_dir': '../logs_test/'
     }
 
@@ -109,7 +107,7 @@ if __name__=="__main__":
 
 
     # Evaluate the model
-    score = model.evaluate_generator(valid_gen, verbose=0)
+    score = model.evaluate(valid_gen, verbose=0)
 
     print('Evaluating')
     print('Test loss: ', score[0])
@@ -127,7 +125,7 @@ if __name__=="__main__":
         hdf5_format.save_model_to_hdf5(model, f)
         f.attrs['experiment_name'] = ''
         f.attrs['experiment_description'] = ''
-        f.attrs['batch_size'] = hparams['train_batch_size']
+        f.attrs['batch_size'] = hparams['batch_size']
         f.attrs['nb_epoch'] = hparams['n_epochs']
         f.attrs['model'] = model_name
         f.attrs['img_shape'] = img_shape
@@ -137,7 +135,7 @@ if __name__=="__main__":
         f.attrs['data_augmentation'] = True
         f.attrs['extreme_data'] = False
         f.attrs['split_test_train'] = 0.30
-        f.attrs['instances_number'] = len(array_annotations_train)
+        f.attrs['instances_number'] = len(annotations_train)
         f.attrs['loss'] = score[0]
         f.attrs['mse'] = score[1]
         f.attrs['mae'] = score[2]

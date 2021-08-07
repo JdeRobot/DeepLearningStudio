@@ -68,9 +68,9 @@ if __name__=="__main__":
 
     print(hparams)
 
-    model_name = 'pilotnet_model'
+    model_name = 'deepest_lstm_tinypilotnet'
     model = deepest_lstm_tinypilotnet_model(img_shape)
-    model_filename = timestr + '_deepest_lstm_tinypilotnet_pilotnet_model_300_all_crop_no_seq_unique_albu_extreme_seq'
+    model_filename = timestr + '_deepest_lstm_tinypilotnet_model_300_all_crop_no_seq_unique_albu_extreme_seq'
     model_file = model_filename + '.h5'
 
     AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST = get_augmentations(data_augs)

@@ -1,7 +1,8 @@
 #!/bin/bash
 
 python train.py \
-	--data_dir '/home/utkubuntu/GSoC2021/datasets/curves_only' \
+	--data_dir '/home/utkubuntu/GSoC2021/datasets/drone_dataset/drone_models/complete_dataset' \
+	--data_dir '/home/utkubuntu/GSoC2021/datasets/drone_dataset/drone_models/curves_only' \
 	--preprocess 'crop' \
 	--preprocess 'extreme' \
 	--base_dir testcase \

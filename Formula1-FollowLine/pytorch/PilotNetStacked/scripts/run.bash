@@ -1,7 +1,7 @@
 
-for horizon in 2 3 4; do
+for horizon in 2; do
 	python train.py \
-		--data_dir '../datasets/curves_only' \
+		--data_dir '/home/utkubuntu/GSoC2021/datasets/curves_only' \
 		--preprocess 'crop' \
 		--preprocess 'extreme' \
 		--base_dir testcase \

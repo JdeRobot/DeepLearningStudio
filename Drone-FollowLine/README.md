@@ -10,8 +10,8 @@ The algorithms are modular and can adapt to various other datasets.
 ## Preparing Dataset
 
 For DeepPilot, we use our custom datasets:
-- Complete dataset: contains images with annotations from different circuits [https://drive.google.com/file/d/1Xdiu69DLj7lKK37F94qrUWsXkVg4ymGv/view?usp=sharing](https://drive.google.com/file/d/1Xdiu69DLj7lKK37F94qrUWsXkVg4ymGv/view?usp=sharing)
-- Curves dataset: contains images with annotations from many_curves circuit: [https://drive.google.com/file/d/1zCJPFJRqCa34Q6jvktjDBY8Z49bIbvLJ/view?usp=sharing](https://drive.google.com/file/d/1zCJPFJRqCa34Q6jvktjDBY8Z49bIbvLJ/view?usp=sharing)
+- Complete dataset: contains images with annotations from different circuits [https://drive.google.com/file/d/1DBvsaw0I_g2zi6RGxEcYSpiFVgbHxM3H/view?usp=sharing](https://drive.google.com/file/d/1DBvsaw0I_g2zi6RGxEcYSpiFVgbHxM3H/view?usp=sharing)
+- Curves dataset: contains images with annotations from many_curves circuit: [https://drive.google.com/file/d/13KNnjchnV0C7-xMMgip59gLKxPd52Pzr/view?usp=sharing](https://drive.google.com/file/d/13KNnjchnV0C7-xMMgip59gLKxPd52Pzr/view?usp=sharing)
 (To Be updated)
 
 ```

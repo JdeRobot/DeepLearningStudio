@@ -3,6 +3,7 @@ import glob
 import numpy as np
 import cv2
 from tqdm import tqdm
+from utils.bm_utils import calculate_deviation
 from collections import deque
 
 def load_data(folder):
@@ -20,6 +21,8 @@ def get_images(list_images, type_image, array_imgs):
     for name in tqdm(list_images):
         img = cv2.imread(name)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        cv2.imshow('frame_0', img)
+        cv2.waitKey(30)
         if type_image == 'cropped':
             img = img[240:480, 0:640]
         # img = cv2.resize(img, (int(img.shape[1] / 4), int(img.shape[0] / 4)))

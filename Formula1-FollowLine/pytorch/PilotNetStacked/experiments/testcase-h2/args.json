@@ -1,1 +1,0 @@
-{"data_dir": ["/home/utkubuntu/GSoC2021/datasets/curves_only"], "preprocess": ["crop", "extreme"], "base_dir": "testcase", "comment": "Selected Augmentations: gaussian", "data_augs": ["gaussian"], "num_epochs": 150, "horizon": 2, "lr": 0.001, "test_split": 0.2, "shuffle": true, "batch_size": 16, "save_iter": 50, "print_terminal": true, "seed": 123}

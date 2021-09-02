@@ -35,19 +35,19 @@ if __name__=="__main__":
 
     args = parse_args()
     path_to_data = args.data_dir[0]
-    preproccess = args.preprocess
+    preprocess = args.preprocess
     data_augs = args.data_augs
     num_epochs = args.num_epochs
     batch_size = args.batch_size
     learning_rate = args.learning_rate               
     img_shape = tuple(map(int, args.img_shape.split(',')))
 
-    if 'no_crop' in preproccess:
+    if 'no_crop' in preprocess:
         type_image = 'no_crop'
     else:
         type_image = 'crop'
     
-    if 'extreme' in preproccess:
+    if 'extreme' in preprocess:
         data_type = 'extreme'
     else:
         data_type = 'no_extreme'

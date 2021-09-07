@@ -1,0 +1,52 @@
+I"�<h2 id="motivation">Motivation</h2>
+
+<p>DeepLearningStudio is created as a significant segment for one of GSoC’21 projects (<a href="https://theroboticsclub.github.io/gsoc2021-Utkarsh_Mishra">more information</a>). The project included implementing the PilotNet algorithm in PyTorch. This, along with the existing tensorflow version of the algorithm (<a href="https://roboticslaburjc.github.io/2019-phd-sergio-paniego/">more information</a>), was used to start the JdeRobot - DeepLearningStudio tool. Further, an extension of the base code was used to explore temporal relations without memory based LSTM algorithms. The stacked brain was a success however further modifications are still going on and is a future work. Further, DeepPilot CNN was implemented in order to conduct extensive DL experiments on drone tasks. Parallely, the tensorflow version of all these algorithms are also being explored and derived from previous works by collaboarators (<a href="https://roboticslaburjc.github.io/2019-phd-sergio-paniego/">more information</a>).</p>
+
+<h2 id="progress">Progress</h2>
+
+<p>The current status of the project contains the following:</p>
+
+<h3 id="formula-1-follow-line-algorithms">Formula-1 follow line algorithms</h3>
+
+<p>PilotNet [1] implementation for both the PyTorch and Tensorflow versions are implemented. This is accompanied by the memory less Stacked</p>
+
+<h3 id="iris-drone-follow-line-algorithms">Iris drone follow line algorithms</h3>
+
+<h2 id="references">References</h2>
+
+<ol>
+  <li>Bojarski, Mariusz, Davide Del Testa, Daniel Dworakowski, Bernhard Firner, Beat Flepp, Prasoon Goyal, Lawrence D. Jackel et al. “End to end learning for self-driving cars.” arXiv preprint arXiv:1604.07316 (2016). <a href="https://arxiv.org/abs/1604.07316">https://arxiv.org/abs/1604.07316</a></li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@article{bojarski2016end,
+  title={End to end learning for self-driving cars},
+  author={Bojarski, Mariusz and Del Testa, Davide and Dworakowski, Daniel and Firner, Bernhard and Flepp, Beat and Goyal, Prasoon and Jackel, Lawrence D and Monfort, Mathew and Muller, Urs and Zhang, Jiakai and others},
+  journal={arXiv preprint arXiv:1604.07316},
+  year={2016}
+}
+
+@article{bojarski2017explaining,
+  title={Explaining how a deep neural network trained with end-to-end learning steers a car},
+  author={Bojarski, Mariusz and Yeres, Philip and Choromanska, Anna and Choromanski, Krzysztof and Firner, Bernhard and Jackel, Lawrence and Muller, Urs},
+  journal={arXiv preprint arXiv:1704.07911},
+  year={2017}
+}
+</code></pre></div></div>
+
+<ol>
+  <li>Rojas-Perez, L.O., &amp; Martinez-Carranza, J. (2020). DeepPilot: A CNN for Autonomous Drone Racing. Sensors, 20(16), 4524. <a href="https://doi.org/10.3390/s20164524">https://doi.org/10.3390/s20164524</a></li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@article{rojas2020deeppilot,
+  title={DeepPilot: A CNN for Autonomous Drone Racing},
+  author={Rojas-Perez, Leticia Oyuki and Martinez-Carranza, Jose},
+  journal={Sensors},
+  volume={20},
+  number={16},
+  pages={4524},
+  year={2020},
+  publisher={Multidisciplinary Digital Publishing Institute}
+}
+</code></pre></div></div>
+
+:ET

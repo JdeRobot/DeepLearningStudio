@@ -377,9 +377,15 @@
         
         <h2 id="motivation">Motivation</h2>
 
+<p>DeepLearningStudio is created as a significant segment for one of GSoC’21 projects (<a href="https://theroboticsclub.github.io/gsoc2021-Utkarsh_Mishra">more information</a>). The project included implementing the PilotNet algorithm in PyTorch. This, along with the existing tensorflow version of the algorithm (<a href="https://roboticslaburjc.github.io/2019-phd-sergio-paniego/">more information</a>), was used to start the JdeRobot - DeepLearningStudio tool. Further, an extension of the base code was used to explore temporal relations without memory based LSTM algorithms. The stacked brain was a success however further modifications are still going on and is a future work. Further, DeepPilot CNN was implemented in order to conduct extensive DL experiments on drone tasks. Parallely, the tensorflow version of all these algorithms are also being explored and derived from previous works by collaboarators (<a href="https://roboticslaburjc.github.io/2019-phd-sergio-paniego/">more information</a>).</p>
+
 <h2 id="progress">Progress</h2>
 
+<p>The current status of the project contains the following:</p>
+
 <h3 id="formula-1-follow-line-algorithms">Formula-1 follow line algorithms</h3>
+
+<p>PilotNet [1] implementation for both the PyTorch and Tensorflow versions are implemented. This is accompanied by the memory less Stacked PilotNet version in PyTorch and memory based LSTM PilotNet version in Tensorflow. The code is trained on the <a href="/quick_start/datasets">datasets</a> and validated on <a href="https://github.com/JdeRobot/BehaviorMetrics">BehaviorMetrics</a>. Some interesting results can be found in <a href="https://www.youtube.com/channel/UCgmUgpircYAv_QhLQziHJOQ">channel</a>.</p>
 
 <h3 id="iris-drone-follow-line-algorithms">Iris drone follow line algorithms</h3>
 

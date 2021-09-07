@@ -1,0 +1,26 @@
+I"�
+<figure class=" ">
+  
+    
+      <a href="/install/ros_melodic" title="ROS melodic">
+        <img src="/assets/images/install/ros_melodic.png" alt="ROS melodic" />
+      </a>
+    
+  
+  
+</figure>
+
+<p>This application depends on dome third party libraries, most of them are included in the requirements file. To install them just type the following:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
+</code></pre></div></div>
+
+<p>However since this project is built under python 2.7 the Qt5 dependencies cannot be installed via pip (it’s included in the pip3 repositories). So it’s needed to install the Qt5 dependencies through apt as follows:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>python-pyqt5 python-pyqt5.qtsvg python-pyqt5.qsci pyqt5-dev-tools
+</code></pre></div></div>
+
+<p>Aside from PyQt5, you will need to install also: <strong>jderobot-base</strong>, <strong>jderobot-assets</strong> and <strong>ROS melodic</strong>. To do that, you have a complete guide <a href="https://jderobot.github.io/RoboticsAcademy/"><strong>here</strong></a>.</p>
+
+<p class="notice--info"><a href="http://jderobot.org/store/deeplearning-networks/">Pretrained network models</a>.</p>
+:ET

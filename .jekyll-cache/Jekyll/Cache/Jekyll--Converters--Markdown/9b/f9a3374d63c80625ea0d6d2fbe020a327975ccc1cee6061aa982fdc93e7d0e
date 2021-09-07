@@ -1,0 +1,329 @@
+I"bF
+<figure class=" ">
+  
+    
+      <a href="/install/ros_noetic" title="ROS noetic">
+        <img src="/assets/images/install/ros_noetic.jpg" alt="ROS noetic" />
+      </a>
+    
+  
+  
+</figure>
+
+<p>Deep Learning Studio with ROS Noetic can be installed as usual in the machine or using Docker. 
+Since ROS Noetic needs Ubuntu 20 and the dependencies are quite new, that workflow is also provided.</p>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<ol>
+  <li><a href="#installation">Ordinary Installation</a>
+    <ol>
+      <li><a href="#requisites">Requirements</a></li>
+      <li><a href="#noetic">Installing ROS Noetic</a></li>
+      <li><a href="#dependencies">Installing Jderobot’ dependencies</a></li>
+      <li><a href="#behavior-studio">Installing Deep Learning Studio</a></li>
+    </ol>
+  </li>
+  <li><a href="#docker-installation">Installation using Docker</a>
+    <ol>
+      <li><a href="#starting-docker">Starting Docker Container</a>
+        <ol>
+          <li><a href="#vnc">VNC container viewer</a></li>
+          <li><a href="#term">Terminal in container</a></li>
+          <li><a href="#stop">Stopping container</a></li>
+          <li><a href="#resume">Resuming container</a></li>
+        </ol>
+      </li>
+      <li><a href="#building">Building the container</a></li>
+    </ol>
+  </li>
+</ol>
+
+<h2 id="installation">Installation</h2>
+
+<h3 id="requirements-">Requirements <a name="requisites"></a></h3>
+
+<ul>
+  <li>Ubuntu 20.04</li>
+</ul>
+
+<h3 id="installing-ros-noetic-">Installing ROS Noetic <a name="noetic"></a></h3>
+
+<p>A detailed ROS Noetic installation guide can be found in the <a href="http://wiki.ros.org/noetic/Installation/Ubuntu">ROS Wiki</a></p>
+
+<h4 id="setup-your-sources">Setup your sources</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>sh <span class="nt">-c</span> <span class="s1">'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" &gt; /etc/apt/sources.list.d/ros-latest.list'</span>
+</code></pre></div></div>
+
+<h4 id="set-up-your-keys">Set up your keys</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-key adv <span class="nt">--keyserver</span> <span class="s1">'hkp://keyserver.ubuntu.com:80'</span> <span class="nt">--recv-key</span> C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+</code></pre></div></div>
+
+<h4 id="installing-ros-noetic">Installing ROS Noetic</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update
+<span class="nb">sudo </span>apt <span class="nb">install </span>ros-noetic-desktop-full
+</code></pre></div></div>
+
+<h4 id="environment-setup">Environment setup</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"source /opt/ros/noetic/setup.bash"</span> <span class="o">&gt;&gt;</span> ~/.bashrc
+<span class="nb">source</span> ~/.bashrc
+</code></pre></div></div>
+
+<h3 id="installing-python-37-and-creating-a-virtualenv">Installing Python 3.7 and creating a virtualenv</h3>
+
+<p>It is recommended to use virtual environment for Deep Learning Studio.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>software-properties-common python3-pip python3-virtualenv
+<span class="nb">sudo </span>add-apt-repository ppa:deadsnakes/ppa
+<span class="nb">sudo </span>apt <span class="nb">install </span>python3.7
+
+<span class="c"># Create virtualenv</span>
+virtualenv <span class="nt">-p</span> python3.7 .behavior-studio
+<span class="nb">source</span> .behavior-studio/bin/activate
+pip <span class="nb">install </span>empy
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>python3.7-dev
+</code></pre></div></div>
+
+<h3 id="installing-dependencies-">Installing dependencies <a name="dependencies"></a></h3>
+
+<h4 id="jderobots-customrobots">JdeRobot’s CustomRobots</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone <span class="nt">-b</span> noetic-devel https://github.com/JdeRobot/CustomRobots
+<span class="nb">cd </span>CustomRobots/f1 <span class="o">&amp;&amp;</span> <span class="nb">mkdir </span>build <span class="o">&amp;&amp;</span> <span class="nb">cd </span>build
+/bin/bash <span class="nt">-c</span> <span class="s2">"source /opt/ros/noetic/setup.bash;
+cmake .. &amp;&amp; make &amp;&amp; make install;"</span>
+<span class="nb">echo</span> <span class="s2">"source /opt/jderobot/share/jderobot/gazebo/assets-setup.sh"</span> <span class="o">&gt;&gt;</span> ~/.bashrc
+</code></pre></div></div>
+
+<h4 id="ros-additional-package">ROS additional package</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/strasdat/Sophus
+<span class="nb">cd </span>Sophus <span class="o">&amp;&amp;</span> <span class="nb">mkdir </span>build <span class="o">&amp;&amp;</span> <span class="nb">cd </span>build
+cmake ../ <span class="o">&amp;&amp;</span> make <span class="o">&amp;&amp;</span> make <span class="nb">install</span>
+</code></pre></div></div>
+
+<h4 id="gym-gazebo">Gym-gazebo</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get <span class="nb">install </span>libbluetooth-dev libcwiid-dev libftdi-dev libspnav-dev libsdl-dev libsdl-image1.2-dev libusb-dev ros-noetic-octomap-msgs ros-noetic-geodesy ros-noetic-octomap-ros ros-noetic-control-toolbox ros-noetic-pluginlib	ros-noetic-trajectory-msgs ros-noetic-control-msgs ros-noetic-std-srvs ros-noetic-nodelet ros-noetic-urdf ros-noetic-rviz ros-noetic-kdl-conversions ros-noetic-eigen-conversions ros-noetic-tf2-sensor-msgs ros-noetic-pcl-ros ros-noetic-navigation
+<span class="nb">cd </span>DeepLearningStudio/gym-gazebo/
+pip3 <span class="nb">install</span> <span class="nt">-e</span> <span class="nb">.</span>
+</code></pre></div></div>
+
+<h3 id="installing-deep-learning-studio-">Installing Deep Learning Studio <a name="behavior-studio"></a></h3>
+
+<p>This application depends on some third party libraries, most of them are included in the requirements file. To install them just type the following:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone <span class="nt">-b</span> noetic-devel https://github.com/JdeRobot/DeepLearningStudio
+<span class="nb">cd </span>DeepLearningStudio
+pip3 <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
+</code></pre></div></div>
+
+<p>If you are going to use the GUI you need to create the resources file for the application.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pyrcc5 <span class="nt">-o</span> behavior_studio/ui/gui/resources/resources.py <span class="se">\</span>
+	behavior_studio/ui/gui/resources/resources.qrc
+</code></pre></div></div>
+
+<h3 id="reinforcement-learning">Reinforcement Learning</h3>
+
+<p>To use current reinforcement brain first some variables must be loaded to the environmet.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd DeepLearningStudio/gym-gazebo/
+bash load_env.sh 
+</code></pre></div></div>
+
+<p>From here you are to good to go to the <a href="../quick_start/">quick start guide!</a></p>
+
+<h2 id="installation-using-docker-">Installation using Docker <a name="docker-installation"></a></h2>
+
+<p>The docker installation guide is very clear and can be found in this <a href="https://docs.docker.com/get-docker/">link</a> which is well documented.</p>
+
+<h3 id="download-docker-in-ubuntu">Download Docker in Ubuntu</h3>
+
+<p>First remove older versions.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get remove docker docker-engine docker.io containerd runc
+</code></pre></div></div>
+
+<p>Then setup the stable repository</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get update
+<span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="se">\</span>
+    apt-transport-https <span class="se">\</span>
+    ca-certificates <span class="se">\</span>
+    curl <span class="se">\</span>
+    gnupg-agent <span class="se">\</span>
+    software-properties-common
+curl <span class="nt">-fsSL</span> https://download.docker.com/linux/ubuntu/gpg | <span class="nb">sudo </span>apt-key add -
+<span class="nb">sudo </span>add-apt-repository <span class="se">\</span>
+   <span class="s2">"deb [arch=amd64] https://download.docker.com/linux/ubuntu </span><span class="se">\</span><span class="s2">
+   </span><span class="si">$(</span>lsb_release <span class="nt">-cs</span><span class="si">)</span><span class="s2"> </span><span class="se">\</span><span class="s2">
+   stable"</span>    
+</code></pre></div></div>
+
+<p>Install the docker engine</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get update
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>docker-ce docker-ce-cli containerd.io
+</code></pre></div></div>
+
+<p>Add your user to the docker’s group to avoid using <code class="language-plaintext highlighter-rouge">sudo</code> for docker, you have to log out and log in to for this change to take effect.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo usermod -aG docker your-user
+</code></pre></div></div>
+
+<p>Test your installation</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run hello-world
+</code></pre></div></div>
+
+<h2 id="running-deep-learning-studio-containers-">Running Deep Learning Studio Containers <a name="starting-docker"></a></h2>
+
+<p>Open up a terminal a paste the following command. Creating a volume is recommended so you can add models or datasets easily.
+To create the volume update <code class="language-plaintext highlighter-rouge">local_directory</code> to yur local directory where your datasets and models are located and <code class="language-plaintext highlighter-rouge">docker_directory</code> to the
+directory you want them to be stored inside the container.</p>
+
+<h3 id="for-cpu-only">For CPU only</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-dit</span> <span class="nt">--name</span> behavior-studio-noetic <span class="se">\</span>
+	<span class="nt">-p</span> 5900:5900 <span class="se">\</span>
+	<span class="nt">-p</span> 8888:8888 <span class="se">\</span>
+        <span class="nt">-v</span> <span class="o">[</span>local_directory]:[docker_directory] <span class="se">\</span>
+	jderobot/behavior-studio:noetic
+</code></pre></div></div>
+
+<h3 id="for-gpu-support-cuda-101-cudnn-7">For GPU support (CUDA 10.1 Cudnn 7)</h3>
+
+<p>Some extra packages are needed for Ubuntu 16.04/18.04/20.04, more about installation in <a href="https://github.com/NVIDIA/nvidia-docker">nvidia-docker docs</a>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">distribution</span><span class="o">=</span><span class="si">$(</span><span class="nb">.</span> /etc/os-release<span class="p">;</span><span class="nb">echo</span> <span class="nv">$ID$VERSION_ID</span><span class="si">)</span>
+curl <span class="nt">-s</span> <span class="nt">-L</span> https://nvidia.github.io/nvidia-docker/gpgkey | <span class="nb">sudo </span>apt-key add -
+curl <span class="nt">-s</span> <span class="nt">-L</span> https://nvidia.github.io/nvidia-docker/<span class="nv">$distribution</span>/nvidia-docker.list | <span class="nb">sudo tee</span> /etc/apt/sources.list.d/nvidia-docker.list
+<span class="nb">sudo </span>apt-get update <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="nt">-y</span> nvidia-container-toolkit
+<span class="nb">sudo </span>systemctl restart docker
+</code></pre></div></div>
+
+<p>The flag <code class="language-plaintext highlighter-rouge">--gpus</code> is added along with the correct image that contains cuda drivers.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--gpus</span> all <span class="nt">-dit</span> <span class="nt">--name</span> behavior-studio-noetic <span class="se">\</span>
+        <span class="nt">-p</span> 5900:5900 <span class="se">\</span>
+        <span class="nt">-p</span> 8888:8888 <span class="se">\</span>
+        jderobot/behavior-studio:noetic-10.1-cudnn7
+</code></pre></div></div>
+
+<h3 id="using-vnc-to-visualize-container-">Using VNC to visualize container <a name="vnc"></a></h3>
+
+<p>To connect to our container <a href="https://chrome.google.com/webstore/detail/vnc%C2%AE-viewer-for-google-ch/iabmpiboiopbgfabjmgeedhcmjenhbla?hl=en">VNC viewer for chrome</a> (recommended) or <a href="https://www.realvnc.com/en/">RealVNC</a> can be installed to access the GUI through the port 5900.</p>
+
+<figure class=" ">
+  
+    
+      <a href="/install/ros_noetic">
+        <img src="/assets/images/install/noetic/vnc.png" alt="" />
+      </a>
+    
+  
+  
+</figure>
+
+<p>Once vnc-viewer is open fill in <code class="language-plaintext highlighter-rouge">localhost:5900</code> in the address and then press connect.</p>
+
+<figure class=" ">
+  
+    
+      <a href="/install/ros_noetic">
+        <img src="/assets/images/install/noetic/vnc-viewer.png" alt="" />
+      </a>
+    
+  
+  
+</figure>
+
+<p>You will need to authenticate, the current password is <strong>jderobot</strong>, although it can be changed in the script <code class="language-plaintext highlighter-rouge">vnc_startup.sh</code>.</p>
+
+<h3 id="using-terminal-in-container-">Using terminal in container <a name="term"></a></h3>
+
+<p>The recommended way to work, is by writing down <code class="language-plaintext highlighter-rouge">docker logs container-name</code> and you will get an URL, which will take you to notebook, double click on the last URL to open Jupyter.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker logs behavior-studio-noetic
+</code></pre></div></div>
+
+<figure class=" ">
+  
+    
+      <a href="/install/ros_noetic">
+        <img src="/assets/images/install/noetic/jupyter.png" alt="" />
+      </a>
+    
+  
+  
+</figure>
+
+<p>Go to that URL in the browser (outside VNC) and once you are in the notebook you can open up a terminal by clicking in Terminal.</p>
+
+<figure class=" ">
+  
+    
+      <a href="/install/ros_noetic">
+        <img src="/assets/images/install/noetic/terminal.png" alt="" />
+      </a>
+    
+  
+  
+</figure>
+
+<p>A terminal window will open. Type</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash
+</code></pre></div></div>
+
+<p>and this window will behave as any other Ubuntu terminal, so you are ready to run Deep Learning Studio, once the GUI is opened it will be displayed in the VNC window.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>DeepLearningStudio/behavior_studio
+python3 driver.py <span class="nt">-c</span> default.yml <span class="nt">-g</span>
+</code></pre></div></div>
+
+<p>This command will open the Gazebo Simulation in the VNC window. You can also directly run the previous command inside VNC window in a terminal.</p>
+
+<p><strong>IF THE PREVIOUS COMMAND FAILS</strong> try the following and try again:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get update <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt-get upgrade
+</code></pre></div></div>
+
+<figure class=" ">
+  
+    
+      <a href="/install/ros_noetic">
+        <img src="/assets/images/install/noetic/behavior-studio.png" alt="" />
+      </a>
+    
+  
+  
+</figure>
+
+<h3 id="stopping-container-">Stopping container <a name="stop"></a></h3>
+
+<p><code class="language-plaintext highlighter-rouge">behavior-studio-noetic</code> should be replaced with the name of your container.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker stop behavior-studio-noetic
+</code></pre></div></div>
+
+<h3 id="resuming-container-">Resuming container <a name="resume"></a></h3>
+
+<p><code class="language-plaintext highlighter-rouge">behavior-studio-noetic</code> should be replace with the name of your container, this command is similar to <code class="language-plaintext highlighter-rouge">docker run</code> so now you can run <code class="language-plaintext highlighter-rouge">docker logs container_name</code> to get a new link for jupyter, and then connect as usual to your VNC viewer.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker restart behavior-studio-noetic
+</code></pre></div></div>
+
+<h2 id="building-the-latest-container-">Building the latest container <a name="building"></a></h2>
+
+<p>First go to the folder where the <code class="language-plaintext highlighter-rouge">Dockerfile</code> is, then use docker use docker built command with the desired name tag.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>DeepLearningStudio/.docker/noetic/
+docker build <span class="nt">-t</span> any-tag-you-want <span class="nb">.</span>
+</code></pre></div></div>
+:ET

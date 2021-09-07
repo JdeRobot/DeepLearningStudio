@@ -1,0 +1,27 @@
+I"<h2 id="current-status">Current Status</h2>
+
+<p>We are currently redesigning the project. The following <strong>functional requirements</strong> have been specified:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Number</th>
+      <th>Description</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>RF01</td>
+      <td>Changing run-time intelligence</td>
+      <td>WIP</td>
+    </tr>
+    <tr>
+      <td>RF02</td>
+      <td>Save tagged dataset (IMG + ROSbags, cmd-vel)</td>
+      <td>WIP</td>
+    </tr>
+  </tbody>
+</table>
+
+:ET

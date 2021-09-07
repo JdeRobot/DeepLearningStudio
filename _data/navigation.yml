@@ -1,0 +1,36 @@
+# main links
+main:
+
+  - title: Quick Start
+    url: /quick_start/
+
+  - title: Installation
+    url: /install/
+
+  - title: Documentation
+    url: /documentation/
+
+# left side bar
+docs:
+  - title: Quick Start
+    url: /quick_start/
+    children:
+    - title: Algorithms zoo
+      url: quick_start/algorithms_zoo/
+    - title: Datasets
+      url: quick_start/datasets/
+
+  - title: Installation
+    url: /install/
+    children:
+    - title: Install
+      url: /install/
+
+  - title: Documentation
+    url: /documentation/
+    children:
+    - title: Status
+      url: /documentation/status/
+    - title: Contributing
+      url: /documentation/contributing/
+  

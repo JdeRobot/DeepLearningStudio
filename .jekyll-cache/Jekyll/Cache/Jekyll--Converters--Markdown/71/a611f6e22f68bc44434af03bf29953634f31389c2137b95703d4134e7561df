@@ -1,0 +1,52 @@
+I"�<h2 id="current-status">Current Status</h2>
+
+<p>We are currently redesigning the project. The following <strong>functional requirements</strong> have been specified:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Number</th>
+      <th>Description</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>RF01</td>
+      <td>Changing run-time intelligence</td>
+      <td>WIP</td>
+    </tr>
+    <tr>
+      <td>RF02</td>
+      <td>Save tagged dataset (IMG + ROSbags, cmd-vel)</td>
+      <td>WIP</td>
+    </tr>
+    <tr>
+      <td>RF03</td>
+      <td>‘Manual’ Autopilot. User solution (OpenCV)</td>
+      <td>DONE</td>
+    </tr>
+    <tr>
+      <td>RF04</td>
+      <td>Teleoperation</td>
+      <td>WIP</td>
+    </tr>
+    <tr>
+      <td>RF05</td>
+      <td>Benchmarking (neuronal network vs groundthruth, checkpoints, center desviation, …)</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>RF06</td>
+      <td>Support for different environments (TensorFlow, Keras, Pytorch, OpenCV, …)</td>
+      <td>WIP</td>
+    </tr>
+    <tr>
+      <td>RF07</td>
+      <td>User profiles (configuration file)</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table>
+
+:ET

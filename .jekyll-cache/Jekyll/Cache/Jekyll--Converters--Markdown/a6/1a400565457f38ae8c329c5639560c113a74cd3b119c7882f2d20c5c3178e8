@@ -1,0 +1,129 @@
+I"Â
+<div class="feature__wrapper">
+
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/cover/test_your_network.jpeg" alt="Test your Network" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Test your Network</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Load, run, get results and compare your network in different environments.</p>
+
+            </div>
+          
+
+          
+            <p><a href="/quick_start/" class="btn btn--primary">Learn more</a></p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/cover/install.png" alt="Install" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Install</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Use of the software. Instructions for replicating project content.</p>
+
+            </div>
+          
+
+          
+            <p><a href="/install/" class="btn btn--primary">Learn more</a></p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/cover/logbook.jpg" alt="Documentation" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Documentation</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>More information about the project. References used, guides, articles, etc.</p>
+
+            </div>
+          
+
+          
+            <p><a href="/documentation/" class="btn btn--primary">Learn more</a></p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+</div>
+
+<p><strong>We are always open for new contributions from outside developers. If you want to contribute to this project, please visit the <a href="/documentation/contributing/">CONTRIBUTING guide</a></strong></p>
+
+<p>Deep Learning Studio is a tool written in Python that helps you to build, train and test deep learning models. It is a modular tool which can be integrated with other JdeRobot projects. Popular use of Deep Learning Studio is to implement algorithms to be tested in Behavior Metrics.</p>
+
+<p>This project aims to have a platform for evaluating and testing complex behaviors for different deep learning algorithms. This application is aimed to provide different implementations of notable algorithms such as:</p>
+
+<ul>
+  <li>Loading a simulated environment for different scenarios where you can evaluate complex robots behaviors.</li>
+  <li>Generating datasets to train your models to be tested later.</li>
+  <li>Evaluate the performance of your models by comparing them against other models.</li>
+  <li>Change the scenarios/models (called brains) on the go.</li>
+  <li>Live view of sensor readings.</li>
+</ul>
+
+<p>The algorithms that command the robots are called <strong>brains</strong>, and that is where the neural logic (behaviors) is at.</p>
+
+<p><img src="https://jderobot.github.io/assets/images/projects/neural_behavior/autonomous.jpeg" alt="config" style="zoom:50%;" /></p>
+
+<p>This project presents different approaches to the follow-the-line exercise but using artificial intelligence to complete the circuits. The solutions presented are:</p>
+
+<ul>
+  <li>Using classification networks.</li>
+  <li>Using regression networks.</li>
+  <li>Using reinforcement learning.</li>
+  <li>Solution for real robots.</li>
+</ul>
+
+<p>You can see the project status in the <a href="https://github.com/JdeRobot/DeepLearningStudio">GitHub repository here</a>.</p>
+:ET

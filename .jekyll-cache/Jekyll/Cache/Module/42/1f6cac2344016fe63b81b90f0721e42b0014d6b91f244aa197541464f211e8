@@ -1,0 +1,31 @@
+I"
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/peloto.png" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Deep Learning Studio
+          <span class="site-subtitle">Structuring Deep Learning Algorithms</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/quick_start/" >Quick Start</a>
+            </li><li class="masthead__menu-item">
+              <a href="/install/" >Installation</a>
+            </li><li class="masthead__menu-item">
+              <a href="/documentation/" >Documentation</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+:ET

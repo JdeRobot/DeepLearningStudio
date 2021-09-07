@@ -1,0 +1,89 @@
+I" <p>Thanks for your interest on contributing!</p>
+
+<p>This file contains a set of rules to contributing to the project and the 
+rest of the projects developed by JdeRobot.
+If you have any doubt about how to contribute contact one of the maintainers
+of the project. They will be pleased to tell you how you can contribute with your
+knowledge to the project and organization!</p>
+
+<ul>
+  <li><a href="#code-of-conduct">Code of conduct</a></li>
+  <li><a href="#prerequisites-before-contributing">Prerequisites before contributing</a></li>
+  <li><a href="#how-can-i-contribute">How can I contribute?</a></li>
+  <li><a href="#i-have-a-question">I have a question, who can I contact</a></li>
+</ul>
+
+<p><a name="#code-of-conduct"></a></p>
+<h2 id="code-of-conduct">Code of conduct</h2>
+<p>Please report any unacceptable behavior to any of <a href="#i-have-a-question">the maintainers</a>.</p>
+
+<p><a name="#prerequisites"></a></p>
+<h2 id="prerequisites-before-contributing">Prerequisites before contributing</h2>
+<p>In order to contribute to JdeRobot projects, please read carefully the project README.md/<a href="https://jderobot.github.io/DeepLearningStudio/">webpage</a> before 
+starting contributing to understand the purpose of the project and where you can contribute.</p>
+
+<p><a name="#how-to-contribute"></a></p>
+<h2 id="how-can-i-contribute">How can I contribute?</h2>
+<p>Any JdeRobot project follows the same workflow when contributing.</p>
+
+<ul>
+  <li>
+    <p><strong>Find a problem or possible improvement for the project:</strong> First of all, check that the feature/bug is not listed in the current <a href="https://github.com/JdeRobot/DeepLearningStudio/issues">open issues</a>.</p>
+  </li>
+  <li>
+    <p><strong>Create an issue:</strong> <a href="https://github.com/JdeRobot/DeepLearningStudio/issues/new">Create an issue</a> in the project with the problem/improvement you will
+address. In this issue, explain carefully what you will be updating and how this changes will impact the project.
+ Provide any complementary information to explain it (code samples, screenshots …). You should information about:</p>
+    <ul>
+      <li>Expected behavior</li>
+      <li>Actual behavior</li>
+      <li>Steps to reproduce</li>
+      <li>Environment</li>
+      <li>Possible cause</li>
+      <li>Possible solution</li>
+    </ul>
+  </li>
+</ul>
+
+<p>The two following points are different depending on the permissions you have to the repo.</p>
+<ul>
+  <li>
+    <p><strong>[If you have write permission] Work in a separate branch always:</strong> Create a new branch with a describable name (you can use the issue number as branch name “issue_xxx”). Create your commits in that branch making the needed changes.
+ Please, use describable names as commit messages, so everyone can understand easily the changes you made.</p>
+  </li>
+  <li>
+    <p><strong>[If you only have read permission] Fork the project:</strong> Fork the project. Work on that copy of the repo, making the desirable changes. Please, use describable names as commit messages, so everyone can understand easily the changes you made.</p>
+  </li>
+  <li>
+    <p><strong>Open a pull request:</strong> A pull request is compulsory any time a new change wants to be added to the core or the project. After solving the issue, create a pull request with your branch. In this pull request include all the commits made,
+ write a good description of the changes made and refer to the issue solved to make things easier to the maintainers. Include any additional resource that would be interesting (references, screenshots…). Link the PR with the issue.</p>
+  </li>
+  <li>
+    <p><strong>Testing and merging pull requests</strong>
+One of Deep Learning Studio’s maintainers will review your code. Reviewer could ask you to modify your pull request.
+ Please provide timely response for reviewers (within weeks, not months), otherwise you submission could be postponed or even rejected.</p>
+  </li>
+  <li>
+    <p><strong>[If you have write permission] Don’t accept your own pull requests:</strong> Wait for a project maintainer to accept the changes you made.
+ They will probably comment the pull request with some feedback and will consider if it can be merge to the master branch.
+ Be proactive and kind!</p>
+  </li>
+</ul>
+
+<p><a name="#contact"></a></p>
+<h2 id="i-have-a-question">I have a question</h2>
+<p>If you have any question related to how to contribute to the project or anything related to the organization,
+you can contact the main project maintainers sending them an email. Indicate the project you are talking about in the 
+subject of the email, please.</p>
+
+<p>Emails:</p>
+
+<ul>
+  <li>
+    <p>Sergio Paniego <a href="mailto:sergiopaniegoblanco@gmail.com">sergiopaniegoblanco@gmail.com</a></p>
+  </li>
+  <li>
+    <p>Jose Maria Cañas <a href="mailto:josemaria.plaza@gmail.com">josemaria.plaza@gmail.com</a></p>
+  </li>
+</ul>
+:ET

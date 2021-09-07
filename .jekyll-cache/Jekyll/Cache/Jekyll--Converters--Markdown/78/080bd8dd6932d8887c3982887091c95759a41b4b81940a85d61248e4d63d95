@@ -1,0 +1,95 @@
+I"�<p>First of all you need to install Deep Learning Studio. If you haven’t completed that step, please go to the <a href="/install/">installation section</a>.</p>
+
+<p>We additionally have some implemented algorithms that you can use in Deep Learning Studio. Find them in the <a href="/quick_start/algorithms_zoo/">algorithms zoo</a>.</p>
+
+<p>If you’d like to train your own brain, we provide you with the <a href="/quick_start/datasets">datasets</a>.</p>
+
+<p>This repository contains the deep learning regression and classification models for all robots used in the JdeRobot community.</p>
+
+<h2 id="structure-of-the-branch">Structure of the branch</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>├── Formula1-FollowLine
+|   |
+|   |── pytorch
+|   |   |── PilotNet                                # Pilot Net pytorch implementation
+|   |   |   ├── scripts                             # scripts for running experiments 
+|   |   |   ├── utils                               
+|   |   |   |   ├── pilot_net_dataset.py            # Torchvision custom dataset
+|   |   |   |   ├── pilotnet.py                     # CNN for PilotNet
+|   |   |   |   ├── transform_helpers.py            # Data Augmentation
+|   |   |   |   └── processing.py                   # Data collecting, processing and utilities
+|   |   |   └── train.py                            # training code
+|   |   |
+|   |   └── PilotNetStacked                         # Pilot Net Stacked Image implementation
+|   |       ├── scripts                             # scripts for running experiments 
+|   |       ├── utils                               
+|   |       |   ├── pilot_net_dataset.py            # Sequentially stacked image dataset
+|   |       |   ├── pilotnet.py                     # Modified Hyperparams 
+|   |       |   ├── transform_helpers.py            # Data Augmentation
+|   |       |   └── processing.py                   # Data collecting, processing and utilities
+|   |       └── train.py                            # training code
+|   |
+|   +── tensoflow
+|       +── PilotNet                                # Pilot Net tensorflow implementation
+|           ├── utils                               
+|           |   ├── dataset.py                      # Custom dataset
+|           |   ├── pilotnet.py                     # CNN for PilotNet
+|           |   └── processing.py                   # Data collecting, processing and utilities
+|           └── train.py                            # training code
++── Drone-FollowLine
+    |
+    +── DeepPilot                               # DeepPilot CNN pytorch implementation
+        ├── scripts                             # scripts for running experiments 
+        ├── utils                               
+        |   ├── pilot_net_dataset.py            # Torchvision custom dataset
+        |   ├── pilotnet.py                     # CNN for DeepPilot
+        |   ├── transform_helpers.py            # Data Augmentation
+        |   └── processing.py                   # Data collecting, processing and utilities
+        └── train.py                            # training code
+</code></pre></div></div>
+
+<h2 id="how-to-use">How to use</h2>
+
+<p>First of all <strong>if you are going to use the GUI</strong> you need to create the resources file for the application. <strong>YOU JUST HAVE TO DO THIS STEP THE FIRST TIME YOU RUN THE APPLICATION</strong></p>
+
+<h3 id="building-your-configuration-file">Building your configuration file</h3>
+
+<p>If you want to create your own <strong>configuration file</strong> for the application (changing the robot, brain, layout, etc) you can either use the desktop GUI or creating a yml file with your own configuration. The default profile looks like this (<strong>Make sure you respect the indentation</strong>):</p>
+
+<h2 id="references">References</h2>
+
+<ol>
+  <li>Bojarski, Mariusz, Davide Del Testa, Daniel Dworakowski, Bernhard Firner, Beat Flepp, Prasoon Goyal, Lawrence D. Jackel et al. “End to end learning for self-driving cars.” arXiv preprint arXiv:1604.07316 (2016). <a href="https://arxiv.org/abs/1604.07316">https://arxiv.org/abs/1604.07316</a></li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@article{bojarski2016end,
+  title={End to end learning for self-driving cars},
+  author={Bojarski, Mariusz and Del Testa, Davide and Dworakowski, Daniel and Firner, Bernhard and Flepp, Beat and Goyal, Prasoon and Jackel, Lawrence D and Monfort, Mathew and Muller, Urs and Zhang, Jiakai and others},
+  journal={arXiv preprint arXiv:1604.07316},
+  year={2016}
+}
+
+@article{bojarski2017explaining,
+  title={Explaining how a deep neural network trained with end-to-end learning steers a car},
+  author={Bojarski, Mariusz and Yeres, Philip and Choromanska, Anna and Choromanski, Krzysztof and Firner, Bernhard and Jackel, Lawrence and Muller, Urs},
+  journal={arXiv preprint arXiv:1704.07911},
+  year={2017}
+}
+</code></pre></div></div>
+
+<ol>
+  <li>Rojas-Perez, L.O., &amp; Martinez-Carranza, J. (2020). DeepPilot: A CNN for Autonomous Drone Racing. Sensors, 20(16), 4524. <a href="https://doi.org/10.3390/s20164524">https://doi.org/10.3390/s20164524</a></li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@article{rojas2020deeppilot,
+  title={DeepPilot: A CNN for Autonomous Drone Racing},
+  author={Rojas-Perez, Leticia Oyuki and Martinez-Carranza, Jose},
+  journal={Sensors},
+  volume={20},
+  number={16},
+  pages={4524},
+  year={2020},
+  publisher={Multidisciplinary Digital Publishing Institute}
+}
+</code></pre></div></div>
+:ET

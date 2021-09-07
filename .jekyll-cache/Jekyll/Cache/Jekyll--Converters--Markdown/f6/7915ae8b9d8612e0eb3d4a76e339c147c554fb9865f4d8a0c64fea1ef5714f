@@ -1,0 +1,168 @@
+I"<h2 id="motivation">Motivation</h2>
+
+<p>The infrastructure of this application is composed of different pieces of software, as shown in the image below. It is based on the Model-View-Controller (MVC) architecture where we have the <strong>model</strong> (the main logic of the application), the <strong>view</strong> (the user interface) and the <strong>controller</strong> that acts as a form of intercommunication of the previous ones.</p>
+
+<figure class=" ">
+  
+    
+      <a href="/assets/images/behavior_suite_diagram.png">
+        <img src="/assets/images/behavior_suite_diagram.png" alt="" />
+      </a>
+    
+  
+  
+    <figcaption>Deep Learning Studio Diagram
+</figcaption>
+  
+</figure>
+
+<p>The core of the application are the driver and the pilot modules, which are responsible for the management of the application and the management of the robot and behaviors respectively.</p>
+
+<h2 id="progress">Progress</h2>
+
+<h3 id="formula-1-follow-line-algorithms">Formula-1 follow line algorithms</h3>
+
+<p>This part of the application is in a single module called <em>controller.py</em> and is responsible for the intercommunication between the model and the view. It is made in such a way that the model increases its performance without having to wait for the view to process the data.</p>
+
+<h2 id="iris-drone-follow-line-algorithms">Iris drone follow line algorithms</h2>
+
+<p>Adding a new brain should first create a python file within the <code class="language-plaintext highlighter-rouge">brain</code> folder, this new brain should be a Brain Class module with the following basic functions that work with the GUI. When using a the <code class="language-plaintext highlighter-rouge">yml</code> file the robot type must match the name of the brain folder.</p>
+
+<p><strong>__init__</strong></p>
+
+<p>this function should have as variables the:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- sensors ( Sensors instance of the robot ).
+- actuators ( Actuators instance of the robot ).
+</code></pre></div></div>
+
+<p><strong>update_frame</strong></p>
+
+<p>Updates the information to be shown in one of the GUI’s frames.</p>
+
+<p><strong>update_pose</strong></p>
+
+<p>Updates the pose 3D information obtained from the robot.</p>
+
+<p><strong>execute</strong></p>
+
+<p>Main loop of the brain. This will be called iteratively each TIME_CYCLE (see pilot.py)</p>
+
+<h2 id="current-status">Current Status</h2>
+
+<p>We are currently redesigning the project. The following <strong>functional requirements</strong> have been specified:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Number</th>
+      <th>Description</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>RF01</td>
+      <td>Changing run-time intelligence</td>
+      <td>WIP</td>
+    </tr>
+    <tr>
+      <td>RF02</td>
+      <td>Save tagged dataset (IMG + ROSbags, cmd-vel)</td>
+      <td>WIP</td>
+    </tr>
+    <tr>
+      <td>RF03</td>
+      <td>‘Manual’ Autopilot. User solution (OpenCV)</td>
+      <td>DONE</td>
+    </tr>
+    <tr>
+      <td>RF04</td>
+      <td>Teleoperation</td>
+      <td>WIP</td>
+    </tr>
+    <tr>
+      <td>RF05</td>
+      <td>Benchmarking (neuronal network vs groundthruth, checkpoints, center desviation, …)</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>RF06</td>
+      <td>Support for different environments (TensorFlow, Keras, Pytorch, OpenCV, …)</td>
+      <td>WIP</td>
+    </tr>
+    <tr>
+      <td>RF07</td>
+      <td>User profiles (configuration file)</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The following table contains <strong>non-functional requirements</strong>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Number</th>
+      <th>Description</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>RN01</td>
+      <td>Real time</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>RN02</td>
+      <td>Memory</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>RN03</td>
+      <td>GPU-Ready</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="references">References</h2>
+
+<ol>
+  <li>Bojarski, Mariusz, Davide Del Testa, Daniel Dworakowski, Bernhard Firner, Beat Flepp, Prasoon Goyal, Lawrence D. Jackel et al. “End to end learning for self-driving cars.” arXiv preprint arXiv:1604.07316 (2016). <a href="https://arxiv.org/abs/1604.07316">https://arxiv.org/abs/1604.07316</a></li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@article{bojarski2016end,
+  title={End to end learning for self-driving cars},
+  author={Bojarski, Mariusz and Del Testa, Davide and Dworakowski, Daniel and Firner, Bernhard and Flepp, Beat and Goyal, Prasoon and Jackel, Lawrence D and Monfort, Mathew and Muller, Urs and Zhang, Jiakai and others},
+  journal={arXiv preprint arXiv:1604.07316},
+  year={2016}
+}
+
+@article{bojarski2017explaining,
+  title={Explaining how a deep neural network trained with end-to-end learning steers a car},
+  author={Bojarski, Mariusz and Yeres, Philip and Choromanska, Anna and Choromanski, Krzysztof and Firner, Bernhard and Jackel, Lawrence and Muller, Urs},
+  journal={arXiv preprint arXiv:1704.07911},
+  year={2017}
+}
+</code></pre></div></div>
+
+<ol>
+  <li>Rojas-Perez, L.O., &amp; Martinez-Carranza, J. (2020). DeepPilot: A CNN for Autonomous Drone Racing. Sensors, 20(16), 4524. <a href="https://doi.org/10.3390/s20164524">https://doi.org/10.3390/s20164524</a></li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@article{rojas2020deeppilot,
+  title={DeepPilot: A CNN for Autonomous Drone Racing},
+  author={Rojas-Perez, Leticia Oyuki and Martinez-Carranza, Jose},
+  journal={Sensors},
+  volume={20},
+  number={16},
+  pages={4524},
+  year={2020},
+  publisher={Multidisciplinary Digital Publishing Institute}
+}
+</code></pre></div></div>
+
+:ET

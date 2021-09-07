@@ -1,0 +1,13 @@
+I"¡<ul class="toc__menu">
+  <li><a href="#motivation">Motivation</a>
+    <ul>
+      <li><a href="#model">Model</a></li>
+      <li><a href="#view">View</a></li>
+      <li><a href="#controller">Controller</a></li>
+    </ul>
+  </li>
+  <li><a href="#programming-a-custom-brain">Programming a custom brain</a></li>
+  <li><a href="#current-status">Current Status</a></li>
+  <li><a href="#references">References</a></li>
+</ul>
+:ET

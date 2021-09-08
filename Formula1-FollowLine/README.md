@@ -150,7 +150,7 @@ python train.py --data_dir ../complete_dataset/ \
 	
 	
 # For DeepestLSTMTinyPilotNet
-python train.py --data_dir ../complete_dataset/ \
+python train.py --data_dir ../ \
 	--preprocess crop \
 	--preprocess extreme \
 	--data_augs True \

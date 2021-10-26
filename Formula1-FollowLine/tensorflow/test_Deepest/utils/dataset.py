@@ -36,21 +36,23 @@ from albumentations import (
     GaussianBlur, ToFloat, Normalize, ColorJitter, ChannelShuffle, Equalize, ReplayCompose
 )
 
-AUGMENTATIONS_TRAIN = ReplayCompose([
-    RandomBrightnessContrast(),
-    HueSaturationValue(),
-    FancyPCA(),
-    RandomGamma(),
-    GaussianBlur(),
-    # GaussNoise(),
-    #
-    # ColorJitter(),
-    # Equalize(),
-    # ChannelShuffle(),
-    #
-    Normalize()
-])
+def get_augmentations():
+    AUGMENTATIONS_TRAIN = ReplayCompose([
+        RandomBrightnessContrast(),
+        HueSaturationValue(),
+        FancyPCA(),
+        RandomGamma(),
+        GaussianBlur(),
+        # GaussNoise(),
+        #
+        # ColorJitter(),
+        # Equalize(),
+        # ChannelShuffle(),
+        #
+        Normalize()
+    ])
 
-AUGMENTATIONS_TEST = ReplayCompose([
-    Normalize()
-])
+    AUGMENTATIONS_TEST = ReplayCompose([
+        Normalize()
+    ])
+    return AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST

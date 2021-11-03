@@ -469,20 +469,20 @@ def process_dataset():
                     if seq[1] >= 0.8 or seq[1] <= 0.2:
                         # Add 10
                         # print(1)
-                        for i in range(0, 2):
+                        for i in range(0, 4):
                             new_big_sequence_imgs += sequences_imgs
                             new_big_sequence_anns += sequences_anns
                     else:
                         # Add 5
                         # print(2)
-                        for i in range(0, 1):
+                        for i in range(0, 2):
                             new_big_sequence_imgs += sequences_imgs
                             new_big_sequence_anns += sequences_anns
                 if seq[0] <= 0.2:
                     # number +=1
                     # Add 1
                     # print(3)
-                    for i in range(0, 1):
+                    for i in range(0, 2):
                         new_big_sequence_imgs += sequences_imgs
                         new_big_sequence_anns += sequences_anns
         print(len(new_big_sequence_imgs))

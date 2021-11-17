@@ -1,6 +1,6 @@
 # Tensorflow models
 
-Models for both approaches that work for all the circuit can be downloaded from here.
+Models for both approaches that work for all the circuits in [BehaviorMetrics](https://github.com/JdeRobot/BehaviorMetrics) can be downloaded from here.
 
 | Model      | Download link |
 | ----------- | ----------- |

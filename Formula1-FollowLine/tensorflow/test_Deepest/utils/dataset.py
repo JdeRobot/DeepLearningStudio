@@ -19,15 +19,26 @@ class DatasetSequence(Sequence):
                                                self.batch_size]
         batch_y = self.y[idx * self.batch_size:(idx + 1) *
                                                self.batch_size]
-
+        sample_weights = []
+        for ann in batch_y:
+            if ann[1] >= 0.7 or ann[1] <= 0.3:
+                if ann[1] >= 0.9 or ann[1] <= 0.1:
+                    sample_weights.append(3)
+                elif ann[1] >= 0.8 or ann[1] <= 0.2:
+                    sample_weights.append(2)
+                else:
+                    sample_weights.append(1.5)
+            elif ann[0] <= 0.2:
+                sample_weights.append(2)
+            else:
+                sample_weights.append(1)
         aug = self.augment(image=batch_x[0])
         new_batch = []
 
         for x, img in enumerate(batch_x):
             new_batch.append(self.augment.replay(saved_augmentations=aug['replay'], image=img)["image"])
 
-        return np.stack(new_batch, axis=0), np.array(batch_y)
-
+        return np.stack(new_batch, axis=0), np.array(batch_y), np.array(sample_weights)
 
 
 from albumentations import (
@@ -36,21 +47,24 @@ from albumentations import (
     GaussianBlur, ToFloat, Normalize, ColorJitter, ChannelShuffle, Equalize, ReplayCompose
 )
 
-AUGMENTATIONS_TRAIN = ReplayCompose([
-    RandomBrightnessContrast(),
-    HueSaturationValue(),
-    FancyPCA(),
-    RandomGamma(),
-    GaussianBlur(),
-    # GaussNoise(),
-    #
-    # ColorJitter(),
-    # Equalize(),
-    # ChannelShuffle(),
-    #
-    Normalize()
-])
 
-AUGMENTATIONS_TEST = ReplayCompose([
-    Normalize()
-])
+def get_augmentations():
+    AUGMENTATIONS_TRAIN = ReplayCompose([
+        RandomBrightnessContrast(),
+        HueSaturationValue(),
+        FancyPCA(),
+        RandomGamma(),
+        GaussianBlur(),
+        # GaussNoise(),
+        #
+        # ColorJitter(),
+        # Equalize(),
+        # ChannelShuffle(),
+        #
+        Normalize()
+    ])
+
+    AUGMENTATIONS_TEST = ReplayCompose([
+        Normalize()
+    ])
+    return AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST

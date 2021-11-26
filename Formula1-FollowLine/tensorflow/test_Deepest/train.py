@@ -706,6 +706,13 @@ import time
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard, CSVLogger
 import datetime
 
+
+from utils.processing import process_dataset
+from utils.deepest_lstm_tinypilotnet import deepest_lstm_tinypilotnet_model
+from utils.dataset import get_augmentations, DatasetSequence
+
+images_train, annotations_train, images_validation, annotations_validation = process_dataset()
+
 timestr = time.strftime("%Y%m%d-%H%M%S")
 print(timestr)
 img_shape = (50, 100, 3)
@@ -730,12 +737,13 @@ model = deepest_lstm_tinypilotnet_model(img_shape)
 model_filename = timestr + '_deepest_lstm_tinypilotnet_pilotnet_model_300_all_crop_no_seq_unique_albu_extreme_seq'
 model_file = model_filename + '.h5'
 
+AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST = get_augmentations()
+
 # Training data
 train_gen = DatasetSequence(images_train, annotations_train, hparams['batch_size'], augmentations=AUGMENTATIONS_TRAIN)
 
 # Validation data
-valid_gen = DatasetSequence(images_validation, annotations_validation, hparams['batch_size'],
-                            augmentations=AUGMENTATIONS_TEST)
+valid_gen = DatasetSequence(images_validation, annotations_validation, hparams['batch_size'], augmentations=AUGMENTATIONS_TEST)
 
 # Define callbacks
 log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")

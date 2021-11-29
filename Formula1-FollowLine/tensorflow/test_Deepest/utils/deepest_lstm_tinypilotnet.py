@@ -1,12 +1,9 @@
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Flatten, Dense, Conv2D, BatchNormalization, Dropout, ConvLSTM2D, Reshape, \
     Activation, MaxPooling2D, LSTM, Input
-# from tensorflow.keras.layers.wrappers import TimeDistributed
 from tensorflow.keras.optimizers import Adam
 
 
-# Real from PAPER
-# PRUEBA SACADA DEL PAPER Self-driving a Car in Simulation Through a CNN
 # DEEPEST LSTM tinypilotnet
 def deepest_lstm_tinypilotnet_model(img_shape):
     model = Sequential()

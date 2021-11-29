@@ -457,56 +457,34 @@ def process_dataset():
     for x, big_sequence_anns in enumerate(array_y):
         new_big_sequence_imgs = []
         new_big_sequence_anns = []
-        #print(len(big_sequence_anns))
         for y in range(0, int(len(big_sequence_anns)/50)):
             sequences_imgs = array_x[x][y*50:(y*50)+50]
             sequences_anns = array_y[x][y*50:(y*50)+50]
-            new_big_sequence_imgs+=sequences_imgs
-            new_big_sequence_anns+=sequences_anns
+            new_big_sequence_imgs += sequences_imgs
+            new_big_sequence_anns += sequences_anns
             for seq_number, seq in enumerate(sequences_anns):
-                #print()
                 if seq[1] >= 0.7 or seq[1] <= 0.3:
                     if seq[1] >= 0.9 or seq[1] <= 0.1:
-                        # Add 10
-                        # for i in range(0,2):
-                        for i in range(0,5):
-                            new_big_sequence_imgs+=sequences_imgs
-                            new_big_sequence_anns+=sequences_anns
-                            #new_big_sequence_imgs+=[sequences_imgs[seq_number]]
-                            #new_big_sequence_anns+=[sequences_anns[seq_number]]
+                        for i in range(0, 5):
+                            new_big_sequence_imgs += sequences_imgs
+                            new_big_sequence_anns += sequences_anns
                     elif seq[1] >= 0.8 or seq[1] <= 0.2:
-                        # Add 10
-                        # for i in range(0,2):
-                        for i in range(0,3):
-                            new_big_sequence_imgs+=sequences_imgs
-                            new_big_sequence_anns+=sequences_anns
-                            #new_big_sequence_imgs+=[sequences_imgs[seq_number]]
-                            #new_big_sequence_anns+=[sequences_anns[seq_number]]
+                        for i in range(0, 3):
+                            new_big_sequence_imgs += sequences_imgs
+                            new_big_sequence_anns += sequences_anns
                     else:
-                        # Add 5
-                        for i in range(0,2):
-                        #for i in range(0,1):
-                            new_big_sequence_imgs+=sequences_imgs
-                            new_big_sequence_anns+=sequences_anns
-                            #new_big_sequence_imgs+=[sequences_imgs[seq_number]]
-                            #new_big_sequence_anns+=[sequences_anns[seq_number]]
+                        for i in range(0, 2):
+                            new_big_sequence_imgs += sequences_imgs
+                            new_big_sequence_anns += sequences_anns
                 if seq[0] <= 0.2:
-                    # Add 1
-                    for i in range(0,5):
-                    #for i in range(0,1):
-                        new_big_sequence_imgs+=sequences_imgs
-                        new_big_sequence_anns+=sequences_anns
-                        #new_big_sequence_imgs+=[sequences_imgs[seq_number]]
-                        #new_big_sequence_anns+=[sequences_anns[seq_number]]
-        #print(len(new_big_sequence_imgs))
-        #print(len(new_big_sequence_anns))
-        #print('----')
+                    for i in range(0, 5):
+                        new_big_sequence_imgs += sequences_imgs
+                        new_big_sequence_anns += sequences_anns
         new_array_x.append(new_big_sequence_imgs)
         new_array_y.append(new_big_sequence_anns)
 
     print('------')
-    # print(len(new_array_x))
-    # print(len(new_array_y))
+
     print(len(new_array_y[0]))
 
     shown_array_imgs = []
@@ -517,8 +495,6 @@ def process_dataset():
     print(len(random_sort))
     print(random_sort)
 
-    new_array_imgs = []
-    new_array_annotations = []
     for numb in random_sort:
         shown_array_imgs += new_array_x[numb]
         shown_array_annotations += new_array_y[numb]

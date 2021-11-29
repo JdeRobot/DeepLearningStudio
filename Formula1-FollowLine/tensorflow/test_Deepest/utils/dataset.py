@@ -15,10 +15,8 @@ class DatasetSequence(Sequence):
         return math.ceil(len(self.x) / self.batch_size)
 
     def __getitem__(self, idx):
-        batch_x = self.x[idx * self.batch_size:(idx + 1) *
-                                               self.batch_size]
-        batch_y = self.y[idx * self.batch_size:(idx + 1) *
-                                               self.batch_size]
+        batch_x = self.x[idx * self.batch_size:(idx + 1) * self.batch_size]
+        batch_y = self.y[idx * self.batch_size:(idx + 1) * self.batch_size]
         sample_weights = []
         for ann in batch_y:
             if ann[1] >= 0.7 or ann[1] <= 0.3:

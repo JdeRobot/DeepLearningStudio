@@ -127,10 +127,6 @@ def get_images_and_annotations():
         array_annotations_v.append(annotation[0])
         array_annotations_w.append(annotation[1])
 
-    return images_complete, images_curves, array_annotations_v, array_annotations_w
-
-
-def normalize_dataset(images_complete, images_curves, array_annotations_v, array_annotations_w):
     # START NORMALIZE DATA
     array_annotations_v = np.stack(array_annotations_v, axis=0)
     array_annotations_v = array_annotations_v.reshape(-1, 1)
@@ -538,8 +534,7 @@ def separate_dataset_into_train_validation(array_x, array_y):
 
 
 def process_dataset():
-    images_complete, images_curves, array_annotations_v, array_annotations_w = get_images_and_annotations()
-    array_imgs, array_annotations = normalize_dataset(images_complete, images_curves, array_annotations_v, array_annotations_w)
+    array_imgs, array_annotations = get_images_and_annotations()
     array_x, array_y = separate_dataset_into_sequences(array_imgs, array_annotations)
     array_x, array_y = add_extreme_sequences(array_x, array_y)
     images_train, images_validation, annotations_train, annotations_validation = separate_dataset_into_train_validation(array_x, array_y)

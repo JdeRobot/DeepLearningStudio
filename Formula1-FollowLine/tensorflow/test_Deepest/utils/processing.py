@@ -59,20 +59,23 @@ def normalize(x):
     return (x - x.min()) / (np.ptp(x))
 
 
-def get_images_and_annotations():
+def get_images_and_annotations(path_to_data, type_image):
     print('---- Complete ----')
-    complete_name_file = '../../../../complete_dataset/data.json'
+    # complete_name_file = '../../../../complete_dataset/data.json'
+    complete_name_file = path_to_data + 'complete_dataset/data.json'
     complete_file = open(complete_name_file, 'r')
     data_complete = complete_file.read()
     complete_file.close()
 
-    array_annotations_complete = []
-    DIR_complete_images = '../../../../complete_dataset/Images/'
+    # array_annotations_complete = []
+    # DIR_complete_images = '../../../../complete_dataset/Images/'
+    DIR_complete_images = path_to_data + 'complete_dataset/Images/'
     list_images_complete = glob.glob(DIR_complete_images + '*')
     images_paths_complete = sorted(list_images_complete, key=lambda x: int(x.split('/')[6].split('.png')[0]))
     array_annotations_complete = parse_json(data_complete)
 
-    images_complete = get_images(images_paths_complete, 'cropped')
+    # images_complete = get_images(images_paths_complete, 'cropped')
+    images_complete = get_images(images_paths_complete, type_image)
     images_complete, array_annotations_complete = flip_images(images_complete, array_annotations_complete)
     print(len(images_complete))
     print(type(images_complete))
@@ -105,17 +108,20 @@ def get_images_and_annotations():
     print(len(array_annotations_complete))
 
     print('---- Curves ----')
-    curves_name_file = '../../../../curves_only/data.json'
+    # curves_name_file = '../../../../curves_only/data.json'
+    curves_name_file = path_to_data + 'curves_only/data.json'
     file_curves = open(curves_name_file, 'r')
     data_curves = file_curves.read()
     file_curves.close()
 
-    DIR_curves_images = '../../../../curves_only/Images/'
+    # DIR_curves_images = '../../../../curves_only/Images/'
+    DIR_curves_images = path_to_data + 'curves_only/Images/'
     list_images_curves = glob.glob(DIR_curves_images + '*')
     images_paths_curves = sorted(list_images_curves, key=lambda x: int(x.split('/')[6].split('.png')[0]))
     array_annotations_curves = parse_json(data_curves)
 
-    images_curves = get_images(images_paths_curves, 'cropped')
+    # images_curves = get_images(images_paths_curves, 'cropped')
+    images_curves = get_images(images_paths_curves, type_image)
     images_curves, array_annotations_curves = flip_images(images_curves, array_annotations_curves)
     print(len(images_curves))
     print(type(images_curves))
@@ -533,10 +539,11 @@ def separate_dataset_into_train_validation(array_x, array_y):
     return images_train, annotations_train, images_validation, annotations_validation
 
 
-def process_dataset():
-    array_imgs, array_annotations = get_images_and_annotations()
+def process_dataset(path_to_data, type_image, data_type):
+    array_imgs, array_annotations = get_images_and_annotations(path_to_data, type_image)
     array_x, array_y = separate_dataset_into_sequences(array_imgs, array_annotations)
-    array_x, array_y = add_extreme_sequences(array_x, array_y)
+    if data_type == 'extreme':
+        array_x, array_y = add_extreme_sequences(array_x, array_y)
     images_train, images_validation, annotations_train, annotations_validation = separate_dataset_into_train_validation(array_x, array_y)
 
     return images_train, annotations_train, images_validation, annotations_validation

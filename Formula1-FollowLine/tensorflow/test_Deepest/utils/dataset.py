@@ -1,8 +1,14 @@
+import numpy as np
+import math
+
 from tensorflow.keras.utils import Sequence
 from skimage.io import imread
 from skimage.transform import resize
-import numpy as np
-import math
+from albumentations import (
+    Compose, HorizontalFlip, RandomBrightnessContrast,
+    HueSaturationValue, FancyPCA, RandomGamma, GaussNoise,
+    GaussianBlur, ToFloat, Normalize, ColorJitter, ChannelShuffle, Equalize, ReplayCompose
+)
 
 
 class DatasetSequence(Sequence):
@@ -39,28 +45,31 @@ class DatasetSequence(Sequence):
         return np.stack(new_batch, axis=0), np.array(batch_y), np.array(sample_weights)
 
 
-from albumentations import (
-    Compose, HorizontalFlip, RandomBrightnessContrast,
-    HueSaturationValue, FancyPCA, RandomGamma, GaussNoise,
-    GaussianBlur, ToFloat, Normalize, ColorJitter, ChannelShuffle, Equalize, ReplayCompose
-)
-
-
-def get_augmentations():
-    AUGMENTATIONS_TRAIN = ReplayCompose([
-        RandomBrightnessContrast(),
-        HueSaturationValue(),
-        FancyPCA(),
-        RandomGamma(),
-        GaussianBlur(),
-        # GaussNoise(),
-        #
-        # ColorJitter(),
-        # Equalize(),
-        # ChannelShuffle(),
-        #
-        Normalize()
-    ])
+def get_augmentations(data_augs):
+    print('----DATA AUGMENTATIONS -----')
+    print('----DATA AUGMENTATIONS -----')
+    print(data_augs)
+    print('----DATA AUGMENTATIONS -----')
+    print('----DATA AUGMENTATIONS -----')
+    if data_augs:
+        AUGMENTATIONS_TRAIN = ReplayCompose([
+            RandomBrightnessContrast(),
+            HueSaturationValue(),
+            FancyPCA(),
+            RandomGamma(),
+            GaussianBlur(),
+            # GaussNoise(),
+            #
+            # ColorJitter(),
+            # Equalize(),
+            # ChannelShuffle(),
+            #
+            Normalize()
+        ])
+    else:
+        AUGMENTATIONS_TRAIN = ReplayCompose([
+            Normalize()
+        ])
 
     AUGMENTATIONS_TEST = ReplayCompose([
         Normalize()

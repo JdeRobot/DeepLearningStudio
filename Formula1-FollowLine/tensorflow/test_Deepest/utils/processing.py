@@ -544,6 +544,6 @@ def process_dataset(path_to_data, type_image, data_type):
     array_x, array_y = separate_dataset_into_sequences(array_imgs, array_annotations)
     if data_type == 'extreme':
         array_x, array_y = add_extreme_sequences(array_x, array_y)
-    images_train, images_validation, annotations_train, annotations_validation = separate_dataset_into_train_validation(array_x, array_y)
+    images_train, annotations_train, images_validation, annotations_validation = separate_dataset_into_train_validation(array_x, array_y)
 
     return images_train, annotations_train, images_validation, annotations_validation

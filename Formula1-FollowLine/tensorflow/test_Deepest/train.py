@@ -35,8 +35,6 @@ if __name__ == "__main__":
     batch_size = args.batch_size
     # learning_rate = args.learning_rate
     img_shape = tuple(map(int, args.img_shape.split(',')))
-    print(img_shape)
-
 
     if 'no_crop' in preprocess:
         type_image = 'no_crop'
@@ -48,14 +46,12 @@ if __name__ == "__main__":
     else:
         data_type = 'no_extreme'
 
-    images_train, annotations_train, images_validation, annotations_validation = process_dataset(path_to_data, type_image, data_type)
+    images_train, annotations_train, images_validation, annotations_validation = process_dataset(path_to_data, type_image, data_type, img_shape)
 
     timestr = time.strftime("%Y%m%d-%H%M%S")
     print(timestr)
-    #img_shape = (50, 100, 3)
     print(images_train.shape)
     print(annotations_train.shape)
-
     print(images_validation.shape)
     print(annotations_validation.shape)
 

@@ -1,10 +1,10 @@
 import torch
 import torch.nn as nn
 from utils.convlstm import ConvLSTM
-from torchsummary import summary # only for debugging
+# from torchsummary import summary # only for debugging
 
 class DeepestLSTMTinyPilotNet(nn.Module):
-    def __init__(self, image_shape, ):
+    def __init__(self, image_shape, num_labels):
         super(DeepestLSTMTinyPilotNet, self).__init__()
         self.num_channels = image_shape[2]
         self.cn_1 = nn.Conv2d(self.num_channels, 8, kernel_size=3, stride=2)
@@ -21,7 +21,7 @@ class DeepestLSTMTinyPilotNet(nn.Module):
         self.relu_fc_1 = nn.ReLU()
         self.fc_2 = nn.Linear(50, 10)
         self.relu_fc_2 = nn.ReLU()
-        self.fc_3 = nn.Linear(10, 2)
+        self.fc_3 = nn.Linear(10, num_labels)
 
     def forward(self, img):        
         out = self.cn_1(img)
@@ -47,7 +47,7 @@ class DeepestLSTMTinyPilotNet(nn.Module):
 
 if __name__ == '__main__':
     model = DeepestLSTMTinyPilotNet((100, 50, 3))
-    summary(model, (3, 100, 50))
-    # input = torch.rand((1, 3, 100, 50))
-    # out = model(input)
-    # print(out)
+    # summary(model, (3, 100, 50))
+    input = torch.rand((1, 3, 100, 50))
+    out = model(input)
+    print(out)

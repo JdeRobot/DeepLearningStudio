@@ -17,5 +17,5 @@ Models for both approaches that work for all the circuits in [BehaviorMetrics](h
 |---------------------------| ----------- |
 | PilotNet                  | [link](https://drive.google.com/file/d/15b7W1kP0utLnc1olB1PD3-7Gll7nXgSy/view?usp=sharing)        |
 | Deepest LSTM TinyPilotNet | [link](https://drive.google.com/file/d/1M_nW37aPXUzbiG1Y2rw6DA0AOR64wbnD/view?usp=sharing)       |
-| Frankenstein              | [link](https://drive.google.com/file/d/1CqMFzYPGeddV40c9xGdtbhbvps0ggTUI/view?usp=sharing)       |
+| Frankenstein              | [link](https://drive.google.com/file/d/1v8zN6TNOnJKUuyKq9S7fF7pf4pGTfraa/view?usp=sharing)       |
 

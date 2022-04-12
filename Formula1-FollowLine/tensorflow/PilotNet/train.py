@@ -6,8 +6,6 @@ import h5py
 
 import numpy as np
 
-from sklearn.model_selection import train_test_split
-from matplotlib import pyplot as plt
 from utils.dataset import get_augmentations, DatasetSequence
 from utils.processing import read_dataset
 from utils.pilotnet import pilotnet_model

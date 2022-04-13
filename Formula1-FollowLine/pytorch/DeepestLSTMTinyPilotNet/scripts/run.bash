@@ -9,8 +9,8 @@ python train.py --data_dir '../datasets' \
 	    --data_augs 'affine' \
 	    --num_epochs 150 \
 	    --lr 1e-4 \
-	    --batch_size 64 \
-	    --save_iter 10 \
+	    --batch_size 128 \
+	    --save_iter 50 \
 	    --print_terminal True \
         --img_shape "100,50,3" \
 	    --seed 123  

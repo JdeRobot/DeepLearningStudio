@@ -1,4 +1,3 @@
-from regex import B
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -86,22 +85,6 @@ if __name__=="__main__":
     # Dataloaders
     train_loader = DataLoader(train_set, batch_size=batch_size)
     valid_loader = DataLoader(valid_set, batch_sampler=batch_size)
-
-    # # Creating data indices for training and test splits:
-    # dataset_size = len(dataset)
-    # indices = list(range(dataset_size))
-    # split = int(np.floor(test_split * dataset_size))
-    # if shuffle_dataset :
-    #     np.random.seed(random_seed)
-    #     np.random.shuffle(indices)
-    # train_indices, test_split = indices[split:], indices[:split]
-
-    # # Creating PT data samplers and loaders:
-    # train_sampler = SubsetRandomSampler(train_indices)
-    # test_sampler = SubsetRandomSampler(test_split)
-
-    # train_loader = DataLoader(dataset, batch_size=batch_size, sampler=train_sampler)
-    # test_loader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
 
     # Load Model
     DLTNetModel = DeepestLSTMTinyPilotNet(train_set.image_shape, train_set.num_labels).to(device)

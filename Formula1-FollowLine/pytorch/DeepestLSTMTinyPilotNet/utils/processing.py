@@ -2,40 +2,22 @@ import glob
 import os
 import cv2
 import random
-import tqdm
+from tqdm import tqdm
 import numpy as np
 
 from sklearn.model_selection import train_test_split
 from matplotlib import pyplot as plt
 
 
-# def load_data(folder):
-#     name_folder = folder + '/Images/'
-#     list_images = glob.glob(name_folder + '*')
-#     images = sorted(list_images, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
-#     name_file = folder + '/data.json'
-#     file = open(name_file, 'r')
-#     data = file.read()
-#     file.close()
-#     return images, labels
-
-
-def get_images(list_images, type_image, array_imgs):
+def get_images(list_images, type_image, img_shape):
     # Read the images
-    for name in tqdm(list_images):
+    array_imgs = []
+    for name in list_images:
         img = cv2.imread(name)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         if type_image == 'cropped':
             img = img[240:480, 0:640]
-            # img = cv2.resize(img, (int(img.shape[1] / 4), int(img.shape[0] / 4)))
-            img = cv2.resize(img, (int(200), int(66)))
-        else:
-            target_height = int(66)
-            target_width = int(target_height * img.shape[1]/img.shape[0])
-            img_resized = cv2.resize(img, (target_width, target_height))
-            padding_left = int((200 - target_width)/2)
-            padding_right = 200 - target_width - padding_left
-            img = cv2.copyMakeBorder(img_resized.copy(),0,0,padding_left,padding_right,cv2.BORDER_CONSTANT,value=[0, 0, 0])
+        img = cv2.resize(img, (img_shape[1], img_shape[0]))
         array_imgs.append(img)
 
     return array_imgs
@@ -57,7 +39,6 @@ def parse_json(data):
         array.append((float(v), float(w)))
     return array
 
-# Additional
 def flip_images(images, array_annotations):
     flipped_images = []
     flipped_annotations = []
@@ -69,7 +50,6 @@ def flip_images(images, array_annotations):
     array_annotations += flipped_annotations
     return images, array_annotations
 
-# New for pytorch
 def check_path(path):
     if not os.path.exists(path):
         print(f"{path} not exist")
@@ -83,6 +63,7 @@ def normalize(x):
 
 def get_images_and_annotations(path_to_data, type_image, img_shape):
     print('---- Complete ----')
+    path_to_data = path_to_data[0] 
     complete_name_file = path_to_data + 'complete_dataset/data.json'
     complete_file = open(complete_name_file, 'r')
     data_complete = complete_file.read()
@@ -90,7 +71,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     DIR_complete_images = path_to_data + 'complete_dataset/Images/'
     list_images_complete = glob.glob(DIR_complete_images + '*')
-    images_paths_complete = sorted(list_images_complete, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    images_paths_complete = sorted(list_images_complete, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
     array_annotations_complete = parse_json(data_complete)
 
     images_complete = get_images(images_paths_complete, type_image, img_shape)
@@ -133,7 +114,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     DIR_curves_images = path_to_data + 'curves_only/Images/'
     list_images_curves = glob.glob(DIR_curves_images + '*')
-    images_paths_curves = sorted(list_images_curves, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    images_paths_curves = sorted(list_images_curves, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
     array_annotations_curves = parse_json(data_curves)
 
     images_curves = get_images(images_paths_curves, type_image, img_shape)

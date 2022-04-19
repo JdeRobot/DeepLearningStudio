@@ -13,9 +13,10 @@ Models for both approaches that work for all the circuits in [BehaviorMetrics](h
 
 ## OpenCV (Explicit 2) dataset
 
-| Model                     | Download link |
-|---------------------------| ----------- |
-| PilotNet                  | [link](https://drive.google.com/file/d/15b7W1kP0utLnc1olB1PD3-7Gll7nXgSy/view?usp=sharing)        |
-| Deepest LSTM TinyPilotNet | [link](https://drive.google.com/file/d/1M_nW37aPXUzbiG1Y2rw6DA0AOR64wbnD/view?usp=sharing)       |
-| Frankenstein              | [link](https://drive.google.com/file/d/1v8zN6TNOnJKUuyKq9S7fF7pf4pGTfraa/view?usp=sharing)       |
+| Model                     | Memory | Download link |
+|---------------------------| -----------| ----------- |
+| PilotNet                  |NO | [link](https://drive.google.com/file/d/15b7W1kP0utLnc1olB1PD3-7Gll7nXgSy/view?usp=sharing)        |
+| Deepest LSTM TinyPilotNet | NO | [link](https://drive.google.com/file/d/1M_nW37aPXUzbiG1Y2rw6DA0AOR64wbnD/view?usp=sharing)       |
+| DeepestConvLSTMConv3DPilotnet     | YES x3 | [link](https://drive.google.com/file/d/1v8zN6TNOnJKUuyKq9S7fF7pf4pGTfraa/view?usp=sharing)       |
+| PilotNetx3          | YES x3| [link](https://drive.google.com/file/d/1MsJEpxOQA7nEVejJBnSAoLr8R3oOkrJm/view?usp=sharing)       |
 

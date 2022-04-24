@@ -50,7 +50,7 @@ For DeepPilot, we use our custom datasets:
 
 ```bash
 source ~/pyenvs/dlstudio/bin/activate
-cd DL_studio/Drone-FollowLine/
+cd DeepLearningStudio/Drone-FollowLine/
 
 # For PilotNet
 

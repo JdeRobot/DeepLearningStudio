@@ -84,7 +84,7 @@ if __name__=="__main__":
 
     # Dataloaders
     train_loader = DataLoader(train_set, batch_size=batch_size)
-    valid_loader = DataLoader(valid_set, batch_sampler=batch_size)
+    valid_loader = DataLoader(valid_set, batch_size=batch_size)
 
     # Load Model
     DLTNetModel = DeepestLSTMTinyPilotNet(train_set.image_shape, train_set.num_labels).to(device)

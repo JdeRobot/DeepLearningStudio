@@ -6,9 +6,25 @@ The algorithms are modular and can adapt to various other datasets. They are bot
 
 ## Preparing Dataset 
 
-For PilotNet, we use our custom datasets:
+The dataset for training is available in the following [link]()
+
+It's generated from running a explicitly programmed brain over different circuits. It's divided as follows:
+
+
+
 - Complete dataset: contains images with annotations from different circuits [https://drive.google.com/file/d/1Xdiu69DLj7lKK37F94qrUWsXkVg4ymGv/view?usp=sharing](https://drive.google.com/file/d/1Xdiu69DLj7lKK37F94qrUWsXkVg4ymGv/view?usp=sharing)
 - Curves dataset: contains images with annotations from many_curves circuit: [https://drive.google.com/file/d/1zCJPFJRqCa34Q6jvktjDBY8Z49bIbvLJ/view?usp=sharing](https://drive.google.com/file/d/1zCJPFJRqCa34Q6jvktjDBY8Z49bIbvLJ/view?usp=sharing)
+
+
+# Pytorch <img src="https://pytorch.org/assets/images/pytorch-logo.png" alt="Pytorch logo" width="50"/> 
+
+The models implemented are derived from:
+1. PilotNet for Autonomous Driving with Behaviour Metrics dataset
+2. PilotNetStacked as an extension of PilotNet with stacked images
+
+## Preparing Dataset
+
+Extract the dataset and place it on the following fashion:
 
 ```
     PilotNet                                # Extract PilotNet dataset here
@@ -19,14 +35,6 @@ For PilotNet, we use our custom datasets:
         ├── Images/                         # Train and Test Images
         └── data.json                       # Annotations
 ```
-
-
-# Pytorch <img src="https://pytorch.org/assets/images/pytorch-logo.png" alt="Pytorch logo" width="50"/> 
-
-The models implemented are derived from:
-1. PilotNet for Autonomous Driving with Behaviour Metrics dataset
-2. PilotNetStacked as an extension of PilotNet with stacked images
-
 
 ## Hyperparameters for the code
 

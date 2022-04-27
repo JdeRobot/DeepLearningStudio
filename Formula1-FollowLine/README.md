@@ -37,6 +37,7 @@ The model weights avaiable here only used the following part of the whole datase
 | Extended simple circuit      | Clockwise       |
 | Many curves      | Clockwise       |
 | Nurburgring      | Clockwise       |
+| Monaco      | Clockwise       |
 | Only curves      | Recorded curves from different circuits       |
 | Difficult situations 1-2     | Recorded difficult situations from different circuits       |
 

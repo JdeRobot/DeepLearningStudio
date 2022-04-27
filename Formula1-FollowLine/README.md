@@ -2,13 +2,7 @@
 
 It contains some deep learning regression models for Formula1 Line Following task.
 
-The models implemented are derived from:
-1. PilotNet for Autonomous Driving with Behaviour Metrics dataset
-2. PilotNetStacked as an extension of PilotNet with stacked images
-
 The algorithms are modular and can adapt to various other datasets. They are both implemented in pytorch and tensorflow.
-
-# Pytorch <img src="https://pytorch.org/assets/images/pytorch-logo.png" alt="Pytorch logo" width="50"/> 
 
 ## Preparing Dataset 
 
@@ -25,6 +19,14 @@ For PilotNet, we use our custom datasets:
         ├── Images/                         # Train and Test Images
         └── data.json                       # Annotations
 ```
+
+
+# Pytorch <img src="https://pytorch.org/assets/images/pytorch-logo.png" alt="Pytorch logo" width="50"/> 
+
+The models implemented are derived from:
+1. PilotNet for Autonomous Driving with Behaviour Metrics dataset
+2. PilotNetStacked as an extension of PilotNet with stacked images
+
 
 ## Hyperparameters for the code
 

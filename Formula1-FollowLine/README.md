@@ -8,9 +8,37 @@ The algorithms are modular and can adapt to various other datasets. They are bot
 
 The dataset for training is available in the following [link]()
 
-It's generated from running a explicitly programmed brain over different circuits. It's divided as follows:
+It's generated from running an explicitly programmed brain over different circuits. It's divided as follows:
 
 
+| Circuit      | Direction | Number of images-annotations |
+| ----------- | ----------- | ----------- |
+| Simple circuit      | Clockwise       | 2190       |
+| Simple circuit   | Anticlockwise        | 2432      |
+| Many curves      | Clockwise       | 4653       |
+| Many curves  | Anticlockwise        | 5165       |
+| Extended simple circuit      | Clockwise       | 3590       |
+| Extended simple circuit  | Anticlockwise        | 3509       |
+| Monaco      | Clockwise       | 5603	|
+| Monaco  | Anticlockwise        | 5206       |
+| Nurburgring      | Clockwise       | 3808	|
+| Nurburgring  | Anticlockwise        | 4045      |
+| Only curves      | Recorded curves from different circuits       | 3008	|
+| Difficult situations 1-2     | Recorded difficult situations from different circuits       | 4292	|
+| Montmeló      | Clockwise       | 10507	|
+| **TOTAL**      | -       | **92280** |
+
+
+The model weights avaiable here only used the following part of the whole dataset for training/validation:
+
+
+| Circuit      | Direction |
+| ----------- | ----------- |
+| Extended simple circuit      | Clockwise       |
+| Many curves      | Clockwise       |
+| Nurburgring      | Clockwise       |
+| Only curves      | Recorded curves from different circuits       |
+| Difficult situations 1-2     | Recorded difficult situations from different circuits       |
 
 - Complete dataset: contains images with annotations from different circuits [https://drive.google.com/file/d/1Xdiu69DLj7lKK37F94qrUWsXkVg4ymGv/view?usp=sharing](https://drive.google.com/file/d/1Xdiu69DLj7lKK37F94qrUWsXkVg4ymGv/view?usp=sharing)
 - Curves dataset: contains images with annotations from many_curves circuit: [https://drive.google.com/file/d/1zCJPFJRqCa34Q6jvktjDBY8Z49bIbvLJ/view?usp=sharing](https://drive.google.com/file/d/1zCJPFJRqCa34Q6jvktjDBY8Z49bIbvLJ/view?usp=sharing)

@@ -1,12 +1,12 @@
 # Formula1 Followline Algorithms: Implementation and Baseline
 
-It contains some deep learning regression models for Formula1 Line Following task.
+Here you will find some deep learning regression models for following a line using a Formula 1 car.
 
-The algorithms are modular and can adapt to various other datasets. They are both implemented in pytorch and tensorflow.
+The algorithms are modular and can adapt to other datasets. They are both implemented in pytorch and tensorflow.
 
 ## Preparing Dataset 
 
-The dataset for training is available in the following [link]()
+The dataset for training is available in the following [link](https://drive.google.com/file/d/1EL2Pzzdoj7jLRRi9DXNDVCwZZ0zGGu7H/view?usp=sharing).
 
 It's generated from running an explicitly programmed brain over different circuits. It's divided as follows:
 
@@ -39,9 +39,6 @@ The model weights avaiable here only used the following part of the whole datase
 | Nurburgring      | Clockwise       |
 | Only curves      | Recorded curves from different circuits       |
 | Difficult situations 1-2     | Recorded difficult situations from different circuits       |
-
-- Complete dataset: contains images with annotations from different circuits [https://drive.google.com/file/d/1Xdiu69DLj7lKK37F94qrUWsXkVg4ymGv/view?usp=sharing](https://drive.google.com/file/d/1Xdiu69DLj7lKK37F94qrUWsXkVg4ymGv/view?usp=sharing)
-- Curves dataset: contains images with annotations from many_curves circuit: [https://drive.google.com/file/d/1zCJPFJRqCa34Q6jvktjDBY8Z49bIbvLJ/view?usp=sharing](https://drive.google.com/file/d/1zCJPFJRqCa34Q6jvktjDBY8Z49bIbvLJ/view?usp=sharing)
 
 
 # Pytorch <img src="https://pytorch.org/assets/images/pytorch-logo.png" alt="Pytorch logo" width="50"/> 

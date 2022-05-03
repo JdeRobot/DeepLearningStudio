@@ -42,6 +42,14 @@ The model weights avaiable here only used the following part of the whole datase
 | Difficult situations 1-2     | Recorded difficult situations from different circuits       |
 
 
+The dataset v and W values range is:
+
+| V min | V max | W min | W min |
+| ----------- | ----------- |----------- |----------- |
+| 6.5 |  24 | -7.1 | 7.1 |
+
+OpenCV(fastest)	6.5	24	-7.1	7.1
+
 # Pytorch <img src="https://pytorch.org/assets/images/pytorch-logo.png" alt="Pytorch logo" width="50"/> 
 
 The models implemented are derived from:

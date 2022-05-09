@@ -48,7 +48,6 @@ The dataset v and W values range is:
 | ----------- | ----------- |----------- |----------- |
 | 6.5 |  24 | -7.1 | 7.1 |
 
-OpenCV(fastest)	6.5	24	-7.1	7.1
 
 # Pytorch <img src="https://pytorch.org/assets/images/pytorch-logo.png" alt="Pytorch logo" width="50"/> 
 

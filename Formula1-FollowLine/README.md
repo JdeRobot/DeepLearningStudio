@@ -6,7 +6,9 @@ The algorithms are modular and can adapt to other datasets. They are both implem
 
 ## Preparing Dataset 
 
-The dataset for training is available in the following [link](https://drive.google.com/file/d/1EL2Pzzdoj7jLRRi9DXNDVCwZZ0zGGu7H/view?usp=sharing).
+Two possible datasets:
+* The dataset for training is available in the following [link](https://drive.google.com/file/d/1EL2Pzzdoj7jLRRi9DXNDVCwZZ0zGGu7H/view?usp=sharing).
+* The **10fps** dataset for training is available in the following [link](https://drive.google.com/file/d/1NxSsbpUqlRisMFSVtIiVZV-QSck3ohKU/view?usp=sharing). It includes timestamp for each sample.
 
 It's generated from running an explicitly programmed brain over different circuits. It's divided as follows:
 

@@ -26,15 +26,9 @@ class PilotNetDataset(Dataset):
             type_image = 'cropped'
             data_type = None
         
-        # collect all directories with image and data
-        path_to_data = glob.glob(path_to_data[0] + '**/data.csv', recursive = True)
-        # path_to_data = list(Path(path_to_data[0]).rglob('*/data.csv'))
-        path_to_data = list(map(lambda path: "/".join(path.split("/")[:-1]), path_to_data)) # crop to only folder name
-
-        for path in path_to_data[3:6]: ### TODO: remove this
+        for path in path_to_data: 
             all_images, all_data = load_data(path)
             self.images = get_images(all_images, type_image, self.images)        
-            # self.labels = parse_json(all_data, self.labels)
             self.labels = parse_csv(all_data, self.labels)
 
         self.labels, self.images = preprocess_data(self.labels, self.images, data_type)

@@ -71,6 +71,8 @@ Extract the dataset and place it on the following fashion:
         └── data.json                       # Annotations
 ```
 
+For new dataset, place it inside `/pytorch` directory.
+
 ## Hyperparameters for the code
 
 ```
@@ -106,8 +108,8 @@ cd DeepLearningStudio/Formula1-FollowLine/pytorch
 # For PilotNet
 
 cd PilotNet
-python train.py --data_dir '../datasets/complete_dataset' \
-	    --data_dir '../datasets/curves_only' \
+python train.py --data_dir '../dataset_opencv' \
+	    # --data_dir '../datasets/curves_only' \
 		--preprocess 'crop' \
 		--preprocess 'extreme' \
 	    --base_dir testcase \
@@ -127,7 +129,6 @@ python train.py --data_dir '../datasets/complete_dataset' \
 
 cd PilotNetStacked
 python train.py --data_dir '../datasets/complete_dataset' \
-		--data_dir '../datasets/curves_only' \
 		--preprocess 'crop' \
 		--preprocess 'extreme' \
 		--base_dir testcase \

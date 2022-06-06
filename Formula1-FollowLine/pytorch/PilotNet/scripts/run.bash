@@ -1,7 +1,6 @@
 #!/bin/bash
 
-python train.py --data_dir '../datasets/complete_dataset' \
-	--data_dir '../datasets/curves_only' \
+python train.py --data_dir '../datasets_opencv/' \
 	--preprocess 'crop' \
 	--preprocess 'extreme' \
 	--base_dir testcase \
@@ -15,3 +14,4 @@ python train.py --data_dir '../datasets/complete_dataset' \
 	--save_iter 50 \
 	--print_terminal True \
 	--seed 123
+	# --data_dir '../datasets/curves_only' \

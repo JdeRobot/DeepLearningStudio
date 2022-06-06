@@ -3,15 +3,19 @@ import glob
 import numpy as np
 import cv2
 from tqdm import tqdm
+import csv
 
 
 def load_data(folder):
-    name_folder = folder + '/Images/'
-    list_images = glob.glob(name_folder + '*')
+    name_folder = folder + '/' #+ '/Images/'
+    list_images = glob.glob(name_folder + '*.png')
     images = sorted(list_images, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
-    name_file = folder + '/data.json'
+    name_file = folder + '/data.csv' #'/data.json'
     file = open(name_file, 'r')
-    data = file.read()
+    reader = csv.DictReader(file)
+    data = []
+    for row in reader: # reading all values
+        data.append((row['v'], row['w']))
     file.close()
     return images, data
 
@@ -42,6 +46,13 @@ def parse_json(data, array):
         v = d.split('"v": ')[1]
         d_parse = d.split(', "v":')[0]
         w = d_parse.split(('"w": '))[1]
+        array.append((float(v), float(w)))
+
+    return array
+
+def parse_csv(data, array):
+    # Process csv
+    for v,w in data:
         array.append((float(v), float(w)))
 
     return array

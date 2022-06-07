@@ -49,18 +49,30 @@ This repository contains the deep learning regression and classification models 
 
 ## Setting up this branch
 
-Best to setup a virtual environment with python 3.6
+First, install Python 3.10
+
+```
+sudo apt install software-properties-common -y
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt install python3.10
+sudo apt install python3.10-venv
+sudo apt install python3.10-dev
+sudo apt install python3.10-minimal
+sudo apt install python3.10-distutils
+```
+
+Next, it is best to setup a virtual environment with python 3.10
 
 ```
 cd ~ && mkdir pyenvs && cd pyenvs
-python3 -m pip install virtualenv
-virtualenv dlstudio --python=python3
+python3.10 -m venv dlstudio
+source ~/pyenvs/dlstudio/bin/activate
+python3 -m pip install -U pip
 
 cd ~
 git clone https://github.com/JdeRobot/DeepLearningStudio DeepLearningStudio
 cd DeepLearningStudio
-source ~/pyenvs/dlstudio/bin/activate
-python3 -m pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ## References

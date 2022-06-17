@@ -7,17 +7,18 @@ import h5py
 import numpy as np
 
 from utils.dataset import get_augmentations, DatasetSequence
-from utils.processing import read_dataset
+from utils.processing import process_dataset
 from utils.pilotnet import pilotnet_model
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard, CSVLogger
 from tensorflow.python.keras.saving import hdf5_format
-    
+
 
 def parse_args():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--data_dir", action='append', help="Directory to find Data")
-    parser.add_argument("--preprocess", action='append', default=None, help="preprocessing information: choose from crop/nocrop and normal/extreme")
+    parser.add_argument("--preprocess", action='append', default=None,
+                        help="preprocessing information: choose from crop/nocrop and normal/extreme")
     parser.add_argument("--base_dir", type=str, default='exp_random', help="Directory to save everything")
     parser.add_argument("--data_augs", action='append', type=bool, default=None, help="Data Augmentations")
     parser.add_argument("--num_epochs", type=int, default=100, help="Number of Epochs")
@@ -29,7 +30,7 @@ def parse_args():
     return args
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
 
     args = parse_args()
     path_to_data = args.data_dir[0]
@@ -37,20 +38,21 @@ if __name__=="__main__":
     data_augs = args.data_augs
     num_epochs = args.num_epochs
     batch_size = args.batch_size
-    learning_rate = args.learning_rate               
+    learning_rate = args.learning_rate
     img_shape = tuple(map(int, args.img_shape.split(',')))
 
     if 'no_crop' in preprocess:
         type_image = 'no_crop'
     else:
         type_image = 'crop'
-    
+
     if 'extreme' in preprocess:
         data_type = 'extreme'
     else:
         data_type = 'no_extreme'
 
-    images_train, array_annotations_train, images_val, array_annotations_val = read_dataset(path_to_data, type_image, img_shape, data_type)
+    images_train, array_annotations_train, images_val, array_annotations_val = process_dataset(path_to_data, type_image,
+                                                                                               data_type, img_shape)
 
     # Train
     timestr = time.strftime("%Y%m%d-%H%M%S")
@@ -58,7 +60,7 @@ if __name__=="__main__":
 
     hparams = {
         'batch_size': batch_size,
-        'n_epochs': num_epochs, 
+        'n_epochs': num_epochs,
         'checkpoint_dir': '../logs_test/'
     }
 
@@ -72,15 +74,17 @@ if __name__=="__main__":
     AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST = get_augmentations(data_augs)
 
     # Training data
-    train_gen = DatasetSequence(images_train, array_annotations_train, hparams['batch_size'], augmentations=AUGMENTATIONS_TRAIN)
+    train_gen = DatasetSequence(images_train, array_annotations_train, hparams['batch_size'],
+                                augmentations=AUGMENTATIONS_TRAIN)
 
     # Validation data
-    valid_gen = DatasetSequence(images_val, array_annotations_val, hparams['batch_size'], augmentations=AUGMENTATIONS_TEST)
+    valid_gen = DatasetSequence(images_val, array_annotations_val, hparams['batch_size'],
+                                augmentations=AUGMENTATIONS_TEST)
 
     # Define callbacks
     log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
-    earlystopping=EarlyStopping(monitor="mae", patience=30, verbose=1, mode='auto')
+    earlystopping = EarlyStopping(monitor="mae", patience=30, verbose=1, mode='auto')
     checkpoint_path = model_filename + '_cp.h5'
     cp_callback = ModelCheckpoint(filepath=checkpoint_path, monitor='mse', save_best_only=True, verbose=1)
     csv_logger = CSVLogger(model_filename + '.csv', append=True)
@@ -96,7 +100,7 @@ if __name__=="__main__":
         epochs=hparams['n_epochs'],
         verbose=2,
         validation_data=valid_gen,
-        #workers=2, use_multiprocessing=False,
+        # workers=2, use_multiprocessing=False,
         callbacks=[tensorboard_callback, earlystopping, cp_callback, csv_logger])
 
     # Save model

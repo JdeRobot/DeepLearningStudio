@@ -39,11 +39,6 @@ def get_augmentations(data_augs):
             RandomGamma(),
             GaussianBlur(),
             GaussNoise(),
-            #
-            #ColorJitter(),
-            #Equalize(),
-            #ChannelShuffle(),
-            #
             Normalize()
         ])
     else:

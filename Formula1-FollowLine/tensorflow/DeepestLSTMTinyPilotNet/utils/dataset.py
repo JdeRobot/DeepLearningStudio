@@ -46,11 +46,6 @@ class DatasetSequence(Sequence):
 
 
 def get_augmentations(data_augs):
-    print('----DATA AUGMENTATIONS -----')
-    print('----DATA AUGMENTATIONS -----')
-    print(data_augs)
-    print('----DATA AUGMENTATIONS -----')
-    print('----DATA AUGMENTATIONS -----')
     if data_augs:
         AUGMENTATIONS_TRAIN = ReplayCompose([
             RandomBrightnessContrast(),
@@ -58,12 +53,6 @@ def get_augmentations(data_augs):
             FancyPCA(),
             RandomGamma(),
             GaussianBlur(),
-            # GaussNoise(),
-            #
-            # ColorJitter(),
-            # Equalize(),
-            # ChannelShuffle(),
-            #
             Normalize()
         ])
     else:

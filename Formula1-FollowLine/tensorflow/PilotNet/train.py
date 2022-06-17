@@ -19,11 +19,9 @@ def parse_args():
     parser.add_argument("--data_dir", action='append', help="Directory to find Data")
     parser.add_argument("--preprocess", action='append', default=None,
                         help="preprocessing information: choose from crop/nocrop and normal/extreme")
-    parser.add_argument("--base_dir", type=str, default='exp_random', help="Directory to save everything")
     parser.add_argument("--data_augs", action='append', type=bool, default=None, help="Data Augmentations")
     parser.add_argument("--num_epochs", type=int, default=100, help="Number of Epochs")
     parser.add_argument("--batch_size", type=int, default=128, help="Batch size")
-    parser.add_argument("--learning_rate", type=float, default=1e-3, help="Learning rate for Policy Net")
     parser.add_argument("--img_shape", type=str, default=(200, 66, 3), help="Image shape")
 
     args = parser.parse_args()
@@ -51,7 +49,7 @@ if __name__ == "__main__":
     else:
         data_type = 'no_extreme'
 
-    images_train, array_annotations_train, images_val, array_annotations_val = process_dataset(path_to_data, type_image,
+    images_train, annotations_train, images_val, annotations_val = process_dataset(path_to_data, type_image,
                                                                                                data_type, img_shape)
 
     # Train
@@ -74,11 +72,11 @@ if __name__ == "__main__":
     AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST = get_augmentations(data_augs)
 
     # Training data
-    train_gen = DatasetSequence(images_train, array_annotations_train, hparams['batch_size'],
+    train_gen = DatasetSequence(images_train, annotations_train, hparams['batch_size'],
                                 augmentations=AUGMENTATIONS_TRAIN)
 
     # Validation data
-    valid_gen = DatasetSequence(images_val, array_annotations_val, hparams['batch_size'],
+    valid_gen = DatasetSequence(images_val, annotations_val, hparams['batch_size'],
                                 augmentations=AUGMENTATIONS_TEST)
 
     # Define callbacks
@@ -130,7 +128,7 @@ if __name__ == "__main__":
         f.attrs['data_augmentation'] = True
         f.attrs['extreme_data'] = False
         f.attrs['split_test_train'] = 0.30
-        f.attrs['instances_number'] = len(array_annotations_train)
+        f.attrs['instances_number'] = len(annotations_train)
         f.attrs['loss'] = score[0]
         f.attrs['mse'] = score[1]
         f.attrs['mae'] = score[2]

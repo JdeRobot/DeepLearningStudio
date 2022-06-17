@@ -5,8 +5,8 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras import Model
 
 
-# Frankenstein
-def frankenstein(img_shape):
+# memDCCP
+def memDCCP(img_shape):
     model = Sequential()
     model.add(BatchNormalization(epsilon=0.001, axis=-1, input_shape=img_shape))
 

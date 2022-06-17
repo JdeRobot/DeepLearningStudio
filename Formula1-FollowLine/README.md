@@ -204,8 +204,8 @@ python3 train.py --data_dir ../ \
     --img_shape 50,100,3 \
     --data_augs True
 
-# For Frankenstein
-cd Frankenstein
+# For memDCCP
+cd memDCCP
 python3 train.py --data_dir ../../../../datasets_opencv/ \
     --preprocess crop \
     --preprocess extreme \

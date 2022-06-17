@@ -8,7 +8,7 @@ import numpy as np
 
 from utils.dataset import get_augmentations, DatasetSequence
 from utils.processing import process_dataset
-from utils.frankenstein import frankenstein
+from utils.memDCCP import memDCCP
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard, CSVLogger
 from tensorflow.python.keras.saving import hdf5_format
 
@@ -66,9 +66,9 @@ if __name__ == "__main__":
 
     print(hparams)
 
-    model_name = 'frankenstein'
-    model = frankenstein(img_shape)
-    model_filename = timestr + '_frankenstein_new_dataset_opencv_10fps_anticlowise_more_extreme_cases_support_300_epochs_weather_changes'
+    model_name = 'memDCCP'
+    model = memDCCP(img_shape)
+    model_filename = timestr + '_memDCCP_new_dataset_opencv'
     model_file = model_filename + '.h5'
 
     AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST = get_augmentations(data_augs)

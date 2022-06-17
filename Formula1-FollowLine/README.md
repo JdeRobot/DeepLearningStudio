@@ -71,6 +71,8 @@ Extract the dataset and place it on the following fashion:
         └── data.json                       # Annotations
 ```
 
+For new dataset, place it inside `/pytorch` directory.
+
 ## Hyperparameters for the code
 
 ```
@@ -106,8 +108,14 @@ cd DeepLearningStudio/Formula1-FollowLine/pytorch
 # For PilotNet
 
 cd PilotNet
-python train.py --data_dir '../datasets/complete_dataset' \
-	    --data_dir '../datasets/curves_only' \
+python train.py --data_dir '../dataset_opencv/extended_simple_circuit_01_04_2022_anticlockwise_1' \
+		--data_dir '../dataset_opencv/extended_simple_circuit_01_04_2022_clockwise_1' \
+		--data_dir '../dataset_opencv/many_curves_01_04_2022_anticlockwise_1' \
+		--data_dir '../dataset_opencv/many_curves_01_04_2022_clockwise_1' \
+		--data_dir '../dataset_opencv/monaco_01_04_2022_anticlockwise_1' \
+		--data_dir '../dataset_opencv/monaco_01_04_2022_clockwise_1' \
+		--data_dir '../dataset_opencv/nurburgring_01_04_2022_anticlockwise_1' \
+		--data_dir '../dataset_opencv/nurburgring_01_04_2022_clockwise_1' \
 		--preprocess 'crop' \
 		--preprocess 'extreme' \
 	    --base_dir testcase \
@@ -127,7 +135,6 @@ python train.py --data_dir '../datasets/complete_dataset' \
 
 cd PilotNetStacked
 python train.py --data_dir '../datasets/complete_dataset' \
-		--data_dir '../datasets/curves_only' \
 		--preprocess 'crop' \
 		--preprocess 'extreme' \
 		--base_dir testcase \

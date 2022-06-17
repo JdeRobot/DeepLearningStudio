@@ -3,15 +3,19 @@ import glob
 import numpy as np
 import cv2
 from tqdm import tqdm
+import csv
 
 
 def load_data(folder):
-    name_folder = folder + '/Images/'
-    list_images = glob.glob(name_folder + '*')
+    name_folder = folder + '/' #+ '/Images/'
+    list_images = glob.glob(name_folder + '*.png')
     images = sorted(list_images, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
-    name_file = folder + '/data.json'
+    name_file = folder + '/data.csv' #'/data.json'
     file = open(name_file, 'r')
-    data = file.read()
+    reader = csv.DictReader(file)
+    data = []
+    for row in reader: # reading all values
+        data.append((row['v'], row['w']))
     file.close()
     return images, data
 
@@ -46,6 +50,13 @@ def parse_json(data, array):
 
     return array
 
+def parse_csv(data, array):
+    # Process csv
+    for v, w in data:
+        array.append((float(v), float(w)))
+
+    return array
+
 def preprocess_data(array, imgs, data_type):
     # Data augmentation
     # Take the image and just flip it and negate the measurement
@@ -74,11 +85,36 @@ def preprocess_data(array, imgs, data_type):
         new_array += extreme_case_1_array*5 + extreme_case_2_array*10
         new_array_imgs += extreme_case_1_img*5 + extreme_case_2_img*10
 
+    new_array = normalize_annotations(new_array)
+
     return new_array, new_array_imgs
 
-def normalize(x):
+def normalize_annotations(array_annotations):
+    array_annotations_v = []
+    array_annotations_w = []
+    for annotation in array_annotations:
+        array_annotations_v.append(annotation[0])
+        array_annotations_w.append(annotation[1])
+        
+    # START NORMALIZE DATA
+    array_annotations_v = np.stack(array_annotations_v, axis=0)
+    array_annotations_v = array_annotations_v.reshape(-1, 1)
+
+    array_annotations_w = np.stack(array_annotations_w, axis=0)
+    array_annotations_w = array_annotations_w.reshape(-1, 1)
+
+    normalized_X = normalize(array_annotations_v, min=6.5, max=24)
+    normalized_Y = normalize(array_annotations_w, min=-7.1, max=7.1)
+
+    normalized_annotations = []
+    for i in range(0, len(normalized_X)):
+        normalized_annotations.append([normalized_X.item(i), normalized_Y.item(i)])
+
+    return normalized_annotations
+
+def normalize(x, min, max):
     x = np.asarray(x)
-    return (x - x.min()) / (np.ptp(x))
+    return (x - min) / (max - min)
 
 def check_path(path):
     if not os.path.exists(path):

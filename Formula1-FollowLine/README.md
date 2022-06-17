@@ -190,18 +190,37 @@ python train.py --data_dir ../complete_dataset/ \
 	--data_augs True \
 	--num_epochs 1 \
 	--batch_size 50 \
-	--learning_rate 0.0001 \
 	--img_shape "200,66,3"
 	
 	
 # For DeepestLSTMTinyPilotNet
+cd DeepestLSTMTinyPilotNet
 python3 train.py --data_dir ../ \
     --preprocess crop \
     --preprocess extreme \
     --num_epochs 300 \
     --batch_size 50 \
-    --img_shape 50,100,3 \
     --data_augs True
+
+# For memDCCP
+cd memDCCP
+python3 train.py --data_dir ../../../../datasets_opencv/ \
+    --preprocess crop \
+    --preprocess extreme \
+    --data_augs True \
+    --num_epochs 1 \
+    --batch_size 50 \
+    --img_shape "3,100,50,3"
+    
+# For PilotNetx3
+cd PilotNetx3
+python3 train.py --data_dir ../../../../datasets_opencv/ \
+    --preprocess crop \
+    --preprocess extreme \
+    --data_augs True \
+    --num_epochs 1 \
+    --batch_size 50 \
+    --img_shape "3,100,50,3"
 
 ```
 

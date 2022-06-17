@@ -15,11 +15,9 @@ def parse_args():
 
     parser.add_argument("--data_dir", action='append', help="Directory to find dataset")
     parser.add_argument("--preprocess", action='append', default=None, help="preprocessing information: choose from crop/nocrop and normal/extreme")
-    # parser.add_argument("--base_dir", type=str, default='exp_random', help="Directory to save everything")
     parser.add_argument("--data_augs", action='append', type=bool, default=None, help="Data Augmentations True/False")
     parser.add_argument("--num_epochs", type=int, default=100, help="Number of epochs")
     parser.add_argument("--batch_size", type=int, default=128, help="Batch size")
-    # parser.add_argument("--learning_rate", type=float, default=1e-3, help="Learning rate for model training")
     parser.add_argument("--img_shape", type=str, default=(200, 66, 3), help="Image shape")
 
     args = parser.parse_args()
@@ -33,7 +31,6 @@ if __name__ == "__main__":
     data_augs = args.data_augs
     num_epochs = args.num_epochs
     batch_size = args.batch_size
-    # learning_rate = args.learning_rate
     img_shape = tuple(map(int, args.img_shape.split(',')))
 
     if 'no_crop' in preprocess:
@@ -118,7 +115,7 @@ if __name__ == "__main__":
         hdf5_format.save_model_to_hdf5(model, f)
         f.attrs['experiment_name'] = ''
         f.attrs['experiment_description'] = ''
-        f.attrs['batch_size'] = hparams['train_batch_size']
+        f.attrs['batch_size'] = hparams['batch_size']
         f.attrs['nb_epoch'] = hparams['n_epochs']
         f.attrs['model'] = model_name
         f.attrs['img_shape'] = img_shape
@@ -128,7 +125,7 @@ if __name__ == "__main__":
         f.attrs['data_augmentation'] = True
         f.attrs['extreme_data'] = False
         f.attrs['split_test_train'] = 0.30
-        f.attrs['instances_number'] = len(array_annotations_train)
+        f.attrs['instances_number'] = len(annotations_train)
         f.attrs['loss'] = score[0]
         f.attrs['mse'] = score[1]
         f.attrs['mae'] = score[2]

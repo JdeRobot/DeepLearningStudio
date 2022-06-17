@@ -8,7 +8,7 @@ import numpy as np
 
 from utils.dataset import get_augmentations, DatasetSequence
 from utils.processing import process_dataset
-from utils.pilotnet import pilotnet_model
+from utils.pilotnet_x3 import pilotnet_x3
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard, CSVLogger
 from tensorflow.python.keras.saving import hdf5_format
 
@@ -36,7 +36,6 @@ if __name__ == "__main__":
     data_augs = args.data_augs
     num_epochs = args.num_epochs
     batch_size = args.batch_size
-    learning_rate = args.learning_rate
     img_shape = tuple(map(int, args.img_shape.split(',')))
 
     if 'no_crop' in preprocess:
@@ -49,7 +48,7 @@ if __name__ == "__main__":
     else:
         data_type = 'no_extreme'
 
-    images_train, annotations_train, images_val, annotations_val = process_dataset(path_to_data, type_image,
+    images_train, array_annotations_train, images_val, array_annotations_val = process_dataset(path_to_data, type_image,
                                                                                                data_type, img_shape)
 
     # Train
@@ -64,27 +63,28 @@ if __name__ == "__main__":
 
     print(hparams)
 
-    model_name = 'pilotnet_model'
-    model = pilotnet_model(img_shape, learning_rate)
-    model_filename = timestr + '_pilotnet_model_100_all_n_extreme_3_albumentations_no_crop'
+    model_name = 'pilotnet_x3'
+    model = pilotnet_x3(img_shape)
+    model_filename = timestr + '_pilotnet_x3_new_dataset_opencv_10fps_anticlowise_more_extreme_cases_support_300_epochs'
     model_file = model_filename + '.h5'
 
     AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST = get_augmentations(data_augs)
 
     # Training data
-    train_gen = DatasetSequence(images_train, annotations_train, hparams['batch_size'],
+    train_gen = DatasetSequence(images_train, array_annotations_train, hparams['batch_size'],
                                 augmentations=AUGMENTATIONS_TRAIN)
 
     # Validation data
-    valid_gen = DatasetSequence(images_val, annotations_val, hparams['batch_size'],
+    valid_gen = DatasetSequence(images_val, array_annotations_val, hparams['batch_size'],
                                 augmentations=AUGMENTATIONS_TEST)
 
     # Define callbacks
     log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
     earlystopping = EarlyStopping(monitor="mae", patience=30, verbose=1, mode='auto')
+    # Create a callback that saves the model's weights
     checkpoint_path = model_filename + '_cp.h5'
-    cp_callback = ModelCheckpoint(filepath=checkpoint_path, monitor='mse', save_best_only=True, verbose=1)
+    cp_callback = ModelCheckpoint(filepath=checkpoint_path, monitor='val_loss', save_best_only=True, verbose=1)
     csv_logger = CSVLogger(model_filename + '.csv', append=True)
 
     # Print layers
@@ -128,7 +128,7 @@ if __name__ == "__main__":
         f.attrs['data_augmentation'] = True
         f.attrs['extreme_data'] = False
         f.attrs['split_test_train'] = 0.30
-        f.attrs['instances_number'] = len(annotations_train)
+        f.attrs['instances_number'] = len(array_annotations_train)
         f.attrs['loss'] = score[0]
         f.attrs['mse'] = score[1]
         f.attrs['mae'] = score[2]

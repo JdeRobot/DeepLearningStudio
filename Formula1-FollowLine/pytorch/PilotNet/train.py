@@ -16,6 +16,7 @@ from PIL import Image
 
 import json
 import numpy as np
+from copy import deepcopy
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -111,8 +112,12 @@ if __name__=="__main__":
     total_step = len(train_loader)
     loss_list = []
     acc_list = []
+    val_acc = -1
     global_iter = 0
+
     for epoch in range(last_epoch, num_epochs):
+        pilotModel.train()
+
         for i, (images, labels) in enumerate(train_loader):
             
             images = FLOAT(images).to(device)
@@ -149,7 +154,30 @@ if __name__=="__main__":
         with open(model_save_dir+'/args.json', 'w') as fp:
             json.dump({'last_epoch': epoch}, fp)
 
+        # Validation 
+        pilotModel.eval()
+        with torch.no_grad():
+            correct = 0
+            total = 0
+            for images, labels in test_loader:
+                images = FLOAT(images).to(device)
+                labels = FLOAT(labels.float()).to(device)
+                outputs = pilotModel(images)
+                total += labels.size(0)
+                correct += (torch.linalg.norm(outputs - labels) < 0.1).sum().item()
+
+            curr_acc = (correct / total) * 100
+            if curr_acc >= val_acc:
+                val_acc = curr_acc
+                best_model = deepcopy(pilotModel)
+                mssg = "Accuracy Improved!!"
+            else:
+                mssg = "No Improved!!"
+
+            print(f'Validation Accuracy of the model on the images: {curr_acc}\t' + mssg)
+
     # Test the model
+    pilotModel = best_model # allot the best model on validation 
     pilotModel.eval()
     with torch.no_grad():
         correct = 0

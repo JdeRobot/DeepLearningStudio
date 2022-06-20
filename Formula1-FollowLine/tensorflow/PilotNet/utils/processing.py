@@ -1393,7 +1393,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
         array_annotations_difficult_situations_4 + array_annotations_difficult_situations_5 + array_annotations_difficult_situations_6 + \
         array_annotations_difficult_situations_7 + array_annotations_difficult_situations_8 + array_annotations_difficult_situations_9 + \
         array_annotations_difficult_situations_10 + array_annotations_difficult_situations_11 + array_annotations_difficult_situations_12 + \
-        array_annotations_difficult_situations_13 + array_annotations_difficult_situations_14 + array_annotations_difficult_situations_15
+        array_annotations_difficult_situations_13 + array_annotations_difficult_situations_14
 
     return array_imgs, array_annotations
 

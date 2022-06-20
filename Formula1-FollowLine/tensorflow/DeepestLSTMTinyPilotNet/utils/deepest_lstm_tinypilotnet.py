@@ -5,7 +5,7 @@ from tensorflow.keras.optimizers import Adam
 
 
 # DEEPEST LSTM tinypilotnet
-def deepest_lstm_tinypilotnet_model(img_shape):
+def deepest_lstm_tinypilotnet_model(img_shape, learning_rate):
     model = Sequential()
     model.add(Conv2D(8, (3, 3), strides=(2, 2), input_shape=img_shape, activation="relu"))
     model.add(Conv2D(8, (3, 3), strides=(2, 2), activation="relu"))
@@ -19,6 +19,6 @@ def deepest_lstm_tinypilotnet_model(img_shape):
     model.add(Dense(50, activation="relu"))
     model.add(Dense(10, activation="relu"))
     model.add(Dense(2))
-    adam = Adam(lr=0.00001)
+    adam = Adam(lr=learning_rate)
     model.compile(optimizer=adam, loss="mse", metrics=['mse', 'mae'])
     return model

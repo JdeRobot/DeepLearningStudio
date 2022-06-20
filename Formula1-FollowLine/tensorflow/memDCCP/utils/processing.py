@@ -51,6 +51,7 @@ def normalize(x):
 
 
 def get_images_and_annotations(path_to_data, type_image, img_shape):
+    ######################################### 1 ########################################
     many_curves_1_name_file = path_to_data + 'many_curves_01_04_2022_clockwise_1/data.csv'
 
     dir_many_curves_1_images = path_to_data + 'many_curves_01_04_2022_clockwise_1/'
@@ -65,7 +66,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_many_curves_1 = pandas.read_csv(many_curves_1_name_file)
     array_annotations_many_curves_1 = parse_csv(array_annotations_many_curves_1)
 
-    images_many_curves_1 = get_images(images_paths_many_curves_1, 'cropped', img_shape)
+    images_many_curves_1 = get_images(images_paths_many_curves_1, type_image, img_shape)
     images_many_curves_1, array_annotations_many_curves_1 = flip_images(images_many_curves_1,
                                                                         array_annotations_many_curves_1)
 
@@ -91,7 +92,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_many_curves_1 = normalized_annotations
 
-    ######################################### 1 #########################################
+    ########################################## 2 ########################################
     nurburgring_1_name_file = path_to_data + 'nurburgring_01_04_2022_clockwise_1/data.csv'
 
     dir_nurburgring_1_images = path_to_data + 'nurburgring_01_04_2022_clockwise_1/'
@@ -106,7 +107,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_nurburgring_1 = pandas.read_csv(nurburgring_1_name_file)
     array_annotations_nurburgring_1 = parse_csv(array_annotations_nurburgring_1)
 
-    images_nurburgring_1 = get_images(images_paths_nurburgring_1, 'cropped', img_shape)
+    images_nurburgring_1 = get_images(images_paths_nurburgring_1, type_image, img_shape)
     images_nurburgring_1, array_annotations_nurburgring_1 = flip_images(images_nurburgring_1,
                                                                         array_annotations_nurburgring_1)
     array_annotations_v = []
@@ -131,7 +132,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_nurburgring_1 = normalized_annotations
 
-    ######################################### 2 #########################################
+    ######################################### 3 #########################################
     monaco_1_name_file = path_to_data + 'monaco_01_04_2022_clockwise_1/data.csv'
 
     dir_monaco_1_images = path_to_data + 'monaco_01_04_2022_clockwise_1/'
@@ -146,7 +147,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_monaco_1 = pandas.read_csv(monaco_1_name_file)
     array_annotations_monaco_1 = parse_csv(array_annotations_monaco_1)
 
-    images_monaco_1 = get_images(images_paths_monaco_1, 'cropped', img_shape)
+    images_monaco_1 = get_images(images_paths_monaco_1, type_image, img_shape)
     images_monaco_1, array_annotations_monaco_1 = flip_images(images_monaco_1, array_annotations_monaco_1)
 
     array_annotations_v = []
@@ -171,7 +172,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_monaco_1 = normalized_annotations
 
-    ######################################### 3 #########################################
+    ######################################### 4 #########################################
     extended_simple_1_name_file = path_to_data + 'extended_simple_circuit_01_04_2022_clockwise_1/data.csv'
 
     dir_extended_simple_1_images = path_to_data + 'extended_simple_circuit_01_04_2022_clockwise_1/'
@@ -187,7 +188,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_extended_simple_1 = pandas.read_csv(extended_simple_1_name_file)
     array_annotations_extended_simple_1 = parse_csv(array_annotations_extended_simple_1)
 
-    images_extended_simple_1 = get_images(images_paths_extended_simple_1, 'cropped', img_shape)
+    images_extended_simple_1 = get_images(images_paths_extended_simple_1, type_image, img_shape)
     images_extended_simple_1, array_annotations_extended_simple_1 = flip_images(images_extended_simple_1,
                                                                                 array_annotations_extended_simple_1)
 
@@ -213,7 +214,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_extended_simple_1 = normalized_annotations
 
-    ######################################### 3 #########################################
+    ######################################### 5 #########################################
     only_curves_1_name_file = path_to_data + 'only_curves_01_04_2022/nurburgring_1/data.csv'
 
     dir_only_curves_1_images = path_to_data + 'only_curves_01_04_2022/nurburgring_1/'
@@ -228,7 +229,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_1 = pandas.read_csv(only_curves_1_name_file)
     array_annotations_only_curves_1 = parse_csv(array_annotations_only_curves_1)
 
-    images_only_curves_1 = get_images(images_paths_only_curves_1, 'cropped', img_shape)
+    images_only_curves_1 = get_images(images_paths_only_curves_1, type_image, img_shape)
     images_only_curves_1, array_annotations_only_curves_1 = flip_images(images_only_curves_1,
                                                                         array_annotations_only_curves_1)
 
@@ -254,7 +255,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_only_curves_1 = normalized_annotations
 
-    ######################################### 4 #########################################
+    ######################################### 6 #########################################
     only_curves_2_name_file = path_to_data + 'only_curves_01_04_2022/nurburgring_2/data.csv'
 
     dir_only_curves_2_images = path_to_data + 'only_curves_01_04_2022/nurburgring_2/'
@@ -269,7 +270,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_2 = pandas.read_csv(only_curves_2_name_file)
     array_annotations_only_curves_2 = parse_csv(array_annotations_only_curves_2)
 
-    images_only_curves_2 = get_images(images_paths_only_curves_2, 'cropped', img_shape)
+    images_only_curves_2 = get_images(images_paths_only_curves_2, type_image, img_shape)
     images_only_curves_2, array_annotations_only_curves_2 = flip_images(images_only_curves_2,
                                                                         array_annotations_only_curves_2)
 
@@ -295,7 +296,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_only_curves_2 = normalized_annotations
 
-    ######################################### 5 #########################################
+    ######################################### 7 #########################################
     only_curves_3_name_file = path_to_data + 'only_curves_01_04_2022/nurburgring_3/data.csv'
 
     dir_only_curves_3_images = path_to_data + 'only_curves_01_04_2022/nurburgring_3/'
@@ -310,7 +311,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_3 = pandas.read_csv(only_curves_3_name_file)
     array_annotations_only_curves_3 = parse_csv(array_annotations_only_curves_3)
 
-    images_only_curves_3 = get_images(images_paths_only_curves_3, 'cropped', img_shape)
+    images_only_curves_3 = get_images(images_paths_only_curves_3, type_image, img_shape)
     images_only_curves_3, array_annotations_only_curves_3 = flip_images(images_only_curves_3,
                                                                         array_annotations_only_curves_3)
 
@@ -336,7 +337,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_only_curves_3 = normalized_annotations
 
-    ######################################### 6 #########################################
+    ######################################### 8 #########################################
     only_curves_4_name_file = path_to_data + 'only_curves_01_04_2022/nurburgring_4/data.csv'
 
     dir_only_curves_4_images = path_to_data + 'only_curves_01_04_2022/nurburgring_4/'
@@ -351,7 +352,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_4 = pandas.read_csv(only_curves_4_name_file)
     array_annotations_only_curves_4 = parse_csv(array_annotations_only_curves_4)
 
-    images_only_curves_4 = get_images(images_paths_only_curves_4, 'cropped', img_shape)
+    images_only_curves_4 = get_images(images_paths_only_curves_4, type_image, img_shape)
     images_only_curves_4, array_annotations_only_curves_4 = flip_images(images_only_curves_4,
                                                                         array_annotations_only_curves_4)
 
@@ -377,7 +378,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_only_curves_4 = normalized_annotations
 
-    ######################################### 7 #########################################
+    ######################################### 9 #########################################
     only_curves_5_name_file = path_to_data + 'only_curves_01_04_2022/nurburgring_5/data.csv'
 
     dir_only_curves_5_images = path_to_data + 'only_curves_01_04_2022/nurburgring_5/'
@@ -392,7 +393,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_5 = pandas.read_csv(only_curves_5_name_file)
     array_annotations_only_curves_5 = parse_csv(array_annotations_only_curves_5)
 
-    images_only_curves_5 = get_images(images_paths_only_curves_5, 'cropped', img_shape)
+    images_only_curves_5 = get_images(images_paths_only_curves_5, type_image, img_shape)
     images_only_curves_5, array_annotations_only_curves_5 = flip_images(images_only_curves_5,
                                                                         array_annotations_only_curves_5)
 
@@ -418,7 +419,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_only_curves_5 = normalized_annotations
 
-    ######################################### 8 #########################################
+    ######################################### 10 #########################################
     only_curves_6_name_file = path_to_data + 'only_curves_01_04_2022/nurburgring_6/data.csv'
 
     dir_only_curves_6_images = path_to_data + 'only_curves_01_04_2022/nurburgring_6/'
@@ -433,7 +434,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_6 = pandas.read_csv(only_curves_6_name_file)
     array_annotations_only_curves_6 = parse_csv(array_annotations_only_curves_6)
 
-    images_only_curves_6 = get_images(images_paths_only_curves_6, 'cropped', img_shape)
+    images_only_curves_6 = get_images(images_paths_only_curves_6, type_image, img_shape)
     images_only_curves_6, array_annotations_only_curves_6 = flip_images(images_only_curves_6,
                                                                         array_annotations_only_curves_6)
 
@@ -459,7 +460,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_only_curves_6 = normalized_annotations
 
-    ######################################### 9 #########################################
+    ######################################### 11 #########################################
     only_curves_7_name_file = path_to_data + '/only_curves_01_04_2022/monaco_1/data.csv'
 
     dir_only_curves_7_images = path_to_data + 'only_curves_01_04_2022/monaco_1/'
@@ -474,7 +475,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_7 = pandas.read_csv(only_curves_7_name_file)
     array_annotations_only_curves_7 = parse_csv(array_annotations_only_curves_7)
 
-    images_only_curves_7 = get_images(images_paths_only_curves_7, 'cropped', img_shape)
+    images_only_curves_7 = get_images(images_paths_only_curves_7, type_image, img_shape)
     images_only_curves_7, array_annotations_only_curves_7 = flip_images(images_only_curves_7,
                                                                         array_annotations_only_curves_7)
 
@@ -500,7 +501,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_only_curves_7 = normalized_annotations
 
-    ######################################### 10 #########################################
+    ######################################### 12 #########################################
     only_curves_8_name_file = path_to_data + 'only_curves_01_04_2022/monaco_2/data.csv'
 
     dir_only_curves_8_images = path_to_data + 'only_curves_01_04_2022/monaco_2/'
@@ -515,7 +516,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_8 = pandas.read_csv(only_curves_8_name_file)
     array_annotations_only_curves_8 = parse_csv(array_annotations_only_curves_8)
 
-    images_only_curves_8 = get_images(images_paths_only_curves_8, 'cropped', img_shape)
+    images_only_curves_8 = get_images(images_paths_only_curves_8, type_image, img_shape)
     images_only_curves_8, array_annotations_only_curves_8 = flip_images(images_only_curves_8,
                                                                         array_annotations_only_curves_8)
 
@@ -541,7 +542,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_only_curves_8 = normalized_annotations
 
-    ######################################### 11 #########################################
+    ######################################### 13 #########################################
     only_curves_9_name_file = path_to_data + 'only_curves_01_04_2022/monaco_3/data.csv'
 
     dir_only_curves_9_images = path_to_data + 'only_curves_01_04_2022/monaco_3/'
@@ -556,7 +557,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_9 = pandas.read_csv(only_curves_9_name_file)
     array_annotations_only_curves_9 = parse_csv(array_annotations_only_curves_9)
 
-    images_only_curves_9 = get_images(images_paths_only_curves_9, 'cropped', img_shape)
+    images_only_curves_9 = get_images(images_paths_only_curves_9, type_image, img_shape)
     images_only_curves_9, array_annotations_only_curves_9 = flip_images(images_only_curves_9,
                                                                         array_annotations_only_curves_9)
 
@@ -582,7 +583,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_only_curves_9 = normalized_annotations
 
-    ######################################### 12 #########################################
+    ######################################### 14 #########################################
     only_curves_10_name_file = path_to_data + 'only_curves_01_04_2022/monaco_4/data.csv'
 
     dir_only_curves_10_images = path_to_data + 'only_curves_01_04_2022/monaco_4/'
@@ -598,7 +599,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_10 = pandas.read_csv(only_curves_10_name_file)
     array_annotations_only_curves_10 = parse_csv(array_annotations_only_curves_10)
 
-    images_only_curves_10 = get_images(images_paths_only_curves_10, 'cropped', img_shape)
+    images_only_curves_10 = get_images(images_paths_only_curves_10, type_image, img_shape)
     images_only_curves_10, array_annotations_only_curves_10 = flip_images(images_only_curves_10,
                                                                           array_annotations_only_curves_10)
 
@@ -624,7 +625,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_only_curves_10 = normalized_annotations
 
-    ######################################### 13 #########################################
+    ######################################### 15 #########################################
     only_curves_11_name_file = path_to_data + 'only_curves_01_04_2022/many_curves_1/data.csv'
 
     dir_only_curves_11_images = path_to_data + 'only_curves_01_04_2022/many_curves_1/'
@@ -640,7 +641,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_11 = pandas.read_csv(only_curves_11_name_file)
     array_annotations_only_curves_11 = parse_csv(array_annotations_only_curves_11)
 
-    images_only_curves_11 = get_images(images_paths_only_curves_11, 'cropped', img_shape)
+    images_only_curves_11 = get_images(images_paths_only_curves_11, type_image, img_shape)
     images_only_curves_11, array_annotations_only_curves_11 = flip_images(images_only_curves_11,
                                                                           array_annotations_only_curves_11)
 
@@ -666,7 +667,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_only_curves_11 = normalized_annotations
 
-    ######################################### 14 #########################################
+    ######################################### 16 #########################################
     only_curves_12_name_file = path_to_data + 'only_curves_01_04_2022/many_curves_2/data.csv'
 
     dir_only_curves_12_images = path_to_data + 'only_curves_01_04_2022/many_curves_2/'
@@ -682,7 +683,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_12 = pandas.read_csv(only_curves_12_name_file)
     array_annotations_only_curves_12 = parse_csv(array_annotations_only_curves_12)
 
-    images_only_curves_12 = get_images(images_paths_only_curves_12, 'cropped', img_shape)
+    images_only_curves_12 = get_images(images_paths_only_curves_12, type_image, img_shape)
     images_only_curves_12, array_annotations_only_curves_12 = flip_images(images_only_curves_12,
                                                                           array_annotations_only_curves_12)
 
@@ -708,7 +709,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_only_curves_12 = normalized_annotations
 
-    ######################################### 15 #########################################
+    ######################################### 17 #########################################
     difficult_situations_1_name_file = path_to_data + 'difficult_situations_01_04_2022/many_curves_1/data.csv'
 
     dir_difficult_situations_1_images = path_to_data + 'difficult_situations_01_04_2022/many_curves_1/'
@@ -724,7 +725,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_1 = pandas.read_csv(difficult_situations_1_name_file)
     array_annotations_difficult_situations_1 = parse_csv(array_annotations_difficult_situations_1)
 
-    images_difficult_situations_1 = get_images(images_paths_difficult_situations_1, 'cropped', img_shape)
+    images_difficult_situations_1 = get_images(images_paths_difficult_situations_1, type_image, img_shape)
     images_difficult_situations_1, array_annotations_difficult_situations_1 = flip_images(images_difficult_situations_1,
                                                                                           array_annotations_difficult_situations_1)
 
@@ -750,7 +751,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_1 = normalized_annotations
 
-    ######################################### 16 #########################################
+    ######################################### 18 #########################################
     difficult_situations_2_name_file = path_to_data + 'difficult_situations_01_04_2022/many_curves_2/data.csv'
 
     dir_difficult_situations_2_images = path_to_data + 'difficult_situations_01_04_2022/many_curves_2/'
@@ -766,7 +767,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_2 = pandas.read_csv(difficult_situations_2_name_file)
     array_annotations_difficult_situations_2 = parse_csv(array_annotations_difficult_situations_2)
 
-    images_difficult_situations_2 = get_images(images_paths_difficult_situations_2, 'cropped', img_shape)
+    images_difficult_situations_2 = get_images(images_paths_difficult_situations_2, type_image, img_shape)
     images_difficult_situations_2, array_annotations_difficult_situations_2 = flip_images(images_difficult_situations_2,
                                                                                           array_annotations_difficult_situations_2)
 
@@ -792,7 +793,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_2 = normalized_annotations
 
-    ######################################### 17 #########################################
+    ######################################### 19 #########################################
     difficult_situations_3_name_file = path_to_data + 'difficult_situations_01_04_2022/many_curves_3/data.csv'
 
     dir_difficult_situations_3_images = path_to_data + 'difficult_situations_01_04_2022/many_curves_3/'
@@ -808,7 +809,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_3 = pandas.read_csv(difficult_situations_3_name_file)
     array_annotations_difficult_situations_3 = parse_csv(array_annotations_difficult_situations_3)
 
-    images_difficult_situations_3 = get_images(images_paths_difficult_situations_3, 'cropped', img_shape)
+    images_difficult_situations_3 = get_images(images_paths_difficult_situations_3, type_image, img_shape)
     images_difficult_situations_3, array_annotations_difficult_situations_3 = flip_images(images_difficult_situations_3,
                                                                                           array_annotations_difficult_situations_3)
 
@@ -834,7 +835,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_3 = normalized_annotations
 
-    ######################################### 18 #########################################
+    ######################################### 20 #########################################
     difficult_situations_4_name_file = path_to_data + 'difficult_situations_01_04_2022/many_curves_4/data.csv'
 
     dir_difficult_situations_4_images = path_to_data + 'difficult_situations_01_04_2022/many_curves_4/'
@@ -850,7 +851,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_4 = pandas.read_csv(difficult_situations_4_name_file)
     array_annotations_difficult_situations_4 = parse_csv(array_annotations_difficult_situations_4)
 
-    images_difficult_situations_4 = get_images(images_paths_difficult_situations_4, 'cropped', img_shape)
+    images_difficult_situations_4 = get_images(images_paths_difficult_situations_4, type_image, img_shape)
     images_difficult_situations_4, array_annotations_difficult_situations_4 = flip_images(images_difficult_situations_4,
                                                                                           array_annotations_difficult_situations_4)
 
@@ -876,7 +877,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_4 = normalized_annotations
 
-    ######################################### 19 #########################################
+    ######################################### 21 #########################################
     difficult_situations_5_name_file = path_to_data + 'difficult_situations_01_04_2022/monaco_1/data.csv'
 
     dir_difficult_situations_5_images = path_to_data + 'difficult_situations_01_04_2022/monaco_1/'
@@ -892,7 +893,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_5 = pandas.read_csv(difficult_situations_5_name_file)
     array_annotations_difficult_situations_5 = parse_csv(array_annotations_difficult_situations_5)
 
-    images_difficult_situations_5 = get_images(images_paths_difficult_situations_5, 'cropped', img_shape)
+    images_difficult_situations_5 = get_images(images_paths_difficult_situations_5, type_image, img_shape)
     images_difficult_situations_5, array_annotations_difficult_situations_5 = flip_images(images_difficult_situations_5,
                                                                                           array_annotations_difficult_situations_5)
 
@@ -918,7 +919,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_5 = normalized_annotations
 
-    ######################################### 20 #########################################
+    ######################################### 22 #########################################
     difficult_situations_6_name_file = path_to_data + 'difficult_situations_01_04_2022/monaco_2/data.csv'
 
     dir_difficult_situations_6_images = path_to_data + 'difficult_situations_01_04_2022/monaco_2/'
@@ -934,7 +935,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_6 = pandas.read_csv(difficult_situations_6_name_file)
     array_annotations_difficult_situations_6 = parse_csv(array_annotations_difficult_situations_6)
 
-    images_difficult_situations_6 = get_images(images_paths_difficult_situations_6, 'cropped', img_shape)
+    images_difficult_situations_6 = get_images(images_paths_difficult_situations_6, type_image, img_shape)
     images_difficult_situations_6, array_annotations_difficult_situations_6 = flip_images(images_difficult_situations_6,
                                                                                           array_annotations_difficult_situations_6)
 
@@ -960,7 +961,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_6 = normalized_annotations
 
-    ######################################### 21 #########################################
+    ######################################### 23 #########################################
     difficult_situations_7_name_file = path_to_data + 'difficult_situations_01_04_2022/monaco_3/data.csv'
 
     dir_difficult_situations_7_images = path_to_data + 'difficult_situations_01_04_2022/monaco_3/'
@@ -976,7 +977,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_7 = pandas.read_csv(difficult_situations_7_name_file)
     array_annotations_difficult_situations_7 = parse_csv(array_annotations_difficult_situations_7)
 
-    images_difficult_situations_7 = get_images(images_paths_difficult_situations_7, 'cropped', img_shape)
+    images_difficult_situations_7 = get_images(images_paths_difficult_situations_7, type_image, img_shape)
     images_difficult_situations_7, array_annotations_difficult_situations_7 = flip_images(images_difficult_situations_7,
                                                                                           array_annotations_difficult_situations_7)
 
@@ -1002,7 +1003,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_7 = normalized_annotations
 
-    ######################################### 22 #########################################
+    ######################################### 24 #########################################
     difficult_situations_8_name_file = path_to_data + 'difficult_situations_01_04_2022/monaco_4/data.csv'
 
     dir_difficult_situations_8_images = path_to_data + 'difficult_situations_01_04_2022/monaco_4/'
@@ -1018,7 +1019,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_8 = pandas.read_csv(difficult_situations_8_name_file)
     array_annotations_difficult_situations_8 = parse_csv(array_annotations_difficult_situations_8)
 
-    images_difficult_situations_8 = get_images(images_paths_difficult_situations_8, 'cropped', img_shape)
+    images_difficult_situations_8 = get_images(images_paths_difficult_situations_8, type_image, img_shape)
     images_difficult_situations_8, array_annotations_difficult_situations_8 = flip_images(images_difficult_situations_8,
                                                                                           array_annotations_difficult_situations_8)
 
@@ -1044,7 +1045,49 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_8 = normalized_annotations
 
-    ######################################### 23 #########################################
+    ######################################### 25 #########################################
+    difficult_situations_9_name_file = path_to_data + 'difficult_situations_01_04_2022/monaco_5/data.csv'
+
+    dir_difficult_situations_9_images = path_to_data + 'difficult_situations_01_04_2022/monaco_5/'
+    list_images_difficult_situations_9 = glob.glob(dir_difficult_situations_9_images + '*')
+    new_list_images_difficult_situations_9 = []
+    for image in list_images_difficult_situations_9:
+        if image != path_to_data + 'difficult_situations_01_04_2022/monaco_5/data.csv':
+            new_list_images_difficult_situations_9.append(image)
+    list_images_difficult_situations_9 = new_list_images_difficult_situations_9
+    images_paths_difficult_situations_9 = sorted(list_images_difficult_situations_9,
+                                                 key=lambda x: int(x.split('/')[7].split('.png')[0]))
+
+    array_annotations_difficult_situations_9 = pandas.read_csv(difficult_situations_9_name_file)
+    array_annotations_difficult_situations_9 = parse_csv(array_annotations_difficult_situations_9)
+
+    images_difficult_situations_9 = get_images(images_paths_difficult_situations_9, type_image, img_shape)
+    images_difficult_situations_9, array_annotations_difficult_situations_9 = flip_images(images_difficult_situations_9,
+                                                                                          array_annotations_difficult_situations_9)
+
+    array_annotations_v = []
+    array_annotations_w = []
+    for annotation in array_annotations_difficult_situations_9:
+        array_annotations_v.append(annotation[0])
+        array_annotations_w.append(annotation[1])
+
+    # START NORMALIZE DATA
+    array_annotations_v = np.stack(array_annotations_v, axis=0)
+    array_annotations_v = array_annotations_v.reshape(-1, 1)
+
+    array_annotations_w = np.stack(array_annotations_w, axis=0)
+    array_annotations_w = array_annotations_w.reshape(-1, 1)
+
+    normalized_x = np.interp(array_annotations_v, (6.5, 24), (0, 1))
+    normalized_y = np.interp(array_annotations_w, (-7.1, 7.1), (0, 1))
+
+    normalized_annotations = []
+    for i in range(0, len(normalized_x)):
+        normalized_annotations.append([normalized_x.item(i), normalized_y.item(i)])
+
+    array_annotations_difficult_situations_9 = normalized_annotations
+
+    ######################################### 26 #########################################
     difficult_situations_10_name_file = path_to_data + 'difficult_situations_01_04_2022/monaco_6/data.csv'
 
     dir_difficult_situations_10_images = path_to_data + 'difficult_situations_01_04_2022/monaco_6/'
@@ -1060,7 +1103,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_10 = pandas.read_csv(difficult_situations_10_name_file)
     array_annotations_difficult_situations_10 = parse_csv(array_annotations_difficult_situations_10)
 
-    images_difficult_situations_10 = get_images(images_paths_difficult_situations_10, 'cropped', img_shape)
+    images_difficult_situations_10 = get_images(images_paths_difficult_situations_10, type_image, img_shape)
     images_difficult_situations_10, array_annotations_difficult_situations_10 = flip_images(
         images_difficult_situations_10, array_annotations_difficult_situations_10)
 
@@ -1086,14 +1129,14 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_10 = normalized_annotations
 
-    ######################################### 24 #########################################
-    difficult_situations_11_name_file = path_to_data + 'difficult_situations_01_04_2022/monaco_7/data.csv'
+    ######################################### 27 #########################################
+    difficult_situations_11_name_file = path_to_data + 'difficult_situations_01_04_2022/nurburgring_1/data.csv'
 
-    dir_difficult_situations_11_images = path_to_data + 'difficult_situations_01_04_2022/monaco_7/'
+    dir_difficult_situations_11_images = path_to_data + 'difficult_situations_01_04_2022/nurburgring_1/'
     list_images_difficult_situations_11 = glob.glob(dir_difficult_situations_11_images + '*')
     new_list_images_difficult_situations_11 = []
     for image in list_images_difficult_situations_11:
-        if image != path_to_data + 'difficult_situations_01_04_2022/monaco_7/data.csv':
+        if image != path_to_data + 'difficult_situations_01_04_2022/nurburgring_1/data.csv':
             new_list_images_difficult_situations_11.append(image)
     list_images_difficult_situations_11 = new_list_images_difficult_situations_11
     images_paths_difficult_situations_11 = sorted(list_images_difficult_situations_11,
@@ -1102,7 +1145,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_11 = pandas.read_csv(difficult_situations_11_name_file)
     array_annotations_difficult_situations_11 = parse_csv(array_annotations_difficult_situations_11)
 
-    images_difficult_situations_11 = get_images(images_paths_difficult_situations_11, 'cropped', img_shape)
+    images_difficult_situations_11 = get_images(images_paths_difficult_situations_11, type_image, img_shape)
     images_difficult_situations_11, array_annotations_difficult_situations_11 = flip_images(
         images_difficult_situations_11, array_annotations_difficult_situations_11)
 
@@ -1128,14 +1171,14 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_11 = normalized_annotations
 
-    ######################################### 25 #########################################
-    difficult_situations_12_name_file = path_to_data + 'difficult_situations_01_04_2022/nurburgring_1/data.csv'
+    ######################################### 28 #########################################
+    difficult_situations_12_name_file = path_to_data + 'difficult_situations_01_04_2022/nurburgring_2/data.csv'
 
-    dir_difficult_situations_12_images = path_to_data + 'difficult_situations_01_04_2022/nurburgring_1/'
+    dir_difficult_situations_12_images = path_to_data + 'difficult_situations_01_04_2022/nurburgring_2/'
     list_images_difficult_situations_12 = glob.glob(dir_difficult_situations_12_images + '*')
     new_list_images_difficult_situations_12 = []
     for image in list_images_difficult_situations_12:
-        if image != path_to_data + 'difficult_situations_01_04_2022/nurburgring_1/data.csv':
+        if image != path_to_data + 'difficult_situations_01_04_2022/nurburgring_2/data.csv':
             new_list_images_difficult_situations_12.append(image)
     list_images_difficult_situations_12 = new_list_images_difficult_situations_12
     images_paths_difficult_situations_12 = sorted(list_images_difficult_situations_12,
@@ -1144,7 +1187,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_12 = pandas.read_csv(difficult_situations_12_name_file)
     array_annotations_difficult_situations_12 = parse_csv(array_annotations_difficult_situations_12)
 
-    images_difficult_situations_12 = get_images(images_paths_difficult_situations_12, 'cropped', img_shape)
+    images_difficult_situations_12 = get_images(images_paths_difficult_situations_12, type_image, img_shape)
     images_difficult_situations_12, array_annotations_difficult_situations_12 = flip_images(
         images_difficult_situations_12, array_annotations_difficult_situations_12)
 
@@ -1170,14 +1213,14 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_12 = normalized_annotations
 
-    ######################################### 26 #########################################
-    difficult_situations_13_name_file = path_to_data + 'difficult_situations_01_04_2022/nurburgring_2/data.csv'
+    ######################################### 29 #########################################
+    difficult_situations_13_name_file = path_to_data + 'difficult_situations_01_04_2022/nurburgring_3/data.csv'
 
-    dir_difficult_situations_13_images = path_to_data + 'difficult_situations_01_04_2022/nurburgring_2/'
+    dir_difficult_situations_13_images = path_to_data + 'difficult_situations_01_04_2022/nurburgring_3/'
     list_images_difficult_situations_13 = glob.glob(dir_difficult_situations_13_images + '*')
     new_list_images_difficult_situations_13 = []
     for image in list_images_difficult_situations_13:
-        if image != path_to_data + 'difficult_situations_01_04_2022/nurburgring_2/data.csv':
+        if image != path_to_data + 'difficult_situations_01_04_2022/nurburgring_3/data.csv':
             new_list_images_difficult_situations_13.append(image)
     list_images_difficult_situations_13 = new_list_images_difficult_situations_13
     images_paths_difficult_situations_13 = sorted(list_images_difficult_situations_13,
@@ -1186,7 +1229,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_13 = pandas.read_csv(difficult_situations_13_name_file)
     array_annotations_difficult_situations_13 = parse_csv(array_annotations_difficult_situations_13)
 
-    images_difficult_situations_13 = get_images(images_paths_difficult_situations_13, 'cropped', img_shape)
+    images_difficult_situations_13 = get_images(images_paths_difficult_situations_13, type_image, img_shape)
     images_difficult_situations_13, array_annotations_difficult_situations_13 = flip_images(
         images_difficult_situations_13, array_annotations_difficult_situations_13)
 
@@ -1212,14 +1255,14 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_13 = normalized_annotations
 
-    ######################################### 27 #########################################
-    difficult_situations_14_name_file = path_to_data + 'difficult_situations_01_04_2022/nurburgring_3/data.csv'
+    ######################################### 30 #########################################
+    difficult_situations_14_name_file = path_to_data + 'difficult_situations_01_04_2022/nurburgring_4/data.csv'
 
-    dir_difficult_situations_14_images = path_to_data + 'difficult_situations_01_04_2022/nurburgring_3/'
+    dir_difficult_situations_14_images = path_to_data + 'difficult_situations_01_04_2022/nurburgring_4/'
     list_images_difficult_situations_14 = glob.glob(dir_difficult_situations_14_images + '*')
     new_list_images_difficult_situations_14 = []
     for image in list_images_difficult_situations_14:
-        if image != path_to_data + 'difficult_situations_01_04_2022/nurburgring_3/data.csv':
+        if image != path_to_data + 'difficult_situations_01_04_2022/nurburgring_4/data.csv':
             new_list_images_difficult_situations_14.append(image)
     list_images_difficult_situations_14 = new_list_images_difficult_situations_14
     images_paths_difficult_situations_14 = sorted(list_images_difficult_situations_14,
@@ -1228,7 +1271,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_14 = pandas.read_csv(difficult_situations_14_name_file)
     array_annotations_difficult_situations_14 = parse_csv(array_annotations_difficult_situations_14)
 
-    images_difficult_situations_14 = get_images(images_paths_difficult_situations_14, 'cropped', img_shape)
+    images_difficult_situations_14 = get_images(images_paths_difficult_situations_14, type_image, img_shape)
     images_difficult_situations_14, array_annotations_difficult_situations_14 = flip_images(
         images_difficult_situations_14, array_annotations_difficult_situations_14)
 
@@ -1254,14 +1297,14 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_14 = normalized_annotations
 
-    ######################################### 28 #########################################
-    difficult_situations_15_name_file = path_to_data + 'difficult_situations_01_04_2022/nurburgring_4/data.csv'
+    ######################################### 31 #########################################
+    difficult_situations_15_name_file = path_to_data + 'difficult_situations_01_04_2022_2/many_curves_1/data.csv'
 
-    dir_difficult_situations_15_images = path_to_data + 'difficult_situations_01_04_2022/nurburgring_4/'
+    dir_difficult_situations_15_images = path_to_data + 'difficult_situations_01_04_2022_2/many_curves_1/'
     list_images_difficult_situations_15 = glob.glob(dir_difficult_situations_15_images + '*')
     new_list_images_difficult_situations_15 = []
     for image in list_images_difficult_situations_15:
-        if image != path_to_data + 'difficult_situations_01_04_2022/nurburgring_4/data.csv':
+        if image != path_to_data + 'difficult_situations_01_04_2022_2/many_curves_1/data.csv':
             new_list_images_difficult_situations_15.append(image)
     list_images_difficult_situations_15 = new_list_images_difficult_situations_15
     images_paths_difficult_situations_15 = sorted(list_images_difficult_situations_15,
@@ -1270,7 +1313,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_15 = pandas.read_csv(difficult_situations_15_name_file)
     array_annotations_difficult_situations_15 = parse_csv(array_annotations_difficult_situations_15)
 
-    images_difficult_situations_15 = get_images(images_paths_difficult_situations_15, 'cropped', img_shape)
+    images_difficult_situations_15 = get_images(images_paths_difficult_situations_15, type_image, img_shape)
     images_difficult_situations_15, array_annotations_difficult_situations_15 = flip_images(
         images_difficult_situations_15, array_annotations_difficult_situations_15)
 
@@ -1296,14 +1339,14 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_15 = normalized_annotations
 
-    ######################################### 29 #########################################
-    difficult_situations_16_name_file = path_to_data + 'difficult_situations_01_04_2022_2/many_curves_1/data.csv'
+    ######################################### 32 #########################################
+    difficult_situations_16_name_file = path_to_data + 'difficult_situations_01_04_2022_2/many_curves_2/data.csv'
 
-    dir_difficult_situations_16_images = path_to_data + 'difficult_situations_01_04_2022_2/many_curves_1/'
+    dir_difficult_situations_16_images = path_to_data + 'difficult_situations_01_04_2022_2/many_curves_2/'
     list_images_difficult_situations_16 = glob.glob(dir_difficult_situations_16_images + '*')
     new_list_images_difficult_situations_16 = []
     for image in list_images_difficult_situations_16:
-        if image != path_to_data + 'difficult_situations_01_04_2022_2/many_curves_1/data.csv':
+        if image != path_to_data + 'difficult_situations_01_04_2022_2/many_curves_2/data.csv':
             new_list_images_difficult_situations_16.append(image)
     list_images_difficult_situations_16 = new_list_images_difficult_situations_16
     images_paths_difficult_situations_16 = sorted(list_images_difficult_situations_16,
@@ -1312,7 +1355,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_16 = pandas.read_csv(difficult_situations_16_name_file)
     array_annotations_difficult_situations_16 = parse_csv(array_annotations_difficult_situations_16)
 
-    images_difficult_situations_16 = get_images(images_paths_difficult_situations_16, 'cropped', img_shape)
+    images_difficult_situations_16 = get_images(images_paths_difficult_situations_16, type_image, img_shape)
     images_difficult_situations_16, array_annotations_difficult_situations_16 = flip_images(
         images_difficult_situations_16, array_annotations_difficult_situations_16)
 
@@ -1338,14 +1381,14 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_16 = normalized_annotations
 
-    ######################################### 30 #########################################
-    difficult_situations_17_name_file = path_to_data + 'difficult_situations_01_04_2022_2/many_curves_2/data.csv'
+    ######################################### 33 #########################################
+    difficult_situations_17_name_file = path_to_data + 'difficult_situations_01_04_2022_2/montreal_1/data.csv'
 
-    dir_difficult_situations_17_images = path_to_data + 'difficult_situations_01_04_2022_2/many_curves_2/'
+    dir_difficult_situations_17_images = path_to_data + 'difficult_situations_01_04_2022_2/montreal_1/'
     list_images_difficult_situations_17 = glob.glob(dir_difficult_situations_17_images + '*')
     new_list_images_difficult_situations_17 = []
     for image in list_images_difficult_situations_17:
-        if image != path_to_data + 'difficult_situations_01_04_2022_2/many_curves_2/data.csv':
+        if image != path_to_data + 'difficult_situations_01_04_2022_2/montreal_1/data.csv':
             new_list_images_difficult_situations_17.append(image)
     list_images_difficult_situations_17 = new_list_images_difficult_situations_17
     images_paths_difficult_situations_17 = sorted(list_images_difficult_situations_17,
@@ -1354,7 +1397,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_17 = pandas.read_csv(difficult_situations_17_name_file)
     array_annotations_difficult_situations_17 = parse_csv(array_annotations_difficult_situations_17)
 
-    images_difficult_situations_17 = get_images(images_paths_difficult_situations_17, 'cropped', img_shape)
+    images_difficult_situations_17 = get_images(images_paths_difficult_situations_17, type_image, img_shape)
     images_difficult_situations_17, array_annotations_difficult_situations_17 = flip_images(
         images_difficult_situations_17, array_annotations_difficult_situations_17)
 
@@ -1380,14 +1423,14 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_17 = normalized_annotations
 
-    ######################################### 31 #########################################
-    difficult_situations_18_name_file = path_to_data + 'difficult_situations_01_04_2022_2/montreal_1/data.csv'
+    ######################################### 34 #########################################
+    difficult_situations_18_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_1/data.csv'
 
-    dir_difficult_situations_18_images = path_to_data + 'difficult_situations_01_04_2022_2/montreal_1/'
+    dir_difficult_situations_18_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_1/'
     list_images_difficult_situations_18 = glob.glob(dir_difficult_situations_18_images + '*')
     new_list_images_difficult_situations_18 = []
     for image in list_images_difficult_situations_18:
-        if image != path_to_data + 'difficult_situations_01_04_2022_2/montreal_1/data.csv':
+        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_1/data.csv':
             new_list_images_difficult_situations_18.append(image)
     list_images_difficult_situations_18 = new_list_images_difficult_situations_18
     images_paths_difficult_situations_18 = sorted(list_images_difficult_situations_18,
@@ -1396,7 +1439,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_18 = pandas.read_csv(difficult_situations_18_name_file)
     array_annotations_difficult_situations_18 = parse_csv(array_annotations_difficult_situations_18)
 
-    images_difficult_situations_18 = get_images(images_paths_difficult_situations_18, 'cropped', img_shape)
+    images_difficult_situations_18 = get_images(images_paths_difficult_situations_18, type_image, img_shape)
     images_difficult_situations_18, array_annotations_difficult_situations_18 = flip_images(
         images_difficult_situations_18, array_annotations_difficult_situations_18)
 
@@ -1422,14 +1465,14 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_18 = normalized_annotations
 
-    ######################################### 32 #########################################
-    difficult_situations_19_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_1/data.csv'
+    ######################################### 35 #########################################
+    difficult_situations_19_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_2/data.csv'
 
-    dir_difficult_situations_19_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_1/'
+    dir_difficult_situations_19_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_2/'
     list_images_difficult_situations_19 = glob.glob(dir_difficult_situations_19_images + '*')
     new_list_images_difficult_situations_19 = []
     for image in list_images_difficult_situations_19:
-        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_1/data.csv':
+        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_2/data.csv':
             new_list_images_difficult_situations_19.append(image)
     list_images_difficult_situations_19 = new_list_images_difficult_situations_19
     images_paths_difficult_situations_19 = sorted(list_images_difficult_situations_19,
@@ -1438,7 +1481,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_19 = pandas.read_csv(difficult_situations_19_name_file)
     array_annotations_difficult_situations_19 = parse_csv(array_annotations_difficult_situations_19)
 
-    images_difficult_situations_19 = get_images(images_paths_difficult_situations_19, 'cropped', img_shape)
+    images_difficult_situations_19 = get_images(images_paths_difficult_situations_19, type_image, img_shape)
     images_difficult_situations_19, array_annotations_difficult_situations_19 = flip_images(
         images_difficult_situations_19, array_annotations_difficult_situations_19)
 
@@ -1464,14 +1507,14 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_19 = normalized_annotations
 
-    ######################################### 33 #########################################
-    difficult_situations_20_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_2/data.csv'
+    ######################################### 36 #########################################
+    difficult_situations_20_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_3/data.csv'
 
-    dir_difficult_situations_20_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_2/'
+    dir_difficult_situations_20_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_3/'
     list_images_difficult_situations_20 = glob.glob(dir_difficult_situations_20_images + '*')
     new_list_images_difficult_situations_20 = []
     for image in list_images_difficult_situations_20:
-        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_2/data.csv':
+        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_3/data.csv':
             new_list_images_difficult_situations_20.append(image)
     list_images_difficult_situations_20 = new_list_images_difficult_situations_20
     images_paths_difficult_situations_20 = sorted(list_images_difficult_situations_20,
@@ -1480,7 +1523,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_20 = pandas.read_csv(difficult_situations_20_name_file)
     array_annotations_difficult_situations_20 = parse_csv(array_annotations_difficult_situations_20)
 
-    images_difficult_situations_20 = get_images(images_paths_difficult_situations_20, 'cropped', img_shape)
+    images_difficult_situations_20 = get_images(images_paths_difficult_situations_20, type_image, img_shape)
     images_difficult_situations_20, array_annotations_difficult_situations_20 = flip_images(
         images_difficult_situations_20, array_annotations_difficult_situations_20)
 
@@ -1506,14 +1549,14 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_20 = normalized_annotations
 
-    ######################################### 34 #########################################
-    difficult_situations_21_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_3/data.csv'
+    ######################################### 37 #########################################
+    difficult_situations_21_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_4/data.csv'
 
-    dir_difficult_situations_21_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_3/'
+    dir_difficult_situations_21_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_4/'
     list_images_difficult_situations_21 = glob.glob(dir_difficult_situations_21_images + '*')
     new_list_images_difficult_situations_21 = []
     for image in list_images_difficult_situations_21:
-        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_3/data.csv':
+        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_4/data.csv':
             new_list_images_difficult_situations_21.append(image)
     list_images_difficult_situations_21 = new_list_images_difficult_situations_21
     images_paths_difficult_situations_21 = sorted(list_images_difficult_situations_21,
@@ -1522,7 +1565,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_21 = pandas.read_csv(difficult_situations_21_name_file)
     array_annotations_difficult_situations_21 = parse_csv(array_annotations_difficult_situations_21)
 
-    images_difficult_situations_21 = get_images(images_paths_difficult_situations_21, 'cropped', img_shape)
+    images_difficult_situations_21 = get_images(images_paths_difficult_situations_21, type_image, img_shape)
     images_difficult_situations_21, array_annotations_difficult_situations_21 = flip_images(
         images_difficult_situations_21, array_annotations_difficult_situations_21)
 
@@ -1548,14 +1591,14 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_21 = normalized_annotations
 
-    ######################################### 35 #########################################
-    difficult_situations_22_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_4/data.csv'
+    ######################################### 38 #########################################
+    difficult_situations_22_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_5/data.csv'
 
-    dir_difficult_situations_22_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_4/'
+    dir_difficult_situations_22_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_5/'
     list_images_difficult_situations_22 = glob.glob(dir_difficult_situations_22_images + '*')
     new_list_images_difficult_situations_22 = []
     for image in list_images_difficult_situations_22:
-        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_4/data.csv':
+        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_5/data.csv':
             new_list_images_difficult_situations_22.append(image)
     list_images_difficult_situations_22 = new_list_images_difficult_situations_22
     images_paths_difficult_situations_22 = sorted(list_images_difficult_situations_22,
@@ -1564,7 +1607,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_22 = pandas.read_csv(difficult_situations_22_name_file)
     array_annotations_difficult_situations_22 = parse_csv(array_annotations_difficult_situations_22)
 
-    images_difficult_situations_22 = get_images(images_paths_difficult_situations_22, 'cropped', img_shape)
+    images_difficult_situations_22 = get_images(images_paths_difficult_situations_22, type_image, img_shape)
     images_difficult_situations_22, array_annotations_difficult_situations_22 = flip_images(
         images_difficult_situations_22, array_annotations_difficult_situations_22)
 
@@ -1590,14 +1633,14 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_22 = normalized_annotations
 
-    ######################################### 36 #########################################
-    difficult_situations_23_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_5/data.csv'
+    ######################################### 39 #########################################
+    difficult_situations_23_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_6/data.csv'
 
-    dir_difficult_situations_23_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_5/'
+    dir_difficult_situations_23_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_6/'
     list_images_difficult_situations_23 = glob.glob(dir_difficult_situations_23_images + '*')
     new_list_images_difficult_situations_23 = []
     for image in list_images_difficult_situations_23:
-        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_5/data.csv':
+        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_6/data.csv':
             new_list_images_difficult_situations_23.append(image)
     list_images_difficult_situations_23 = new_list_images_difficult_situations_23
     images_paths_difficult_situations_23 = sorted(list_images_difficult_situations_23,
@@ -1606,7 +1649,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_23 = pandas.read_csv(difficult_situations_23_name_file)
     array_annotations_difficult_situations_23 = parse_csv(array_annotations_difficult_situations_23)
 
-    images_difficult_situations_23 = get_images(images_paths_difficult_situations_23, 'cropped', img_shape)
+    images_difficult_situations_23 = get_images(images_paths_difficult_situations_23, type_image, img_shape)
     images_difficult_situations_23, array_annotations_difficult_situations_23 = flip_images(
         images_difficult_situations_23, array_annotations_difficult_situations_23)
 
@@ -1632,14 +1675,14 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_23 = normalized_annotations
 
-    ######################################### 37 #########################################
-    difficult_situations_24_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_6/data.csv'
+    ######################################### 40 #########################################
+    difficult_situations_24_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_7/data.csv'
 
-    dir_difficult_situations_24_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_6/'
+    dir_difficult_situations_24_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_7/'
     list_images_difficult_situations_24 = glob.glob(dir_difficult_situations_24_images + '*')
     new_list_images_difficult_situations_24 = []
     for image in list_images_difficult_situations_24:
-        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_6/data.csv':
+        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_7/data.csv':
             new_list_images_difficult_situations_24.append(image)
     list_images_difficult_situations_24 = new_list_images_difficult_situations_24
     images_paths_difficult_situations_24 = sorted(list_images_difficult_situations_24,
@@ -1648,7 +1691,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_24 = pandas.read_csv(difficult_situations_24_name_file)
     array_annotations_difficult_situations_24 = parse_csv(array_annotations_difficult_situations_24)
 
-    images_difficult_situations_24 = get_images(images_paths_difficult_situations_24, 'cropped', img_shape)
+    images_difficult_situations_24 = get_images(images_paths_difficult_situations_24, type_image, img_shape)
     images_difficult_situations_24, array_annotations_difficult_situations_24 = flip_images(
         images_difficult_situations_24, array_annotations_difficult_situations_24)
 
@@ -1674,14 +1717,14 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_24 = normalized_annotations
 
-    ######################################### 38 #########################################
-    difficult_situations_25_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_7/data.csv'
+    ######################################### 41 #########################################
+    difficult_situations_25_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_8/data.csv'
 
-    dir_difficult_situations_25_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_7/'
+    dir_difficult_situations_25_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_8/'
     list_images_difficult_situations_25 = glob.glob(dir_difficult_situations_25_images + '*')
     new_list_images_difficult_situations_25 = []
     for image in list_images_difficult_situations_25:
-        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_7/data.csv':
+        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_8/data.csv':
             new_list_images_difficult_situations_25.append(image)
     list_images_difficult_situations_25 = new_list_images_difficult_situations_25
     images_paths_difficult_situations_25 = sorted(list_images_difficult_situations_25,
@@ -1690,7 +1733,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_25 = pandas.read_csv(difficult_situations_25_name_file)
     array_annotations_difficult_situations_25 = parse_csv(array_annotations_difficult_situations_25)
 
-    images_difficult_situations_25 = get_images(images_paths_difficult_situations_25, 'cropped', img_shape)
+    images_difficult_situations_25 = get_images(images_paths_difficult_situations_25, type_image, img_shape)
     images_difficult_situations_25, array_annotations_difficult_situations_25 = flip_images(
         images_difficult_situations_25, array_annotations_difficult_situations_25)
 
@@ -1716,14 +1759,14 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_25 = normalized_annotations
 
-    ######################################### 39 #########################################
-    difficult_situations_26_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_8/data.csv'
+    ######################################### 42 #########################################
+    difficult_situations_26_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_9/data.csv'
 
-    dir_difficult_situations_26_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_8/'
+    dir_difficult_situations_26_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_9/'
     list_images_difficult_situations_26 = glob.glob(dir_difficult_situations_26_images + '*')
     new_list_images_difficult_situations_26 = []
     for image in list_images_difficult_situations_26:
-        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_8/data.csv':
+        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_9/data.csv':
             new_list_images_difficult_situations_26.append(image)
     list_images_difficult_situations_26 = new_list_images_difficult_situations_26
     images_paths_difficult_situations_26 = sorted(list_images_difficult_situations_26,
@@ -1732,7 +1775,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_26 = pandas.read_csv(difficult_situations_26_name_file)
     array_annotations_difficult_situations_26 = parse_csv(array_annotations_difficult_situations_26)
 
-    images_difficult_situations_26 = get_images(images_paths_difficult_situations_26, 'cropped', img_shape)
+    images_difficult_situations_26 = get_images(images_paths_difficult_situations_26, type_image, img_shape)
     images_difficult_situations_26, array_annotations_difficult_situations_26 = flip_images(
         images_difficult_situations_26, array_annotations_difficult_situations_26)
 
@@ -1758,14 +1801,14 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     array_annotations_difficult_situations_26 = normalized_annotations
 
-    ######################################### 40 #########################################
-    difficult_situations_27_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_9/data.csv'
+    ######################################### 43 #########################################
+    difficult_situations_27_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_10/data.csv'
 
-    dir_difficult_situations_27_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_9/'
+    dir_difficult_situations_27_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_10/'
     list_images_difficult_situations_27 = glob.glob(dir_difficult_situations_27_images + '*')
     new_list_images_difficult_situations_27 = []
     for image in list_images_difficult_situations_27:
-        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_9/data.csv':
+        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_10/data.csv':
             new_list_images_difficult_situations_27.append(image)
     list_images_difficult_situations_27 = new_list_images_difficult_situations_27
     images_paths_difficult_situations_27 = sorted(list_images_difficult_situations_27,
@@ -1774,7 +1817,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_27 = pandas.read_csv(difficult_situations_27_name_file)
     array_annotations_difficult_situations_27 = parse_csv(array_annotations_difficult_situations_27)
 
-    images_difficult_situations_27 = get_images(images_paths_difficult_situations_27, 'cropped', img_shape)
+    images_difficult_situations_27 = get_images(images_paths_difficult_situations_27, type_image, img_shape)
     images_difficult_situations_27, array_annotations_difficult_situations_27 = flip_images(
         images_difficult_situations_27, array_annotations_difficult_situations_27)
 
@@ -1799,48 +1842,6 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
         normalized_annotations.append([normalized_x.item(i), normalized_y.item(i)])
 
     array_annotations_difficult_situations_27 = normalized_annotations
-
-    ######################################### 41 #########################################
-    difficult_situations_28_name_file = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_10/data.csv'
-
-    dir_difficult_situations_28_images = path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_10/'
-    list_images_difficult_situations_28 = glob.glob(dir_difficult_situations_28_images + '*')
-    new_list_images_difficult_situations_28 = []
-    for image in list_images_difficult_situations_28:
-        if image != path_to_data + 'difficult_situations_01_04_2022_2/nurburgring_10/data.csv':
-            new_list_images_difficult_situations_28.append(image)
-    list_images_difficult_situations_28 = new_list_images_difficult_situations_28
-    images_paths_difficult_situations_28 = sorted(list_images_difficult_situations_28,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
-
-    array_annotations_difficult_situations_28 = pandas.read_csv(difficult_situations_28_name_file)
-    array_annotations_difficult_situations_28 = parse_csv(array_annotations_difficult_situations_28)
-
-    images_difficult_situations_28 = get_images(images_paths_difficult_situations_28, 'cropped', img_shape)
-    images_difficult_situations_28, array_annotations_difficult_situations_28 = flip_images(
-        images_difficult_situations_28, array_annotations_difficult_situations_28)
-
-    array_annotations_v = []
-    array_annotations_w = []
-    for annotation in array_annotations_difficult_situations_28:
-        array_annotations_v.append(annotation[0])
-        array_annotations_w.append(annotation[1])
-
-    # START NORMALIZE DATA
-    array_annotations_v = np.stack(array_annotations_v, axis=0)
-    array_annotations_v = array_annotations_v.reshape(-1, 1)
-
-    array_annotations_w = np.stack(array_annotations_w, axis=0)
-    array_annotations_w = array_annotations_w.reshape(-1, 1)
-
-    normalized_x = np.interp(array_annotations_v, (6.5, 24), (0, 1))
-    normalized_y = np.interp(array_annotations_w, (-7.1, 7.1), (0, 1))
-
-    normalized_annotations = []
-    for i in range(0, len(normalized_x)):
-        normalized_annotations.append([normalized_x.item(i), normalized_y.item(i)])
-
-    array_annotations_difficult_situations_28 = normalized_annotations
 
     images_many_curves_1_1 = images_many_curves_1[:len(images_many_curves_1) // 2]
     images_many_curves_1_2 = images_many_curves_1[len(images_many_curves_1) // 2:]
@@ -2027,7 +2028,6 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
                                                  :len(array_annotations_difficult_situations_4) // 2]
     array_annotations_difficult_situations_4_2 = array_annotations_difficult_situations_4[
                                                  len(array_annotations_difficult_situations_4) // 2:]
-
     images_difficult_situations_5_1 = images_difficult_situations_5[:len(images_difficult_situations_5) // 2]
     images_difficult_situations_5_2 = images_difficult_situations_5[len(images_difficult_situations_5) // 2:]
     images_difficult_situations_5_1 = images_difficult_situations_5_1[:-39]
@@ -2072,115 +2072,122 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_8_1 = array_annotations_difficult_situations_8_1[:-32]
     array_annotations_difficult_situations_8_2 = array_annotations_difficult_situations_8_2[:-32]
 
+    images_difficult_situations_9_1 = images_difficult_situations_9[:len(images_difficult_situations_9) // 2]
+    images_difficult_situations_9_2 = images_difficult_situations_9[len(images_difficult_situations_9) // 2:]
+    images_difficult_situations_9_1 = images_difficult_situations_9_1[:-26]
+    images_difficult_situations_9_2 = images_difficult_situations_9_2[:-26]
+    array_annotations_difficult_situations_9_1 = array_annotations_difficult_situations_9[
+                                                 :len(array_annotations_difficult_situations_9) // 2]
+    array_annotations_difficult_situations_9_2 = array_annotations_difficult_situations_9[
+                                                 len(array_annotations_difficult_situations_9) // 2:]
+    array_annotations_difficult_situations_9_1 = array_annotations_difficult_situations_9_1[:-26]
+    array_annotations_difficult_situations_9_2 = array_annotations_difficult_situations_9_2[:-26]
+
     images_difficult_situations_10_1 = images_difficult_situations_10[:len(images_difficult_situations_10) // 2]
     images_difficult_situations_10_2 = images_difficult_situations_10[len(images_difficult_situations_10) // 2:]
-    images_difficult_situations_10_1 = images_difficult_situations_10_1[:-26]
-    images_difficult_situations_10_2 = images_difficult_situations_10_2[:-26]
+    images_difficult_situations_10_1 = images_difficult_situations_10_1[:-42]
+    images_difficult_situations_10_2 = images_difficult_situations_10_2[:-42]
     array_annotations_difficult_situations_10_1 = array_annotations_difficult_situations_10[
                                                   :len(array_annotations_difficult_situations_10) // 2]
     array_annotations_difficult_situations_10_2 = array_annotations_difficult_situations_10[
                                                   len(array_annotations_difficult_situations_10) // 2:]
-    array_annotations_difficult_situations_10_1 = array_annotations_difficult_situations_10_1[:-26]
-    array_annotations_difficult_situations_10_2 = array_annotations_difficult_situations_10_2[:-26]
+    array_annotations_difficult_situations_10_1 = array_annotations_difficult_situations_10_1[:-42]
+    array_annotations_difficult_situations_10_2 = array_annotations_difficult_situations_10_2[:-42]
 
     images_difficult_situations_11_1 = images_difficult_situations_11[:len(images_difficult_situations_11) // 2]
     images_difficult_situations_11_2 = images_difficult_situations_11[len(images_difficult_situations_11) // 2:]
-    images_difficult_situations_11_1 = images_difficult_situations_11_1[:-42]
-    images_difficult_situations_11_2 = images_difficult_situations_11_2[:-42]
+    images_difficult_situations_11_1 = images_difficult_situations_11_1[:-13]
+    images_difficult_situations_11_2 = images_difficult_situations_11_2[:-13]
     array_annotations_difficult_situations_11_1 = array_annotations_difficult_situations_11[
                                                   :len(array_annotations_difficult_situations_11) // 2]
     array_annotations_difficult_situations_11_2 = array_annotations_difficult_situations_11[
                                                   len(array_annotations_difficult_situations_11) // 2:]
-    array_annotations_difficult_situations_11_1 = array_annotations_difficult_situations_11_1[:-42]
-    array_annotations_difficult_situations_11_2 = array_annotations_difficult_situations_11_2[:-42]
+    array_annotations_difficult_situations_11_1 = array_annotations_difficult_situations_11_1[:-13]
+    array_annotations_difficult_situations_11_2 = array_annotations_difficult_situations_11_2[:-13]
 
     images_difficult_situations_12_1 = images_difficult_situations_12[:len(images_difficult_situations_12) // 2]
     images_difficult_situations_12_2 = images_difficult_situations_12[len(images_difficult_situations_12) // 2:]
-    images_difficult_situations_12_1 = images_difficult_situations_12_1[:-13]
-    images_difficult_situations_12_2 = images_difficult_situations_12_2[:-13]
+    images_difficult_situations_12_1 = images_difficult_situations_12_1[:-3]
+    images_difficult_situations_12_2 = images_difficult_situations_12_2[:-3]
     array_annotations_difficult_situations_12_1 = array_annotations_difficult_situations_12[
                                                   :len(array_annotations_difficult_situations_12) // 2]
     array_annotations_difficult_situations_12_2 = array_annotations_difficult_situations_12[
                                                   len(array_annotations_difficult_situations_12) // 2:]
-    array_annotations_difficult_situations_12_1 = array_annotations_difficult_situations_12_1[:-13]
-    array_annotations_difficult_situations_12_2 = array_annotations_difficult_situations_12_2[:-13]
+    array_annotations_difficult_situations_12_1 = array_annotations_difficult_situations_12_1[:-3]
+    array_annotations_difficult_situations_12_2 = array_annotations_difficult_situations_12_2[:-3]
 
     images_difficult_situations_13_1 = images_difficult_situations_13[:len(images_difficult_situations_13) // 2]
     images_difficult_situations_13_2 = images_difficult_situations_13[len(images_difficult_situations_13) // 2:]
-    images_difficult_situations_13_1 = images_difficult_situations_13_1[:-3]
-    images_difficult_situations_13_2 = images_difficult_situations_13_2[:-3]
+    images_difficult_situations_13_1 = images_difficult_situations_13_1[:-29]
+    images_difficult_situations_13_2 = images_difficult_situations_13_2[:-29]
     array_annotations_difficult_situations_13_1 = array_annotations_difficult_situations_13[
                                                   :len(array_annotations_difficult_situations_13) // 2]
     array_annotations_difficult_situations_13_2 = array_annotations_difficult_situations_13[
                                                   len(array_annotations_difficult_situations_13) // 2:]
-    array_annotations_difficult_situations_13_1 = array_annotations_difficult_situations_13_1[:-3]
-    array_annotations_difficult_situations_13_2 = array_annotations_difficult_situations_13_2[:-3]
+    array_annotations_difficult_situations_13_1 = array_annotations_difficult_situations_13_1[:-29]
+    array_annotations_difficult_situations_13_2 = array_annotations_difficult_situations_13_2[:-29]
 
     images_difficult_situations_14_1 = images_difficult_situations_14[:len(images_difficult_situations_14) // 2]
     images_difficult_situations_14_2 = images_difficult_situations_14[len(images_difficult_situations_14) // 2:]
-    images_difficult_situations_14_1 = images_difficult_situations_14_1[:-29]
-    images_difficult_situations_14_2 = images_difficult_situations_14_2[:-29]
+    images_difficult_situations_14_1 = images_difficult_situations_14_1[:-2]
+    images_difficult_situations_14_2 = images_difficult_situations_14_2[:-2]
     array_annotations_difficult_situations_14_1 = array_annotations_difficult_situations_14[
                                                   :len(array_annotations_difficult_situations_14) // 2]
     array_annotations_difficult_situations_14_2 = array_annotations_difficult_situations_14[
                                                   len(array_annotations_difficult_situations_14) // 2:]
-    array_annotations_difficult_situations_14_1 = array_annotations_difficult_situations_14_1[:-29]
-    array_annotations_difficult_situations_14_2 = array_annotations_difficult_situations_14_2[:-29]
+    array_annotations_difficult_situations_14_1 = array_annotations_difficult_situations_14_1[:-2]
+    array_annotations_difficult_situations_14_2 = array_annotations_difficult_situations_14_2[:-2]
 
     images_difficult_situations_15_1 = images_difficult_situations_15[:len(images_difficult_situations_15) // 2]
     images_difficult_situations_15_2 = images_difficult_situations_15[len(images_difficult_situations_15) // 2:]
-    images_difficult_situations_15_1 = images_difficult_situations_15_1[:-2]
-    images_difficult_situations_15_2 = images_difficult_situations_15_2[:-2]
+    images_difficult_situations_15_1 = images_difficult_situations_15_1[:-11]
+    images_difficult_situations_15_2 = images_difficult_situations_15_2[:-11]
     array_annotations_difficult_situations_15_1 = array_annotations_difficult_situations_15[
                                                   :len(array_annotations_difficult_situations_15) // 2]
     array_annotations_difficult_situations_15_2 = array_annotations_difficult_situations_15[
                                                   len(array_annotations_difficult_situations_15) // 2:]
-    array_annotations_difficult_situations_15_1 = array_annotations_difficult_situations_15_1[:-2]
-    array_annotations_difficult_situations_15_2 = array_annotations_difficult_situations_15_2[:-2]
+    array_annotations_difficult_situations_15_1 = array_annotations_difficult_situations_15_1[:-11]
+    array_annotations_difficult_situations_15_2 = array_annotations_difficult_situations_15_2[:-11]
 
     images_difficult_situations_16_1 = images_difficult_situations_16[:len(images_difficult_situations_16) // 2]
     images_difficult_situations_16_2 = images_difficult_situations_16[len(images_difficult_situations_16) // 2:]
-    images_difficult_situations_16_1 = images_difficult_situations_16_1[:-11]
-    images_difficult_situations_16_2 = images_difficult_situations_16_2[:-1]
+    images_difficult_situations_16_1 = images_difficult_situations_16_1[:-26]
+    images_difficult_situations_16_2 = images_difficult_situations_16_2[:-26]
     array_annotations_difficult_situations_16_1 = array_annotations_difficult_situations_16[
                                                   :len(array_annotations_difficult_situations_16) // 2]
     array_annotations_difficult_situations_16_2 = array_annotations_difficult_situations_16[
                                                   len(array_annotations_difficult_situations_16) // 2:]
-    array_annotations_difficult_situations_16_1 = array_annotations_difficult_situations_16_1[:-11]
-    array_annotations_difficult_situations_16_2 = array_annotations_difficult_situations_16_2[:-1]
+    array_annotations_difficult_situations_16_1 = array_annotations_difficult_situations_16_1[:-26]
+    array_annotations_difficult_situations_16_2 = array_annotations_difficult_situations_16_2[:-26]
 
     images_difficult_situations_17_1 = images_difficult_situations_17[:len(images_difficult_situations_17) // 2]
     images_difficult_situations_17_2 = images_difficult_situations_17[len(images_difficult_situations_17) // 2:]
-    images_difficult_situations_17_1 = images_difficult_situations_17_1[:-26]
-    images_difficult_situations_17_2 = images_difficult_situations_17_2[:-26]
+    images_difficult_situations_17_1 = images_difficult_situations_17_1[:-18]
+    images_difficult_situations_17_2 = images_difficult_situations_17_2[:-18]
     array_annotations_difficult_situations_17_1 = array_annotations_difficult_situations_17[
                                                   :len(array_annotations_difficult_situations_17) // 2]
     array_annotations_difficult_situations_17_2 = array_annotations_difficult_situations_17[
                                                   len(array_annotations_difficult_situations_17) // 2:]
-    array_annotations_difficult_situations_17_1 = array_annotations_difficult_situations_17_1[:-26]
-    array_annotations_difficult_situations_17_2 = array_annotations_difficult_situations_17_2[:-26]
+    array_annotations_difficult_situations_17_1 = array_annotations_difficult_situations_17_1[:-18]
+    array_annotations_difficult_situations_17_2 = array_annotations_difficult_situations_17_2[:-18]
 
     images_difficult_situations_18_1 = images_difficult_situations_18[:len(images_difficult_situations_18) // 2]
     images_difficult_situations_18_2 = images_difficult_situations_18[len(images_difficult_situations_18) // 2:]
-    images_difficult_situations_18_1 = images_difficult_situations_18_1[:-18]
-    images_difficult_situations_18_2 = images_difficult_situations_18_2[:-18]
+    images_difficult_situations_18_1 = images_difficult_situations_18_1[:-3]
+    images_difficult_situations_18_2 = images_difficult_situations_18_2[:-3]
     array_annotations_difficult_situations_18_1 = array_annotations_difficult_situations_18[
                                                   :len(array_annotations_difficult_situations_18) // 2]
     array_annotations_difficult_situations_18_2 = array_annotations_difficult_situations_18[
                                                   len(array_annotations_difficult_situations_18) // 2:]
-    array_annotations_difficult_situations_18_1 = array_annotations_difficult_situations_18_1[:-18]
-    array_annotations_difficult_situations_18_2 = array_annotations_difficult_situations_18_2[:-18]
+    array_annotations_difficult_situations_18_1 = array_annotations_difficult_situations_18_1[:-3]
+    array_annotations_difficult_situations_18_2 = array_annotations_difficult_situations_18_2[:-3]
 
     images_difficult_situations_19_1 = images_difficult_situations_19[:len(images_difficult_situations_19) // 2]
     images_difficult_situations_19_2 = images_difficult_situations_19[len(images_difficult_situations_19) // 2:]
-    images_difficult_situations_19_1 = images_difficult_situations_19_1[:-3]
-    images_difficult_situations_19_2 = images_difficult_situations_19_2[:-3]
     array_annotations_difficult_situations_19_1 = array_annotations_difficult_situations_19[
                                                   :len(array_annotations_difficult_situations_19) // 2]
     array_annotations_difficult_situations_19_2 = array_annotations_difficult_situations_19[
                                                   len(array_annotations_difficult_situations_19) // 2:]
-    array_annotations_difficult_situations_19_1 = array_annotations_difficult_situations_19_1[:-3]
-    array_annotations_difficult_situations_19_2 = array_annotations_difficult_situations_19_2[:-3]
 
     images_difficult_situations_20_1 = images_difficult_situations_20[:len(images_difficult_situations_20) // 2]
     images_difficult_situations_20_2 = images_difficult_situations_20[len(images_difficult_situations_20) // 2:]
@@ -2191,69 +2198,69 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
 
     images_difficult_situations_21_1 = images_difficult_situations_21[:len(images_difficult_situations_21) // 2]
     images_difficult_situations_21_2 = images_difficult_situations_21[len(images_difficult_situations_21) // 2:]
-    images_difficult_situations_21_1 = images_difficult_situations_21_1[:-10]
-    images_difficult_situations_21_2 = images_difficult_situations_21_2[:-10]
+    images_difficult_situations_21_1 = images_difficult_situations_21_1[:-26]
+    images_difficult_situations_21_2 = images_difficult_situations_21_2[:-26]
     array_annotations_difficult_situations_21_1 = array_annotations_difficult_situations_21[
                                                   :len(array_annotations_difficult_situations_21) // 2]
     array_annotations_difficult_situations_21_2 = array_annotations_difficult_situations_21[
                                                   len(array_annotations_difficult_situations_21) // 2:]
-    array_annotations_difficult_situations_21_1 = array_annotations_difficult_situations_21_1[:-10]
-    array_annotations_difficult_situations_21_2 = array_annotations_difficult_situations_21_2[:-10]
+    array_annotations_difficult_situations_21_1 = array_annotations_difficult_situations_21_1[:-26]
+    array_annotations_difficult_situations_21_2 = array_annotations_difficult_situations_21_2[:-26]
 
     images_difficult_situations_22_1 = images_difficult_situations_22[:len(images_difficult_situations_22) // 2]
     images_difficult_situations_22_2 = images_difficult_situations_22[len(images_difficult_situations_22) // 2:]
-    images_difficult_situations_22_1 = images_difficult_situations_22_1[:-26]
-    images_difficult_situations_22_2 = images_difficult_situations_22_2[:-26]
+    images_difficult_situations_22_1 = images_difficult_situations_22_1[:-4]
+    images_difficult_situations_22_2 = images_difficult_situations_22_2[:-4]
     array_annotations_difficult_situations_22_1 = array_annotations_difficult_situations_22[
                                                   :len(array_annotations_difficult_situations_22) // 2]
     array_annotations_difficult_situations_22_2 = array_annotations_difficult_situations_22[
                                                   len(array_annotations_difficult_situations_22) // 2:]
-    array_annotations_difficult_situations_22_1 = array_annotations_difficult_situations_22_1[:-26]
-    array_annotations_difficult_situations_22_2 = array_annotations_difficult_situations_22_2[:-26]
+    array_annotations_difficult_situations_22_1 = array_annotations_difficult_situations_22_1[:-4]
+    array_annotations_difficult_situations_22_2 = array_annotations_difficult_situations_22_2[:-4]
 
     images_difficult_situations_23_1 = images_difficult_situations_23[:len(images_difficult_situations_23) // 2]
     images_difficult_situations_23_2 = images_difficult_situations_23[len(images_difficult_situations_23) // 2:]
-    images_difficult_situations_23_1 = images_difficult_situations_23_1[:-4]
-    images_difficult_situations_23_2 = images_difficult_situations_23_2[:-4]
+    images_difficult_situations_23_1 = images_difficult_situations_23_1[:-35]
+    images_difficult_situations_23_2 = images_difficult_situations_23_2[:-35]
     array_annotations_difficult_situations_23_1 = array_annotations_difficult_situations_23[
                                                   :len(array_annotations_difficult_situations_23) // 2]
     array_annotations_difficult_situations_23_2 = array_annotations_difficult_situations_23[
                                                   len(array_annotations_difficult_situations_23) // 2:]
-    array_annotations_difficult_situations_23_1 = array_annotations_difficult_situations_23_1[:-4]
-    array_annotations_difficult_situations_23_2 = array_annotations_difficult_situations_23_2[:-4]
+    array_annotations_difficult_situations_23_1 = array_annotations_difficult_situations_23_1[:-35]
+    array_annotations_difficult_situations_23_2 = array_annotations_difficult_situations_23_2[:-35]
 
     images_difficult_situations_24_1 = images_difficult_situations_24[:len(images_difficult_situations_24) // 2]
     images_difficult_situations_24_2 = images_difficult_situations_24[len(images_difficult_situations_24) // 2:]
-    images_difficult_situations_24_1 = images_difficult_situations_24_1[:-35]
-    images_difficult_situations_24_2 = images_difficult_situations_24_2[:-35]
+    images_difficult_situations_24_1 = images_difficult_situations_24_1[:-5]
+    images_difficult_situations_24_2 = images_difficult_situations_24_2[:-5]
     array_annotations_difficult_situations_24_1 = array_annotations_difficult_situations_24[
                                                   :len(array_annotations_difficult_situations_24) // 2]
     array_annotations_difficult_situations_24_2 = array_annotations_difficult_situations_24[
                                                   len(array_annotations_difficult_situations_24) // 2:]
-    array_annotations_difficult_situations_24_1 = array_annotations_difficult_situations_24_1[:-35]
-    array_annotations_difficult_situations_24_2 = array_annotations_difficult_situations_24_2[:-35]
+    array_annotations_difficult_situations_24_1 = array_annotations_difficult_situations_24_1[:-5]
+    array_annotations_difficult_situations_24_2 = array_annotations_difficult_situations_24_2[:-5]
 
     images_difficult_situations_25_1 = images_difficult_situations_25[:len(images_difficult_situations_25) // 2]
     images_difficult_situations_25_2 = images_difficult_situations_25[len(images_difficult_situations_25) // 2:]
-    images_difficult_situations_25_1 = images_difficult_situations_25_1[:-5]
-    images_difficult_situations_25_2 = images_difficult_situations_25_2[:-5]
+    images_difficult_situations_25_1 = images_difficult_situations_25_1[:-15]
+    images_difficult_situations_25_2 = images_difficult_situations_25_2[:-15]
     array_annotations_difficult_situations_25_1 = array_annotations_difficult_situations_25[
                                                   :len(array_annotations_difficult_situations_25) // 2]
     array_annotations_difficult_situations_25_2 = array_annotations_difficult_situations_25[
                                                   len(array_annotations_difficult_situations_25) // 2:]
-    array_annotations_difficult_situations_25_1 = array_annotations_difficult_situations_25_1[:-5]
-    array_annotations_difficult_situations_25_2 = array_annotations_difficult_situations_25_2[:-5]
+    array_annotations_difficult_situations_25_1 = array_annotations_difficult_situations_25_1[:-15]
+    array_annotations_difficult_situations_25_2 = array_annotations_difficult_situations_25_2[:-15]
 
     images_difficult_situations_26_1 = images_difficult_situations_26[:len(images_difficult_situations_26) // 2]
     images_difficult_situations_26_2 = images_difficult_situations_26[len(images_difficult_situations_26) // 2:]
-    images_difficult_situations_26_1 = images_difficult_situations_26_1[:-15]
-    images_difficult_situations_26_2 = images_difficult_situations_26_2[:-15]
+    images_difficult_situations_26_1 = images_difficult_situations_26_1[:-31]
+    images_difficult_situations_26_2 = images_difficult_situations_26_2[:-31]
     array_annotations_difficult_situations_26_1 = array_annotations_difficult_situations_26[
                                                   :len(array_annotations_difficult_situations_26) // 2]
     array_annotations_difficult_situations_26_2 = array_annotations_difficult_situations_26[
                                                   len(array_annotations_difficult_situations_26) // 2:]
-    array_annotations_difficult_situations_26_1 = array_annotations_difficult_situations_26_1[:-15]
-    array_annotations_difficult_situations_26_2 = array_annotations_difficult_situations_26_2[:-15]
+    array_annotations_difficult_situations_26_1 = array_annotations_difficult_situations_26_1[:-31]
+    array_annotations_difficult_situations_26_2 = array_annotations_difficult_situations_26_2[:-31]
 
     images_difficult_situations_27_1 = images_difficult_situations_27[:len(images_difficult_situations_27) // 2]
     images_difficult_situations_27_2 = images_difficult_situations_27[len(images_difficult_situations_27) // 2:]
@@ -2265,17 +2272,6 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
                                                   len(array_annotations_difficult_situations_27) // 2:]
     array_annotations_difficult_situations_27_1 = array_annotations_difficult_situations_27_1[:-31]
     array_annotations_difficult_situations_27_2 = array_annotations_difficult_situations_27_2[:-31]
-
-    images_difficult_situations_28_1 = images_difficult_situations_28[:len(images_difficult_situations_28) // 2]
-    images_difficult_situations_28_2 = images_difficult_situations_28[len(images_difficult_situations_28) // 2:]
-    images_difficult_situations_28_1 = images_difficult_situations_28_1[:-31]
-    images_difficult_situations_28_2 = images_difficult_situations_28_2[:-31]
-    array_annotations_difficult_situations_28_1 = array_annotations_difficult_situations_28[
-                                                  :len(array_annotations_difficult_situations_28) // 2]
-    array_annotations_difficult_situations_28_2 = array_annotations_difficult_situations_28[
-                                                  len(array_annotations_difficult_situations_28) // 2:]
-    array_annotations_difficult_situations_28_1 = array_annotations_difficult_situations_28_1[:-31]
-    array_annotations_difficult_situations_28_2 = array_annotations_difficult_situations_28_2[:-31]
 
     array_x = [
         images_many_curves_1_1, images_many_curves_1_2, images_nurburgring_1_1, images_nurburgring_1_2,
@@ -2296,6 +2292,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
         images_difficult_situations_6_2,
         images_difficult_situations_7_1, images_difficult_situations_7_2, images_difficult_situations_8_1,
         images_difficult_situations_8_2,
+        images_difficult_situations_9_1, images_difficult_situations_9_2,
         images_difficult_situations_10_1, images_difficult_situations_10_2, images_difficult_situations_11_1,
         images_difficult_situations_11_2,
         images_difficult_situations_12_1, images_difficult_situations_12_2, images_difficult_situations_13_1,
@@ -2313,8 +2310,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
         images_difficult_situations_24_1, images_difficult_situations_24_2, images_difficult_situations_25_1,
         images_difficult_situations_25_2,
         images_difficult_situations_26_1, images_difficult_situations_26_2, images_difficult_situations_27_1,
-        images_difficult_situations_27_2,
-        images_difficult_situations_28_1, images_difficult_situations_28_2
+        images_difficult_situations_27_2
     ]
 
     array_y = [
@@ -2337,13 +2333,13 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
         array_annotations_difficult_situations_6_1, array_annotations_difficult_situations_6_2,
         array_annotations_difficult_situations_7_1, array_annotations_difficult_situations_7_2,
         array_annotations_difficult_situations_8_1, array_annotations_difficult_situations_8_2,
+        array_annotations_difficult_situations_9_1, array_annotations_difficult_situations_9_2,
         array_annotations_difficult_situations_10_1, array_annotations_difficult_situations_10_2,
         array_annotations_difficult_situations_11_1, array_annotations_difficult_situations_11_2,
         array_annotations_difficult_situations_12_1, array_annotations_difficult_situations_12_2,
         array_annotations_difficult_situations_13_1, array_annotations_difficult_situations_13_2,
         array_annotations_difficult_situations_14_1, array_annotations_difficult_situations_14_2,
         array_annotations_difficult_situations_15_1, array_annotations_difficult_situations_15_2,
-
         array_annotations_difficult_situations_16_1, array_annotations_difficult_situations_16_2,
         array_annotations_difficult_situations_17_1, array_annotations_difficult_situations_17_2,
         array_annotations_difficult_situations_18_1, array_annotations_difficult_situations_18_2,
@@ -2356,8 +2352,6 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
         array_annotations_difficult_situations_25_1, array_annotations_difficult_situations_25_2,
         array_annotations_difficult_situations_26_1, array_annotations_difficult_situations_26_2,
         array_annotations_difficult_situations_27_1, array_annotations_difficult_situations_27_2,
-        array_annotations_difficult_situations_28_1, array_annotations_difficult_situations_28_2
-
     ]
     print(len(array_x))
     print(len(array_y))

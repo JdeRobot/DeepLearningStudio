@@ -3,7 +3,7 @@ from tensorflow.keras.layers import Flatten, Dense, Conv2D, BatchNormalization, 
 from tensorflow.keras.optimizers import Adam
 
 
-def pilotnet_x3(img_shape):
+def pilotnet_x3(img_shape, learning_rate):
     model = Sequential()
     model.add(BatchNormalization(epsilon=0.001, axis=-1, input_shape=img_shape))
     model.add(TimeDistributed(Conv2D(24, (5, 5), strides=(2, 2), activation="relu",padding='same')))
@@ -22,6 +22,6 @@ def pilotnet_x3(img_shape):
     model.add(Dense(50, activation="relu"))
     model.add(Dense(10, activation="relu"))
     model.add(Dense(2))
-    adam = Adam(learning_rate=0.0001)
+    adam = Adam(learning_rate=learning_rate)
     model.compile(optimizer=adam, loss="mse", metrics=['mse', 'mae'])
     return model

@@ -191,7 +191,7 @@ cd DeepLearningStudio/Formula1-FollowLine/tensorflow
 # For PilotNet
 
 cd PilotNet
-python train.py --data_dir ../complete_dataset/ \
+python3 train.py --data_dir ../../../../datasets_opencv/ \
 	--preprocess crop \
 	--preprocess extreme \
 	--data_augs True \
@@ -202,12 +202,13 @@ python train.py --data_dir ../complete_dataset/ \
 	
 # For DeepestLSTMTinyPilotNet
 cd DeepestLSTMTinyPilotNet
-python3 train.py --data_dir ../ \
+python3 train.py --data_dir ../../../../datasets_opencv/ \
     --preprocess crop \
     --preprocess extreme \
-    --num_epochs 300 \
+     --data_augs True \
+    --num_epochs 1 \
     --batch_size 50 \
-    --data_augs True
+    --img_shape "100,50,3"
 
 # For memDCCP
 cd memDCCP

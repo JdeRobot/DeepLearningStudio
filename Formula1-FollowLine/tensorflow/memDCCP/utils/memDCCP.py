@@ -6,7 +6,7 @@ from tensorflow.keras import Model
 
 
 # memDCCP
-def memDCCP(img_shape):
+def memDCCP(img_shape, learning_rate):
     model = Sequential()
     model.add(BatchNormalization(epsilon=0.001, axis=-1, input_shape=img_shape))
 
@@ -29,6 +29,6 @@ def memDCCP(img_shape):
     model.add(Dense(10, activation="relu"))
     model.add(Dense(2))
 
-    adam = Adam(lr=0.00001)
+    adam = Adam(lr=learning_rate)
     model.compile(optimizer=adam, loss="mse", metrics=['mse', 'mae'])
     return model

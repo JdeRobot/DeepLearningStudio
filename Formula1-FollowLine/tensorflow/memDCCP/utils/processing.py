@@ -66,7 +66,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_many_curves_1 = pandas.read_csv(many_curves_1_name_file)
     array_annotations_many_curves_1 = parse_csv(array_annotations_many_curves_1)
 
-    images_many_curves_1 = get_images(images_paths_many_curves_1, 'cropped', img_shape)
+    images_many_curves_1 = get_images(images_paths_many_curves_1, type_image, img_shape)
     images_many_curves_1, array_annotations_many_curves_1 = flip_images(images_many_curves_1,
                                                                         array_annotations_many_curves_1)
 
@@ -107,7 +107,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_nurburgring_1 = pandas.read_csv(nurburgring_1_name_file)
     array_annotations_nurburgring_1 = parse_csv(array_annotations_nurburgring_1)
 
-    images_nurburgring_1 = get_images(images_paths_nurburgring_1, 'cropped', img_shape)
+    images_nurburgring_1 = get_images(images_paths_nurburgring_1, type_image, img_shape)
     images_nurburgring_1, array_annotations_nurburgring_1 = flip_images(images_nurburgring_1,
                                                                         array_annotations_nurburgring_1)
     array_annotations_v = []
@@ -147,7 +147,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_monaco_1 = pandas.read_csv(monaco_1_name_file)
     array_annotations_monaco_1 = parse_csv(array_annotations_monaco_1)
 
-    images_monaco_1 = get_images(images_paths_monaco_1, 'cropped', img_shape)
+    images_monaco_1 = get_images(images_paths_monaco_1, type_image, img_shape)
     images_monaco_1, array_annotations_monaco_1 = flip_images(images_monaco_1, array_annotations_monaco_1)
 
     array_annotations_v = []
@@ -188,7 +188,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_extended_simple_1 = pandas.read_csv(extended_simple_1_name_file)
     array_annotations_extended_simple_1 = parse_csv(array_annotations_extended_simple_1)
 
-    images_extended_simple_1 = get_images(images_paths_extended_simple_1, 'cropped', img_shape)
+    images_extended_simple_1 = get_images(images_paths_extended_simple_1, type_image, img_shape)
     images_extended_simple_1, array_annotations_extended_simple_1 = flip_images(images_extended_simple_1,
                                                                                 array_annotations_extended_simple_1)
 
@@ -229,7 +229,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_1 = pandas.read_csv(only_curves_1_name_file)
     array_annotations_only_curves_1 = parse_csv(array_annotations_only_curves_1)
 
-    images_only_curves_1 = get_images(images_paths_only_curves_1, 'cropped', img_shape)
+    images_only_curves_1 = get_images(images_paths_only_curves_1, type_image, img_shape)
     images_only_curves_1, array_annotations_only_curves_1 = flip_images(images_only_curves_1,
                                                                         array_annotations_only_curves_1)
 
@@ -270,7 +270,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_2 = pandas.read_csv(only_curves_2_name_file)
     array_annotations_only_curves_2 = parse_csv(array_annotations_only_curves_2)
 
-    images_only_curves_2 = get_images(images_paths_only_curves_2, 'cropped', img_shape)
+    images_only_curves_2 = get_images(images_paths_only_curves_2, type_image, img_shape)
     images_only_curves_2, array_annotations_only_curves_2 = flip_images(images_only_curves_2,
                                                                         array_annotations_only_curves_2)
 
@@ -311,7 +311,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_3 = pandas.read_csv(only_curves_3_name_file)
     array_annotations_only_curves_3 = parse_csv(array_annotations_only_curves_3)
 
-    images_only_curves_3 = get_images(images_paths_only_curves_3, 'cropped', img_shape)
+    images_only_curves_3 = get_images(images_paths_only_curves_3, type_image, img_shape)
     images_only_curves_3, array_annotations_only_curves_3 = flip_images(images_only_curves_3,
                                                                         array_annotations_only_curves_3)
 
@@ -352,7 +352,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_4 = pandas.read_csv(only_curves_4_name_file)
     array_annotations_only_curves_4 = parse_csv(array_annotations_only_curves_4)
 
-    images_only_curves_4 = get_images(images_paths_only_curves_4, 'cropped', img_shape)
+    images_only_curves_4 = get_images(images_paths_only_curves_4, type_image, img_shape)
     images_only_curves_4, array_annotations_only_curves_4 = flip_images(images_only_curves_4,
                                                                         array_annotations_only_curves_4)
 
@@ -393,7 +393,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_5 = pandas.read_csv(only_curves_5_name_file)
     array_annotations_only_curves_5 = parse_csv(array_annotations_only_curves_5)
 
-    images_only_curves_5 = get_images(images_paths_only_curves_5, 'cropped', img_shape)
+    images_only_curves_5 = get_images(images_paths_only_curves_5, type_image, img_shape)
     images_only_curves_5, array_annotations_only_curves_5 = flip_images(images_only_curves_5,
                                                                         array_annotations_only_curves_5)
 
@@ -434,7 +434,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_6 = pandas.read_csv(only_curves_6_name_file)
     array_annotations_only_curves_6 = parse_csv(array_annotations_only_curves_6)
 
-    images_only_curves_6 = get_images(images_paths_only_curves_6, 'cropped', img_shape)
+    images_only_curves_6 = get_images(images_paths_only_curves_6, type_image, img_shape)
     images_only_curves_6, array_annotations_only_curves_6 = flip_images(images_only_curves_6,
                                                                         array_annotations_only_curves_6)
 
@@ -475,7 +475,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_7 = pandas.read_csv(only_curves_7_name_file)
     array_annotations_only_curves_7 = parse_csv(array_annotations_only_curves_7)
 
-    images_only_curves_7 = get_images(images_paths_only_curves_7, 'cropped', img_shape)
+    images_only_curves_7 = get_images(images_paths_only_curves_7, type_image, img_shape)
     images_only_curves_7, array_annotations_only_curves_7 = flip_images(images_only_curves_7,
                                                                         array_annotations_only_curves_7)
 
@@ -516,7 +516,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_8 = pandas.read_csv(only_curves_8_name_file)
     array_annotations_only_curves_8 = parse_csv(array_annotations_only_curves_8)
 
-    images_only_curves_8 = get_images(images_paths_only_curves_8, 'cropped', img_shape)
+    images_only_curves_8 = get_images(images_paths_only_curves_8, type_image, img_shape)
     images_only_curves_8, array_annotations_only_curves_8 = flip_images(images_only_curves_8,
                                                                         array_annotations_only_curves_8)
 
@@ -557,7 +557,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_9 = pandas.read_csv(only_curves_9_name_file)
     array_annotations_only_curves_9 = parse_csv(array_annotations_only_curves_9)
 
-    images_only_curves_9 = get_images(images_paths_only_curves_9, 'cropped', img_shape)
+    images_only_curves_9 = get_images(images_paths_only_curves_9, type_image, img_shape)
     images_only_curves_9, array_annotations_only_curves_9 = flip_images(images_only_curves_9,
                                                                         array_annotations_only_curves_9)
 
@@ -599,7 +599,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_10 = pandas.read_csv(only_curves_10_name_file)
     array_annotations_only_curves_10 = parse_csv(array_annotations_only_curves_10)
 
-    images_only_curves_10 = get_images(images_paths_only_curves_10, 'cropped', img_shape)
+    images_only_curves_10 = get_images(images_paths_only_curves_10, type_image, img_shape)
     images_only_curves_10, array_annotations_only_curves_10 = flip_images(images_only_curves_10,
                                                                           array_annotations_only_curves_10)
 
@@ -641,7 +641,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_11 = pandas.read_csv(only_curves_11_name_file)
     array_annotations_only_curves_11 = parse_csv(array_annotations_only_curves_11)
 
-    images_only_curves_11 = get_images(images_paths_only_curves_11, 'cropped', img_shape)
+    images_only_curves_11 = get_images(images_paths_only_curves_11, type_image, img_shape)
     images_only_curves_11, array_annotations_only_curves_11 = flip_images(images_only_curves_11,
                                                                           array_annotations_only_curves_11)
 
@@ -683,7 +683,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_only_curves_12 = pandas.read_csv(only_curves_12_name_file)
     array_annotations_only_curves_12 = parse_csv(array_annotations_only_curves_12)
 
-    images_only_curves_12 = get_images(images_paths_only_curves_12, 'cropped', img_shape)
+    images_only_curves_12 = get_images(images_paths_only_curves_12, type_image, img_shape)
     images_only_curves_12, array_annotations_only_curves_12 = flip_images(images_only_curves_12,
                                                                           array_annotations_only_curves_12)
 
@@ -725,7 +725,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_1 = pandas.read_csv(difficult_situations_1_name_file)
     array_annotations_difficult_situations_1 = parse_csv(array_annotations_difficult_situations_1)
 
-    images_difficult_situations_1 = get_images(images_paths_difficult_situations_1, 'cropped', img_shape)
+    images_difficult_situations_1 = get_images(images_paths_difficult_situations_1, type_image, img_shape)
     images_difficult_situations_1, array_annotations_difficult_situations_1 = flip_images(images_difficult_situations_1,
                                                                                           array_annotations_difficult_situations_1)
 
@@ -767,7 +767,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_2 = pandas.read_csv(difficult_situations_2_name_file)
     array_annotations_difficult_situations_2 = parse_csv(array_annotations_difficult_situations_2)
 
-    images_difficult_situations_2 = get_images(images_paths_difficult_situations_2, 'cropped', img_shape)
+    images_difficult_situations_2 = get_images(images_paths_difficult_situations_2, type_image, img_shape)
     images_difficult_situations_2, array_annotations_difficult_situations_2 = flip_images(images_difficult_situations_2,
                                                                                           array_annotations_difficult_situations_2)
 
@@ -809,7 +809,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_3 = pandas.read_csv(difficult_situations_3_name_file)
     array_annotations_difficult_situations_3 = parse_csv(array_annotations_difficult_situations_3)
 
-    images_difficult_situations_3 = get_images(images_paths_difficult_situations_3, 'cropped', img_shape)
+    images_difficult_situations_3 = get_images(images_paths_difficult_situations_3, type_image, img_shape)
     images_difficult_situations_3, array_annotations_difficult_situations_3 = flip_images(images_difficult_situations_3,
                                                                                           array_annotations_difficult_situations_3)
 
@@ -851,7 +851,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_4 = pandas.read_csv(difficult_situations_4_name_file)
     array_annotations_difficult_situations_4 = parse_csv(array_annotations_difficult_situations_4)
 
-    images_difficult_situations_4 = get_images(images_paths_difficult_situations_4, 'cropped', img_shape)
+    images_difficult_situations_4 = get_images(images_paths_difficult_situations_4, type_image, img_shape)
     images_difficult_situations_4, array_annotations_difficult_situations_4 = flip_images(images_difficult_situations_4,
                                                                                           array_annotations_difficult_situations_4)
 
@@ -893,7 +893,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_5 = pandas.read_csv(difficult_situations_5_name_file)
     array_annotations_difficult_situations_5 = parse_csv(array_annotations_difficult_situations_5)
 
-    images_difficult_situations_5 = get_images(images_paths_difficult_situations_5, 'cropped', img_shape)
+    images_difficult_situations_5 = get_images(images_paths_difficult_situations_5, type_image, img_shape)
     images_difficult_situations_5, array_annotations_difficult_situations_5 = flip_images(images_difficult_situations_5,
                                                                                           array_annotations_difficult_situations_5)
 
@@ -935,7 +935,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_6 = pandas.read_csv(difficult_situations_6_name_file)
     array_annotations_difficult_situations_6 = parse_csv(array_annotations_difficult_situations_6)
 
-    images_difficult_situations_6 = get_images(images_paths_difficult_situations_6, 'cropped', img_shape)
+    images_difficult_situations_6 = get_images(images_paths_difficult_situations_6, type_image, img_shape)
     images_difficult_situations_6, array_annotations_difficult_situations_6 = flip_images(images_difficult_situations_6,
                                                                                           array_annotations_difficult_situations_6)
 
@@ -977,7 +977,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_7 = pandas.read_csv(difficult_situations_7_name_file)
     array_annotations_difficult_situations_7 = parse_csv(array_annotations_difficult_situations_7)
 
-    images_difficult_situations_7 = get_images(images_paths_difficult_situations_7, 'cropped', img_shape)
+    images_difficult_situations_7 = get_images(images_paths_difficult_situations_7, type_image, img_shape)
     images_difficult_situations_7, array_annotations_difficult_situations_7 = flip_images(images_difficult_situations_7,
                                                                                           array_annotations_difficult_situations_7)
 
@@ -1019,7 +1019,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_8 = pandas.read_csv(difficult_situations_8_name_file)
     array_annotations_difficult_situations_8 = parse_csv(array_annotations_difficult_situations_8)
 
-    images_difficult_situations_8 = get_images(images_paths_difficult_situations_8, 'cropped', img_shape)
+    images_difficult_situations_8 = get_images(images_paths_difficult_situations_8, type_image, img_shape)
     images_difficult_situations_8, array_annotations_difficult_situations_8 = flip_images(images_difficult_situations_8,
                                                                                           array_annotations_difficult_situations_8)
 
@@ -1061,7 +1061,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_9 = pandas.read_csv(difficult_situations_9_name_file)
     array_annotations_difficult_situations_9 = parse_csv(array_annotations_difficult_situations_9)
 
-    images_difficult_situations_9 = get_images(images_paths_difficult_situations_9, 'cropped', img_shape)
+    images_difficult_situations_9 = get_images(images_paths_difficult_situations_9, type_image, img_shape)
     images_difficult_situations_9, array_annotations_difficult_situations_9 = flip_images(images_difficult_situations_9,
                                                                                           array_annotations_difficult_situations_9)
 
@@ -1103,7 +1103,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_10 = pandas.read_csv(difficult_situations_10_name_file)
     array_annotations_difficult_situations_10 = parse_csv(array_annotations_difficult_situations_10)
 
-    images_difficult_situations_10 = get_images(images_paths_difficult_situations_10, 'cropped', img_shape)
+    images_difficult_situations_10 = get_images(images_paths_difficult_situations_10, type_image, img_shape)
     images_difficult_situations_10, array_annotations_difficult_situations_10 = flip_images(
         images_difficult_situations_10, array_annotations_difficult_situations_10)
 
@@ -1145,7 +1145,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_11 = pandas.read_csv(difficult_situations_11_name_file)
     array_annotations_difficult_situations_11 = parse_csv(array_annotations_difficult_situations_11)
 
-    images_difficult_situations_11 = get_images(images_paths_difficult_situations_11, 'cropped', img_shape)
+    images_difficult_situations_11 = get_images(images_paths_difficult_situations_11, type_image, img_shape)
     images_difficult_situations_11, array_annotations_difficult_situations_11 = flip_images(
         images_difficult_situations_11, array_annotations_difficult_situations_11)
 
@@ -1187,7 +1187,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_12 = pandas.read_csv(difficult_situations_12_name_file)
     array_annotations_difficult_situations_12 = parse_csv(array_annotations_difficult_situations_12)
 
-    images_difficult_situations_12 = get_images(images_paths_difficult_situations_12, 'cropped', img_shape)
+    images_difficult_situations_12 = get_images(images_paths_difficult_situations_12, type_image, img_shape)
     images_difficult_situations_12, array_annotations_difficult_situations_12 = flip_images(
         images_difficult_situations_12, array_annotations_difficult_situations_12)
 
@@ -1229,7 +1229,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_13 = pandas.read_csv(difficult_situations_13_name_file)
     array_annotations_difficult_situations_13 = parse_csv(array_annotations_difficult_situations_13)
 
-    images_difficult_situations_13 = get_images(images_paths_difficult_situations_13, 'cropped', img_shape)
+    images_difficult_situations_13 = get_images(images_paths_difficult_situations_13, type_image, img_shape)
     images_difficult_situations_13, array_annotations_difficult_situations_13 = flip_images(
         images_difficult_situations_13, array_annotations_difficult_situations_13)
 
@@ -1271,7 +1271,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_14 = pandas.read_csv(difficult_situations_14_name_file)
     array_annotations_difficult_situations_14 = parse_csv(array_annotations_difficult_situations_14)
 
-    images_difficult_situations_14 = get_images(images_paths_difficult_situations_14, 'cropped', img_shape)
+    images_difficult_situations_14 = get_images(images_paths_difficult_situations_14, type_image, img_shape)
     images_difficult_situations_14, array_annotations_difficult_situations_14 = flip_images(
         images_difficult_situations_14, array_annotations_difficult_situations_14)
 
@@ -1313,7 +1313,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_15 = pandas.read_csv(difficult_situations_15_name_file)
     array_annotations_difficult_situations_15 = parse_csv(array_annotations_difficult_situations_15)
 
-    images_difficult_situations_15 = get_images(images_paths_difficult_situations_15, 'cropped', img_shape)
+    images_difficult_situations_15 = get_images(images_paths_difficult_situations_15, type_image, img_shape)
     images_difficult_situations_15, array_annotations_difficult_situations_15 = flip_images(
         images_difficult_situations_15, array_annotations_difficult_situations_15)
 
@@ -1355,7 +1355,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_16 = pandas.read_csv(difficult_situations_16_name_file)
     array_annotations_difficult_situations_16 = parse_csv(array_annotations_difficult_situations_16)
 
-    images_difficult_situations_16 = get_images(images_paths_difficult_situations_16, 'cropped', img_shape)
+    images_difficult_situations_16 = get_images(images_paths_difficult_situations_16, type_image, img_shape)
     images_difficult_situations_16, array_annotations_difficult_situations_16 = flip_images(
         images_difficult_situations_16, array_annotations_difficult_situations_16)
 
@@ -1397,7 +1397,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_17 = pandas.read_csv(difficult_situations_17_name_file)
     array_annotations_difficult_situations_17 = parse_csv(array_annotations_difficult_situations_17)
 
-    images_difficult_situations_17 = get_images(images_paths_difficult_situations_17, 'cropped', img_shape)
+    images_difficult_situations_17 = get_images(images_paths_difficult_situations_17, type_image, img_shape)
     images_difficult_situations_17, array_annotations_difficult_situations_17 = flip_images(
         images_difficult_situations_17, array_annotations_difficult_situations_17)
 
@@ -1439,7 +1439,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_18 = pandas.read_csv(difficult_situations_18_name_file)
     array_annotations_difficult_situations_18 = parse_csv(array_annotations_difficult_situations_18)
 
-    images_difficult_situations_18 = get_images(images_paths_difficult_situations_18, 'cropped', img_shape)
+    images_difficult_situations_18 = get_images(images_paths_difficult_situations_18, type_image, img_shape)
     images_difficult_situations_18, array_annotations_difficult_situations_18 = flip_images(
         images_difficult_situations_18, array_annotations_difficult_situations_18)
 
@@ -1481,7 +1481,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_19 = pandas.read_csv(difficult_situations_19_name_file)
     array_annotations_difficult_situations_19 = parse_csv(array_annotations_difficult_situations_19)
 
-    images_difficult_situations_19 = get_images(images_paths_difficult_situations_19, 'cropped', img_shape)
+    images_difficult_situations_19 = get_images(images_paths_difficult_situations_19, type_image, img_shape)
     images_difficult_situations_19, array_annotations_difficult_situations_19 = flip_images(
         images_difficult_situations_19, array_annotations_difficult_situations_19)
 
@@ -1523,7 +1523,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_20 = pandas.read_csv(difficult_situations_20_name_file)
     array_annotations_difficult_situations_20 = parse_csv(array_annotations_difficult_situations_20)
 
-    images_difficult_situations_20 = get_images(images_paths_difficult_situations_20, 'cropped', img_shape)
+    images_difficult_situations_20 = get_images(images_paths_difficult_situations_20, type_image, img_shape)
     images_difficult_situations_20, array_annotations_difficult_situations_20 = flip_images(
         images_difficult_situations_20, array_annotations_difficult_situations_20)
 
@@ -1565,7 +1565,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_21 = pandas.read_csv(difficult_situations_21_name_file)
     array_annotations_difficult_situations_21 = parse_csv(array_annotations_difficult_situations_21)
 
-    images_difficult_situations_21 = get_images(images_paths_difficult_situations_21, 'cropped', img_shape)
+    images_difficult_situations_21 = get_images(images_paths_difficult_situations_21, type_image, img_shape)
     images_difficult_situations_21, array_annotations_difficult_situations_21 = flip_images(
         images_difficult_situations_21, array_annotations_difficult_situations_21)
 
@@ -1607,7 +1607,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_22 = pandas.read_csv(difficult_situations_22_name_file)
     array_annotations_difficult_situations_22 = parse_csv(array_annotations_difficult_situations_22)
 
-    images_difficult_situations_22 = get_images(images_paths_difficult_situations_22, 'cropped', img_shape)
+    images_difficult_situations_22 = get_images(images_paths_difficult_situations_22, type_image, img_shape)
     images_difficult_situations_22, array_annotations_difficult_situations_22 = flip_images(
         images_difficult_situations_22, array_annotations_difficult_situations_22)
 
@@ -1649,7 +1649,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_23 = pandas.read_csv(difficult_situations_23_name_file)
     array_annotations_difficult_situations_23 = parse_csv(array_annotations_difficult_situations_23)
 
-    images_difficult_situations_23 = get_images(images_paths_difficult_situations_23, 'cropped', img_shape)
+    images_difficult_situations_23 = get_images(images_paths_difficult_situations_23, type_image, img_shape)
     images_difficult_situations_23, array_annotations_difficult_situations_23 = flip_images(
         images_difficult_situations_23, array_annotations_difficult_situations_23)
 
@@ -1691,7 +1691,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_24 = pandas.read_csv(difficult_situations_24_name_file)
     array_annotations_difficult_situations_24 = parse_csv(array_annotations_difficult_situations_24)
 
-    images_difficult_situations_24 = get_images(images_paths_difficult_situations_24, 'cropped', img_shape)
+    images_difficult_situations_24 = get_images(images_paths_difficult_situations_24, type_image, img_shape)
     images_difficult_situations_24, array_annotations_difficult_situations_24 = flip_images(
         images_difficult_situations_24, array_annotations_difficult_situations_24)
 
@@ -1733,7 +1733,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_25 = pandas.read_csv(difficult_situations_25_name_file)
     array_annotations_difficult_situations_25 = parse_csv(array_annotations_difficult_situations_25)
 
-    images_difficult_situations_25 = get_images(images_paths_difficult_situations_25, 'cropped', img_shape)
+    images_difficult_situations_25 = get_images(images_paths_difficult_situations_25, type_image, img_shape)
     images_difficult_situations_25, array_annotations_difficult_situations_25 = flip_images(
         images_difficult_situations_25, array_annotations_difficult_situations_25)
 
@@ -1775,7 +1775,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_26 = pandas.read_csv(difficult_situations_26_name_file)
     array_annotations_difficult_situations_26 = parse_csv(array_annotations_difficult_situations_26)
 
-    images_difficult_situations_26 = get_images(images_paths_difficult_situations_26, 'cropped', img_shape)
+    images_difficult_situations_26 = get_images(images_paths_difficult_situations_26, type_image, img_shape)
     images_difficult_situations_26, array_annotations_difficult_situations_26 = flip_images(
         images_difficult_situations_26, array_annotations_difficult_situations_26)
 
@@ -1817,7 +1817,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
     array_annotations_difficult_situations_27 = pandas.read_csv(difficult_situations_27_name_file)
     array_annotations_difficult_situations_27 = parse_csv(array_annotations_difficult_situations_27)
 
-    images_difficult_situations_27 = get_images(images_paths_difficult_situations_27, 'cropped', img_shape)
+    images_difficult_situations_27 = get_images(images_paths_difficult_situations_27, type_image, img_shape)
     images_difficult_situations_27, array_annotations_difficult_situations_27 = flip_images(
         images_difficult_situations_27, array_annotations_difficult_situations_27)
 

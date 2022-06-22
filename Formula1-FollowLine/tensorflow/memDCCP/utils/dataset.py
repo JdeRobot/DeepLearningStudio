@@ -6,7 +6,7 @@ from tensorflow.keras.utils import Sequence
 from albumentations import (
     Compose, HorizontalFlip, RandomBrightnessContrast,
     HueSaturationValue, FancyPCA, RandomGamma, GaussNoise,
-    GaussianBlur, ToFloat, Normalize, ColorJitter, ChannelShuffle, Equalize, ReplayCompose, CoarseDropout,
+    GaussianBlur, ToFloat, Normalize, ColorJitter, ChannelShuffle, Equalize, ReplayCompose,
     RandomRain, RandomShadow, RandomSnow, RandomFog, RandomSunFlare,
 )
 from albumentations.core.composition import OneOf

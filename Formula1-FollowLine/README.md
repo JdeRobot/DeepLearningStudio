@@ -173,7 +173,7 @@ The same workflow as for PyTorch is followed, refer to the previous section
 -h, --help                            show this help message and exit
 --data_dir            DATA_DIR        Directory to find Data
 --preprocess          PREPROCESSING   Preprocessing information about cropping and extreme cases 
---data_augs           AUGMENTATIONS   Data augmentations
+--data_augs           AUGMENTATIONS   Data augmentations (0=No / 1=Normal / 2=Normal+Weather changes)
 --num_epochs          NUM_EPOCHS      Number of Epochs
 --learning_rate       LR              Learning rate for Policy Net
 --batch_size          BATCH_SIZE      Batch size
@@ -194,7 +194,7 @@ cd PilotNet
 python3 train.py --data_dir ../../../../datasets_opencv/ \
 	--preprocess crop \
 	--preprocess extreme \
-	--data_augs True \
+	--data_augs 2 \
 	--num_epochs 1 \
 	--learning_rate 0.0001 \
 	--batch_size 50 \
@@ -206,7 +206,7 @@ cd DeepestLSTMTinyPilotNet
 python3 train.py --data_dir ../../../../datasets_opencv/ \
     --preprocess crop \
     --preprocess extreme \
-    --data_augs True \
+    --data_augs 2 \
     --num_epochs 1 \
     --learning_rate 0.0001 \
     --batch_size 50 \
@@ -217,7 +217,7 @@ cd memDCCP
 python3 train.py --data_dir ../../../../datasets_opencv/ \
     --preprocess crop \
     --preprocess extreme \
-    --data_augs True \
+    --data_augs 2 \
     --num_epochs 1 \
     --learning_rate 0.0001 \
     --batch_size 50 \
@@ -228,7 +228,7 @@ cd PilotNetx3
 python3 train.py --data_dir ../../../../datasets_opencv/ \
     --preprocess crop \
     --preprocess extreme \
-    --data_augs True \
+    --data_augs 2 \
     --num_epochs 1 \
     --learning_rate 0.0001 \
     --batch_size 50 \

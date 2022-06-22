@@ -7,8 +7,10 @@ from skimage.transform import resize
 from albumentations import (
     Compose, HorizontalFlip, RandomBrightnessContrast,
     HueSaturationValue, FancyPCA, RandomGamma, GaussNoise,
-    GaussianBlur, ToFloat, Normalize, ColorJitter, ChannelShuffle, Equalize, ReplayCompose
+    GaussianBlur, ToFloat, Normalize, ColorJitter, ChannelShuffle, Equalize, ReplayCompose,
+    RandomRain, RandomShadow, RandomSnow, RandomFog, RandomSunFlare,
 )
+from albumentations.core.composition import OneOf
 
 
 class DatasetSequence(Sequence):
@@ -46,7 +48,7 @@ class DatasetSequence(Sequence):
 
 
 def get_augmentations(data_augs):
-    if data_augs:
+    if data_augs == 1:
         AUGMENTATIONS_TRAIN = ReplayCompose([
             RandomBrightnessContrast(),
             HueSaturationValue(),
@@ -55,12 +57,28 @@ def get_augmentations(data_augs):
             GaussianBlur(),
             Normalize()
         ])
-    else:
+    elif data_augs == 2:
         AUGMENTATIONS_TRAIN = ReplayCompose([
+            RandomBrightnessContrast(),
+            HueSaturationValue(),
+            FancyPCA(),
+            RandomGamma(),
+            GaussianBlur(),
+            OneOf([
+                RandomRain(),
+                RandomSnow(),
+                RandomFog(),
+                RandomSunFlare()
+            ]),
+            Normalize()
+        ])
+    else:
+        AUGMENTATIONS_TRAIN = Compose([
             Normalize()
         ])
 
     AUGMENTATIONS_TEST = ReplayCompose([
         Normalize()
     ])
+
     return AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST

@@ -6,8 +6,10 @@ from tensorflow.keras.utils import Sequence
 from albumentations import (
     Compose, HorizontalFlip, RandomBrightnessContrast, 
     HueSaturationValue, FancyPCA, RandomGamma, GaussNoise,
-    GaussianBlur, ToFloat, Normalize, ColorJitter, ChannelShuffle, Equalize
+    GaussianBlur, ToFloat, Normalize, ColorJitter, ChannelShuffle, Equalize,
+    RandomRain, RandomShadow, RandomSnow, RandomFog, RandomSunFlare,
 )
+from albumentations.core.composition import OneOf
 
 
 class DatasetSequence(Sequence):
@@ -31,14 +33,28 @@ class DatasetSequence(Sequence):
     
     
 def get_augmentations(data_augs):
-    if data_augs:
-        AUGMENTATIONS_TRAIN = Compose([
+    if data_augs == 1:
+        AUGMENTATIONS_TRAIN = ReplayCompose([
             RandomBrightnessContrast(),
             HueSaturationValue(),
             FancyPCA(),
             RandomGamma(),
             GaussianBlur(),
-            GaussNoise(),
+            Normalize()
+        ])
+    elif data_augs == 2:
+        AUGMENTATIONS_TRAIN = ReplayCompose([
+            RandomBrightnessContrast(),
+            HueSaturationValue(),
+            FancyPCA(),
+            RandomGamma(),
+            GaussianBlur(),
+            OneOf([
+                RandomRain(),
+                RandomSnow(),
+                RandomFog(),
+                RandomSunFlare()
+            ]),
             Normalize()
         ])
     else:
@@ -46,8 +62,7 @@ def get_augmentations(data_augs):
             Normalize()
         ])
 
-
-    AUGMENTATIONS_TEST = Compose([
+    AUGMENTATIONS_TEST = ReplayCompose([
         Normalize()
     ])
     

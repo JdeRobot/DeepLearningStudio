@@ -135,9 +135,8 @@ def load_data(args):
         data_type = 'no_extreme'
     ##!! All dataset alloted to val/test
     images_train, annotations_train, images_val, annotations_val = process_dataset(args.data_dir, type_image,
-                                                                                               data_type, img_shape)
+                                                                                    data_type, img_shape, optimize_mode=True)
     AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST = get_augmentations(args.data_augs)
-    ##!! Not needed
     # Training data
     train_gen = DatasetSequence(images_train, annotations_train, args.batch_size,
                                 augmentations=AUGMENTATIONS_TRAIN)

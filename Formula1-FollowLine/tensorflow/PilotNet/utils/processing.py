@@ -1424,12 +1424,12 @@ def separate_dataset_into_train_validation(array_x, array_y):
 
 def get_images_and_annotations_val(path_to_data, type_image, img_shape, data_type):
     ######################################### VAL 1 #########################################
-    simple_circuit_name_file = path_to_data[0] + 'simple_circuit_01_04_2022_clockwise_1/data.csv'
-    dir_simple_circuit_images = path_to_data[0] + 'simple_circuit_01_04_2022_clockwise_1/'
+    simple_circuit_name_file = path_to_data + 'simple_circuit_01_04_2022_clockwise_1/data.csv'
+    dir_simple_circuit_images = path_to_data + 'simple_circuit_01_04_2022_clockwise_1/'
     list_images_simple_circuit_1 = glob.glob(dir_simple_circuit_images + '*')
     new_list_images_simple_circuit_1 = []
     for image in list_images_simple_circuit_1:
-        if image != path_to_data[0] + 'simple_circuit_01_04_2022_clockwise_1/data.csv':
+        if image != path_to_data + 'simple_circuit_01_04_2022_clockwise_1/data.csv':
             new_list_images_simple_circuit_1.append(image)
     list_images_simple_circuit_1 = new_list_images_simple_circuit_1
     images_paths_simple_circuit = sorted(list_images_simple_circuit_1, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
@@ -1468,12 +1468,12 @@ def get_images_and_annotations_val(path_to_data, type_image, img_shape, data_typ
     print("Loaded Simple Circuit!!")
 
 #     ######################################### VAL 2 #########################################
-#     montmelo_name_file = path_to_data[0] + 'montmelo_12_05_2022_opencv_clockwise_1/data.csv'
-#     dir_montmelo_images = path_to_data[0] + 'montmelo_12_05_2022_opencv_clockwise_1/'
+#     montmelo_name_file = path_to_data + 'montmelo_12_05_2022_opencv_clockwise_1/data.csv'
+#     dir_montmelo_images = path_to_data + 'montmelo_12_05_2022_opencv_clockwise_1/'
 #     list_images_montmelo = glob.glob(dir_montmelo_images + '*')
 #     new_list_images_montmelo = []
 #     for image in list_images_montmelo:
-#         if image != path_to_data[0] + 'montmelo_12_05_2022_opencv_clockwise_1/data.csv':
+#         if image != path_to_data + 'montmelo_12_05_2022_opencv_clockwise_1/data.csv':
 #             new_list_images_montmelo.append(image)
 #     list_images_montmelo = new_list_images_montmelo
 #     images_paths_montmelo = sorted(list_images_montmelo, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
@@ -1511,12 +1511,12 @@ def get_images_and_annotations_val(path_to_data, type_image, img_shape, data_typ
 #     array_annotations_montmelo = normalized_annotations
 #     print("Loaded Montmelo!!")
 # ######################################### VAL 3 #########################################
-#     montreal_name_file = path_to_data[0] + 'montreal_12_05_2022_opencv_clockwise_1/data.csv'
-#     dir_montreal_images = path_to_data[0] + 'montreal_12_05_2022_opencv_clockwise_1/'
+#     montreal_name_file = path_to_data + 'montreal_12_05_2022_opencv_clockwise_1/data.csv'
+#     dir_montreal_images = path_to_data + 'montreal_12_05_2022_opencv_clockwise_1/'
 #     list_images_montreal = glob.glob(dir_montreal_images + '*')
 #     new_list_images_montreal = []
 #     for image in list_images_montreal:
-#         if image != path_to_data[0] + 'montreal_12_05_2022_opencv_clockwise_1/data.csv':
+#         if image != path_to_data + 'montreal_12_05_2022_opencv_clockwise_1/data.csv':
 #             new_list_images_montreal.append(image)
 #     list_images_montreal = new_list_images_montreal
 #     images_paths_montreal = sorted(list_images_montreal, key=lambda x: int(x.split('/')[-1].split('.png')[0]))

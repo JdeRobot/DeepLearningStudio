@@ -22,16 +22,21 @@ def measure_inference_time(tflite_model, images_val):
     # measure average inference time
     interpreter = tf.lite.Interpreter(model_content=tflite_model)
     interpreter.allocate_tensors()
-    input_index = interpreter.get_input_details()[0]["index"]
-    output_index = interpreter.get_output_details()[0]["index"]
+    input_details = interpreter.get_input_details()[0]
+    output_details = interpreter.get_output_details()[0]
     
     inf_time = []
     r_idx = np.random.randint(0, len(images_val), 1000)
     for i in tqdm(r_idx):
-        # Pre-processing: add batch dimension and convert to float32 to match with
+        # Pre-processing: add batch dimension and convert to 'dtype' to match with
         # the model's input data format.
-        test_image = np.expand_dims(images_val[i], axis=0).astype(np.float32)
-        interpreter.set_tensor(input_index, test_image)
+        # Check if the input type is quantized, then rescale input data to uint8
+        if input_details['dtype'] == np.uint8:
+            input_scale, input_zero_point = input_details["quantization"]
+            test_images = test_images / input_scale + input_zero_point
+        
+        test_image = np.expand_dims(images_val[i], axis=0).astype(input_details["dtype"])
+        interpreter.set_tensor(input_details["index"], test_image)
 
         start_t = time.time()
         # Run inference.
@@ -39,7 +44,7 @@ def measure_inference_time(tflite_model, images_val):
         # pred = tflite_model.predict(img, verbose=0)
         inf_time.append(time.time() - start_t)
         # Post-processing
-        output = interpreter.tensor(output_index)
+        output = interpreter.get_tensor(output_details["index"])
         
     return np.mean(inf_time)
 
@@ -53,18 +58,24 @@ def measure_mse(tflite_model, images_val, valid_set, batch_size):
     interpreter.resize_tensor_input(input_index, (batch_size, *images_val[0].shape))
     interpreter.resize_tensor_input(output_index, (batch_size, 2))
     interpreter.allocate_tensors()
-    input_index = interpreter.get_input_details()[0]["index"]
-    output_index = interpreter.get_output_details()[0]["index"]
+    input_details = interpreter.get_input_details()[0]
+    output_details = interpreter.get_output_details()[0]
     
     metric = 0.0
     for idx in tqdm(range((len(valid_set)-1))):
         test_images, test_labels = valid_set[idx]
+        
         # Pre-processing
-        interpreter.set_tensor(input_index, test_images)
+        # Check if the input type is quantized, then rescale input data to uint8
+        if input_details['dtype'] == np.uint8:
+            input_scale, input_zero_point = input_details["quantization"]
+            test_images = test_images / input_scale + input_zero_point
+        
+        interpreter.set_tensor(input_details["index"], test_images.astype(input_details["dtype"]))
         # Run inference.
         interpreter.invoke()
         # Post-processing
-        output = interpreter.get_tensor(output_index)
+        output = interpreter.get_tensor(output_details["index"])
         metric += np.mean(tf.keras.losses.mse(test_labels, output).numpy())
 
     return metric/(len(valid_set)-1)
@@ -106,19 +117,53 @@ def convert_baseline(model_path, model_name, tflite_models_dir, valid_set, image
 
 
 def dynamic_range_quantization(model_path, model_name, tflite_models_dir, valid_set, images_val, batch_size):
+    print()
+    print("********* Start Dynamic range Quantization ***********")
     # Post-training dynamic range quantization
     model = tf.keras.models.load_model(model_path)
     converter = tf.lite.TFLiteConverter.from_keras_model(model)
     converter.optimizations = [tf.lite.Optimize.DEFAULT]
     tflite_model = converter.convert()
-    tflite_model_quant_file = tflite_models_dir/f"{model_name}_model_quant.tflite"
+
+    tflite_model_quant_file = tflite_models_dir/f"{model_name}_dynamic_quant.tflite"
     tflite_model_quant_file.write_bytes(tflite_model) # save model
+    
     model_size, mse, inf_time = evaluate_model(tflite_model_quant_file, tflite_model, valid_set, images_val, batch_size)
     print("********** Dynamic range Q stats **********")
     print("Model size (MB):", model_size)
     print("MSE:", mse)
     print("Inference time (s):", inf_time)
     return model_size, mse, inf_time
+
+def integer_only_quantization(model_path, model_name, tflite_models_dir, valid_set, images_val, batch_size):
+    print()
+    print("********* Start Integer Quantization ***********")
+    def representative_data_gen():
+        for input_value in tf.data.Dataset.from_tensor_slices(images_val).batch(1).take(100):
+            yield [input_value]
+
+    # Post-training integer only quantization
+    model = tf.keras.models.load_model(model_path)
+    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+    converter.optimizations = [tf.lite.Optimize.DEFAULT]
+    converter.representative_dataset = representative_data_gen
+    # Ensure that if any ops can't be quantized, the converter throws an error
+    converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
+    # Set the input and output tensors to uint8 
+    converter.inference_input_type = tf.uint8
+    converter.inference_output_type = tf.uint8
+    tflite_model = converter.convert()
+
+    tflite_model_quant_file = tflite_models_dir/f"{model_name}_int_quant.tflite"
+    tflite_model_quant_file.write_bytes(tflite_model) # save model
+    
+    model_size, mse, inf_time = evaluate_model(tflite_model_quant_file, tflite_model, valid_set, images_val, batch_size)
+    print("********** Integer only Q stats **********")
+    print("Model size (MB):", model_size)
+    print("MSE:", mse)
+    print("Inference time (s):", inf_time)
+    return model_size, mse, inf_time
+
 
 def load_data(args):
 
@@ -134,7 +179,7 @@ def load_data(args):
     else:
         data_type = 'no_extreme'
     ##!! All dataset alloted to val/test
-    images_train, annotations_train, images_val, annotations_val = process_dataset(args.data_dir, type_image,
+    images_train, annotations_train, images_val, annotations_val = process_dataset(args.data_dir[0], type_image,
                                                                                     data_type, img_shape, optimize_mode=True)
     AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST = get_augmentations(args.data_augs)
     # Training data
@@ -161,7 +206,7 @@ def parse_args():
     # parser.add_argument('--res_path', default='Result_Model_3.csv', help="Path(+filename) to store the results" )
     parser.add_argument('--eval_base', type=bool, default=False, help="If set to True, it will calculate accuracy, size and inference time for original model.")
     parser.add_argument("--tech", action='append', default=[], help="Techniques to apply for model compression. Options are: \n"+
-                               "'dynamic_quan', 'float16_quan', 'full_int_quan', and 'all' .")
+                               "'dynamic_quan', 'int_quan', 'float16_quan' and 'all' .")
     
     args = parser.parse_args()
     return args
@@ -199,6 +244,10 @@ if __name__ == '__main__':
     if "dynamic_quan" in args.tech or 'all' in args.tech : 
         res = dynamic_range_quantization(args.model_path, args.model_name, tflite_models_dir, valid_set, images_val, args.batch_size)
         results.append(("Dynamic Range Q",) + res)
+    if "int_quan" in args.tech or 'all' in args.tech : 
+        res = integer_only_quantization(args.model_path, args.model_name, tflite_models_dir, valid_set, images_val, args.batch_size)
+        results.append(("Integer only Q",) + res)
+
 
     df = pd.DataFrame(results)
     df.columns = ["Method", "Model size (MB)", "MSE", "Inference time (s)"]

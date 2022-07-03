@@ -1422,9 +1422,160 @@ def separate_dataset_into_train_validation(array_x, array_y):
     return images_train, annotations_train, images_validation, annotations_validation
 
 
-def process_dataset(path_to_data, type_image, data_type, img_shape):
-    array_imgs, array_annotations = get_images_and_annotations(path_to_data, type_image, img_shape, data_type)
-    images_train, annotations_train, images_validation, annotations_validation = separate_dataset_into_train_validation(
-        array_imgs, array_annotations)
+def get_images_and_annotations_val(path_to_data, type_image, img_shape, data_type):
+    ######################################### VAL 1 #########################################
+    simple_circuit_name_file = path_to_data[0] + 'simple_circuit_01_04_2022_clockwise_1/data.csv'
+    dir_simple_circuit_images = path_to_data[0] + 'simple_circuit_01_04_2022_clockwise_1/'
+    list_images_simple_circuit_1 = glob.glob(dir_simple_circuit_images + '*')
+    new_list_images_simple_circuit_1 = []
+    for image in list_images_simple_circuit_1:
+        if image != path_to_data[0] + 'simple_circuit_01_04_2022_clockwise_1/data.csv':
+            new_list_images_simple_circuit_1.append(image)
+    list_images_simple_circuit_1 = new_list_images_simple_circuit_1
+    images_paths_simple_circuit = sorted(list_images_simple_circuit_1, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
+
+    array_annotations_simple_circuit = pandas.read_csv(simple_circuit_name_file)
+    array_annotations_simple_circuit = parse_csv(array_annotations_simple_circuit)
+
+    images_simple_circuit = get_images(images_paths_simple_circuit, type_image, img_shape)
+    images_simple_circuit, array_annotations_simple_circuit = flip_images(images_simple_circuit,
+                                                                        array_annotations_simple_circuit)
+    if data_type == 'extreme':
+        images_simple_circuit, array_annotations_simple_circuit = add_extreme_data(images_simple_circuit,
+                                                                                 array_annotations_simple_circuit)
+
+    array_annotations_v = []
+    array_annotations_w = []
+    for annotation in array_annotations_simple_circuit:
+        array_annotations_v.append(annotation[0])
+        array_annotations_w.append(annotation[1])
+
+    # START NORMALIZE DATA
+    array_annotations_v = np.stack(array_annotations_v, axis=0)
+    array_annotations_v = array_annotations_v.reshape(-1, 1)
+
+    array_annotations_w = np.stack(array_annotations_w, axis=0)
+    array_annotations_w = array_annotations_w.reshape(-1, 1)
+
+    normalized_x = np.interp(array_annotations_v, (6.5, 24), (0, 1))
+    normalized_y = np.interp(array_annotations_w, (-7.1, 7.1), (0, 1))
+
+    normalized_annotations = []
+    for i in range(0, len(normalized_x)):
+        normalized_annotations.append([normalized_x.item(i), normalized_y.item(i)])
+
+    array_annotations_simple_circuit = normalized_annotations
+    print("Loaded Simple Circuit!!")
+
+#     ######################################### VAL 2 #########################################
+#     montmelo_name_file = path_to_data[0] + 'montmelo_12_05_2022_opencv_clockwise_1/data.csv'
+#     dir_montmelo_images = path_to_data[0] + 'montmelo_12_05_2022_opencv_clockwise_1/'
+#     list_images_montmelo = glob.glob(dir_montmelo_images + '*')
+#     new_list_images_montmelo = []
+#     for image in list_images_montmelo:
+#         if image != path_to_data[0] + 'montmelo_12_05_2022_opencv_clockwise_1/data.csv':
+#             new_list_images_montmelo.append(image)
+#     list_images_montmelo = new_list_images_montmelo
+#     images_paths_montmelo = sorted(list_images_montmelo, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
+
+#     array_annotations_montmelo = pandas.read_csv(montmelo_name_file)
+#     array_annotations_montmelo = parse_csv(array_annotations_montmelo)
+
+#     images_montmelo = get_images(images_paths_montmelo, type_image, img_shape)
+#     images_montmelo, array_annotations_montmelo = flip_images(images_montmelo,
+#                                                                         array_annotations_montmelo)
+#     if data_type == 'extreme':
+#         images_montmelo, array_annotations_montmelo = add_extreme_data(images_montmelo,
+#                                                                                  array_annotations_montmelo)
+
+#     array_annotations_v = []
+#     array_annotations_w = []
+#     for annotation in array_annotations_montmelo:
+#         array_annotations_v.append(annotation[0])
+#         array_annotations_w.append(annotation[1])
+
+#     # START NORMALIZE DATA
+#     array_annotations_v = np.stack(array_annotations_v, axis=0)
+#     array_annotations_v = array_annotations_v.reshape(-1, 1)
+
+#     array_annotations_w = np.stack(array_annotations_w, axis=0)
+#     array_annotations_w = array_annotations_w.reshape(-1, 1)
+
+#     normalized_x = np.interp(array_annotations_v, (6.5, 24), (0, 1))
+#     normalized_y = np.interp(array_annotations_w, (-7.1, 7.1), (0, 1))
+
+#     normalized_annotations = []
+#     for i in range(0, len(normalized_x)):
+#         normalized_annotations.append([normalized_x.item(i), normalized_y.item(i)])
+
+#     array_annotations_montmelo = normalized_annotations
+#     print("Loaded Montmelo!!")
+# ######################################### VAL 3 #########################################
+#     montreal_name_file = path_to_data[0] + 'montreal_12_05_2022_opencv_clockwise_1/data.csv'
+#     dir_montreal_images = path_to_data[0] + 'montreal_12_05_2022_opencv_clockwise_1/'
+#     list_images_montreal = glob.glob(dir_montreal_images + '*')
+#     new_list_images_montreal = []
+#     for image in list_images_montreal:
+#         if image != path_to_data[0] + 'montreal_12_05_2022_opencv_clockwise_1/data.csv':
+#             new_list_images_montreal.append(image)
+#     list_images_montreal = new_list_images_montreal
+#     images_paths_montreal = sorted(list_images_montreal, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
+
+#     array_annotations_montreal = pandas.read_csv(montreal_name_file)
+#     array_annotations_montreal = parse_csv(array_annotations_montreal)
+
+#     images_montreal = get_images(images_paths_montreal, type_image, img_shape)
+#     images_montreal, array_annotations_montreal = flip_images(images_montreal,
+#                                                                         array_annotations_montreal)
+#     if data_type == 'extreme':
+#         images_montreal, array_annotations_montreal = add_extreme_data(images_montreal,
+#                                                                                  array_annotations_montreal)
+
+#     array_annotations_v = []
+#     array_annotations_w = []
+#     for annotation in array_annotations_montreal:
+#         array_annotations_v.append(annotation[0])
+#         array_annotations_w.append(annotation[1])
+
+#     # START NORMALIZE DATA
+#     array_annotations_v = np.stack(array_annotations_v, axis=0)
+#     array_annotations_v = array_annotations_v.reshape(-1, 1)
+
+#     array_annotations_w = np.stack(array_annotations_w, axis=0)
+#     array_annotations_w = array_annotations_w.reshape(-1, 1)
+
+#     normalized_x = np.interp(array_annotations_v, (6.5, 24), (0, 1))
+#     normalized_y = np.interp(array_annotations_w, (-7.1, 7.1), (0, 1))
+
+#     normalized_annotations = []
+#     for i in range(0, len(normalized_x)):
+#         normalized_annotations.append([normalized_x.item(i), normalized_y.item(i)])
+
+#     array_annotations_montreal = normalized_annotations
+#     print("Loaded Montreal!!")
+#     #############################################################################
+
+    array_imgs = images_simple_circuit #+ \
+                    # images_montmelo + \
+                    # images_montreal
+
+    array_annotations = array_annotations_simple_circuit #+ \
+                        # array_annotations_montmelo + \
+                        # array_annotations_montreal
+
+    return array_imgs, array_annotations
+
+
+def process_dataset(path_to_data, type_image, data_type, img_shape, optimize_mode=False):
+
+    if not optimize_mode:
+        array_imgs, array_annotations = get_images_and_annotations(path_to_data, type_image, img_shape, data_type)
+        images_train, annotations_train, images_validation, annotations_validation = separate_dataset_into_train_validation(
+            array_imgs, array_annotations)
+    else:
+        # images_train, annotations_train = get_images_and_annotations(path_to_data, type_image, img_shape, data_type)
+        images_train, annotations_train = [], []
+        images_validation, annotations_validation = get_images_and_annotations_val(path_to_data, type_image, img_shape, data_type)
+            
 
     return images_train, annotations_train, images_validation, annotations_validation

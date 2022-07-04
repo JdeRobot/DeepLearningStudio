@@ -257,7 +257,7 @@ def weight_pruning(model_path, model_name, tflite_models_dir, valid_set, images_
     # Compute end step to finish pruning after 2 epochs.
     epochs = 2
     validation_split = 0.1 # 10% of training set will be used for validation set. 
-    num_images = images_train.shape[0] * (1 - validation_split)
+    num_images = len(images_train) * (1 - validation_split)
     end_step = np.ceil(num_images / args.batch_size).astype(np.int32) * epochs
     # Define model for pruning.
     pruning_params = {
@@ -402,7 +402,7 @@ if __name__ == '__main__':
     if "quan_aware" in args.tech or 'all' in args.tech : 
         res = quantization_aware_train(args.model_path, args.model_name, tflite_models_dir, valid_set, 
                                     images_val, args, images_train, annotations_train)
-        results.append(("Float16 Q",) + res)
+        results.append(("Q aware training",) + res)
     if "prune" in args.tech or 'all' in args.tech : 
         res = weight_pruning(args.model_path, args.model_name, tflite_models_dir, valid_set, 
                             images_val, args, images_train, annotations_train, apply_quan=False)

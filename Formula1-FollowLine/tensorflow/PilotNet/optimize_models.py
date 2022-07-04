@@ -220,8 +220,27 @@ def quantization_aware_train(model_path, model_name, tflite_models_dir, valid_se
     print("********* Start Quantization Aware Training ***********")
 
     model = tf.keras.models.load_model(model_path) # load original model
-    quantize_model = tfmot.quantization.keras.quantize_model
-    q_aware_model = quantize_model(model)
+    # quantize_model = tfmot.quantization.keras.quantize_model
+    # q_aware_model = quantize_model(model)
+
+    ### Quantize model - dense and conv2d (batchnorm not support)
+    # Helper function uses `quantize_annotate_layer` to annotate that only the specified layers be Q 
+    def apply_quantization_to_layers(layer):
+        if isinstance(layer, tf.keras.layers.Dense):
+            return tfmot.quantization.keras.quantize_annotate_layer(layer)
+        if isinstance(layer, tf.keras.layers.Conv2D):
+            return tfmot.quantization.keras.quantize_annotate_layer(layer)
+        return layer
+    # Use `tf.keras.models.clone_model` to apply `apply_quantization_to_dense` 
+    # to the layers of the model.
+    annotated_model = tf.keras.models.clone_model(
+        model,
+        clone_function=apply_quantization_to_layers,
+    )
+    # Now that the Dense layers are annotated,
+    # `quantize_apply` actually makes the model quantization aware.
+    q_aware_model = tfmot.quantization.keras.quantize_apply(annotated_model)
+
     # `quantize_model` requires a recompile.
     q_aware_model.compile(optimizer=Adam(learning_rate=args.learning_rate), loss="mse", metrics=['mse', 'mae'])
     q_aware_model.summary() # every layer has `quant` prefix

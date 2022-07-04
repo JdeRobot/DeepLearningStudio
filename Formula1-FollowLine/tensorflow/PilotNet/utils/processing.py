@@ -1573,8 +1573,8 @@ def process_dataset(path_to_data, type_image, data_type, img_shape, optimize_mod
         images_train, annotations_train, images_validation, annotations_validation = separate_dataset_into_train_validation(
             array_imgs, array_annotations)
     else:
-        # images_train, annotations_train = get_images_and_annotations(path_to_data, type_image, img_shape, data_type)
-        images_train, annotations_train = [], []
+        images_train, annotations_train = get_images_and_annotations(path_to_data, type_image, img_shape, data_type)
+        # images_train, annotations_train = [], []
         images_validation, annotations_validation = get_images_and_annotations_val(path_to_data, type_image, img_shape, data_type)
             
 

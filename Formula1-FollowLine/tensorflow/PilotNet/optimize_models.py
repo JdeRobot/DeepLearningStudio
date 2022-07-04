@@ -16,7 +16,8 @@ import argparse
 from utils.dataset import get_augmentations, DatasetSequence
 from utils.processing import process_dataset
 from tqdm import tqdm
-
+import tensorflow_model_optimization as tfmot
+from tensorflow.keras.optimizers import Adam
 
 def measure_inference_time(tflite_model, images_val):
     # measure average inference time
@@ -99,7 +100,6 @@ def evaluate_model(model_path, tflite_model, valid_set, images_val, batch_size):
     mse = measure_mse(tflite_model, images_val, valid_set, batch_size)
     
     inf_time = measure_inference_time(tflite_model, images_val)
-
 
     return model_size, mse, inf_time
 
@@ -192,6 +192,7 @@ def integer_float_quantization(model_path, model_name, tflite_models_dir, valid_
     print("Inference time (s):", inf_time)
     return model_size, mse, inf_time
 
+
 def float16_quantization(model_path, model_name, tflite_models_dir, valid_set, images_val, batch_size):
     print()
     print("********* Start Float16 Quantization ***********")
@@ -207,6 +208,38 @@ def float16_quantization(model_path, model_name, tflite_models_dir, valid_set, i
     
     model_size, mse, inf_time = evaluate_model(tflite_model_quant_file, tflite_model, valid_set, images_val, batch_size)
     print("********** Float16 Q stats **********")
+    print("Model size (MB):", model_size)
+    print("MSE:", mse)
+    print("Inference time (s):", inf_time)
+    return model_size, mse, inf_time
+
+
+def quantization_aware_train(model_path, model_name, tflite_models_dir, valid_set, images_val, args, images_train, annotations_train):
+    print()
+    print("********* Start Quantization Aware Training ***********")
+
+    model = tf.keras.models.load_model(model_path) # load original model
+    quantize_model = tfmot.quantization.keras.quantize_model
+    q_aware_model = quantize_model(model)
+    # `quantize_model` requires a recompile.
+    q_aware_model.compile(optimizer=Adam(learning_rate=args.learning_rate), loss="mse", metrics=['mse', 'mae'])
+    q_aware_model.summary() # every layer has `quant` prefix
+    # use subset of data to train; here 1%
+    ridx = np.random.randint(0, len(images_train), len(images_train)*0.01)
+    images_train, annotations_train = images_train[ridx], annotations_train[ridx]
+    # fine-tune pre-trained model with quantization aware training
+    q_aware_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=2, validation_split=0.1)
+    
+    # Create quantized model for TFLite backend - quantized model with int8 weights and uint8 activations
+    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+    converter.optimizations = [tf.lite.Optimize.DEFAULT]
+    tflite_model = converter.convert()
+
+    tflite_model_quant_file = tflite_models_dir/f"{model_name}_quant_aware.tflite"
+    tflite_model_quant_file.write_bytes(tflite_model) # save model
+    
+    model_size, mse, inf_time = evaluate_model(tflite_model_quant_file, tflite_model, valid_set, images_val, args.batch_size)
+    print("********** Quantization Aware Training stats **********")
     print("Model size (MB):", model_size)
     print("MSE:", mse)
     print("Inference time (s):", inf_time)
@@ -238,7 +271,7 @@ def load_data(args):
     valid_gen = DatasetSequence(images_val, annotations_val, args.batch_size,
                                 augmentations=AUGMENTATIONS_TEST)
 
-    return train_gen, valid_gen, images_val
+    return train_gen, valid_gen, images_train, annotations_train, images_val, annotations_val
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -251,10 +284,11 @@ def parse_args():
     parser.add_argument("--batch_size", type=int, default=128, help="Batch size")
     parser.add_argument('--model_path', type=str, default='trained_models/pilotnet.h5', help="Path to directory containing pre-trained models")
     parser.add_argument('--model_name', default='pilotnet', help="Name of model" )
+    parser.add_argument("--learning_rate", type=float, default=1e-3, help="Learning rate")
     # parser.add_argument('--res_path', default='Result_Model_3.csv', help="Path(+filename) to store the results" )
     parser.add_argument('--eval_base', type=bool, default=False, help="If set to True, it will calculate accuracy, size and inference time for original model.")
     parser.add_argument("--tech", action='append', default=[], help="Techniques to apply for model compression. Options are: \n"+
-                               "'dynamic_quan', 'int_quan', 'int_flt_quan', 'float16_quan' and 'all' .")
+                               "'dynamic_quan', 'int_quan', 'int_flt_quan', 'float16_quan', 'quan_aware' and 'all' .")
     
     args = parser.parse_args()
     return args
@@ -282,7 +316,7 @@ if __name__ == '__main__':
     tflite_models_dir.mkdir(exist_ok=True, parents=True)
 
     # load datasets
-    train_set, valid_set, images_val = load_data(args)
+    train_set, valid_set, images_train, annotations_train, images_val, annotations_val = load_data(args)
 
     results = []
 
@@ -301,7 +335,11 @@ if __name__ == '__main__':
     if "float16_quan" in args.tech or 'all' in args.tech : 
         res = float16_quantization(args.model_path, args.model_name, tflite_models_dir, valid_set, images_val, args.batch_size)
         results.append(("Float16 Q",) + res)
+    if "quan_aware" in args.tech or 'all' in args.tech : 
+        res = quantization_aware_train(args.model_path, args.model_name, tflite_models_dir, valid_set, images_val, args, images_train, annotations_train)
+        results.append(("Float16 Q",) + res)
 
+    
 
     df = pd.DataFrame(results)
     df.columns = ["Method", "Model size (MB)", "MSE", "Inference time (s)"]

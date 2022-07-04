@@ -2,6 +2,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import os
 import time
+import datetime
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -84,7 +85,6 @@ def measure_mse(tflite_model, images_val, valid_set, batch_size):
 
     return metric/(len(valid_set)-1)
 
-
 def evaluate_model(model_path, tflite_model, valid_set, images_val, batch_size):
     '''
     Calculate accuracy, model size and inference time for the given model.
@@ -102,7 +102,6 @@ def evaluate_model(model_path, tflite_model, valid_set, images_val, batch_size):
     inf_time = measure_inference_time(tflite_model, images_val)
 
     return model_size, mse, inf_time
-
 
 
 def convert_baseline(model_path, model_name, tflite_models_dir, valid_set, images_val, batch_size):
@@ -139,6 +138,7 @@ def dynamic_range_quantization(model_path, model_name, tflite_models_dir, valid_
     print("Inference time (s):", inf_time)
     return model_size, mse, inf_time
 
+
 def integer_only_quantization(model_path, model_name, tflite_models_dir, valid_set, images_val, batch_size):
     print()
     print("********* Start Integer Quantization ***********")
@@ -167,6 +167,7 @@ def integer_only_quantization(model_path, model_name, tflite_models_dir, valid_s
     print("MSE:", mse)
     print("Inference time (s):", inf_time)
     return model_size, mse, inf_time
+
 
 def integer_float_quantization(model_path, model_name, tflite_models_dir, valid_set, images_val, batch_size):
     print()
@@ -246,6 +247,69 @@ def quantization_aware_train(model_path, model_name, tflite_models_dir, valid_se
     return model_size, mse, inf_time
 
 
+def weight_pruning(model_path, model_name, tflite_models_dir, valid_set, images_val, args, images_train, annotations_train, apply_quan=False):
+    print()
+    print("********* Start (random sparse) Weight pruning ***********")
+
+    model = tf.keras.models.load_model(model_path) # load original model
+    
+    prune_low_magnitude = tfmot.sparsity.keras.prune_low_magnitude
+    # Compute end step to finish pruning after 2 epochs.
+    epochs = 2
+    validation_split = 0.1 # 10% of training set will be used for validation set. 
+    num_images = images_train.shape[0] * (1 - validation_split)
+    end_step = np.ceil(num_images / args.batch_size).astype(np.int32) * epochs
+    # Define model for pruning.
+    pruning_params = {
+        'pruning_schedule': tfmot.sparsity.keras.PolynomialDecay(initial_sparsity=0.50,
+                                                                final_sparsity=0.80,
+                                                                begin_step=0,
+                                                                end_step=end_step)
+    }
+    model_for_pruning = prune_low_magnitude(model, **pruning_params)
+
+    # requires a recompile.
+    model_for_pruning.compile(optimizer=Adam(learning_rate=args.learning_rate), loss="mse", metrics=['mse', 'mae'])
+    model_for_pruning.summary() # every layer has `quant` prefix
+    
+    log_dir = "logs/fit_prune/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    # The logs show the progression of sparsity on a per-layer basis.
+    # tensorboard --logdir={logdir}
+    callbacks = [
+        tfmot.sparsity.keras.UpdatePruningStep(),
+        tfmot.sparsity.keras.PruningSummaries(log_dir=log_dir),
+    ]
+    # fine-tune pre-trained model with pruning
+    model_for_pruning.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=epochs, 
+                        validation_split=validation_split, callbacks=callbacks)
+    # removes every tf.Variable that pruning only needs during training, 
+    model_for_export = tfmot.sparsity.keras.strip_pruning(model_for_pruning)
+
+
+    # apply post-training quantization to the pruned model for additional benefits.
+    if apply_quan:
+        converter = tf.lite.TFLiteConverter.from_keras_model(model_for_export)
+        converter.optimizations = [tf.lite.Optimize.DEFAULT]
+        tflite_model = converter.convert()
+        tflite_model_file = tflite_models_dir/f"{model_name}_pruned_quan.tflite"
+        tflite_model_file.write_bytes(tflite_model) # save model
+        mssg = "********** Weight Pruning + Quantization stats **********" 
+    else: # convert only pruned model
+        converter = tf.lite.TFLiteConverter.from_keras_model(model_for_export)
+        tflite_model = converter.convert()
+        tflite_model_file = tflite_models_dir/f"{model_name}_pruned.tflite"
+        tflite_model_file.write_bytes(tflite_model) # save model
+        mssg = "********** Weight Pruning stats **********"
+
+    model_size, mse, inf_time = evaluate_model(tflite_model_file, tflite_model, valid_set, images_val, args.batch_size)
+    print(mssg)
+    print("Model size (MB):", model_size)
+    print("MSE:", mse)
+    print("Inference time (s):", inf_time)
+    return model_size, mse, inf_time
+
+
+
 def load_data(args):
 
     img_shape = tuple(map(int, args.img_shape.split(',')))
@@ -259,7 +323,7 @@ def load_data(args):
         data_type = 'extreme'
     else:
         data_type = 'no_extreme'
-    ##!! All dataset alloted to val/test
+    
     images_train, annotations_train, images_val, annotations_val = process_dataset(args.data_dir[0], type_image,
                                                                                     data_type, img_shape, optimize_mode=True)
     AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST = get_augmentations(args.data_augs)
@@ -288,7 +352,7 @@ def parse_args():
     # parser.add_argument('--res_path', default='Result_Model_3.csv', help="Path(+filename) to store the results" )
     parser.add_argument('--eval_base', type=bool, default=False, help="If set to True, it will calculate accuracy, size and inference time for original model.")
     parser.add_argument("--tech", action='append', default=[], help="Techniques to apply for model compression. Options are: \n"+
-                               "'dynamic_quan', 'int_quan', 'int_flt_quan', 'float16_quan', 'quan_aware' and 'all' .")
+                               "'dynamic_quan', 'int_quan', 'int_flt_quan', 'float16_quan', 'quan_aware', 'prune', 'prune_quan' and 'all' .")
     
     args = parser.parse_args()
     return args
@@ -336,11 +400,19 @@ if __name__ == '__main__':
         res = float16_quantization(args.model_path, args.model_name, tflite_models_dir, valid_set, images_val, args.batch_size)
         results.append(("Float16 Q",) + res)
     if "quan_aware" in args.tech or 'all' in args.tech : 
-        res = quantization_aware_train(args.model_path, args.model_name, tflite_models_dir, valid_set, images_val, args, images_train, annotations_train)
+        res = quantization_aware_train(args.model_path, args.model_name, tflite_models_dir, valid_set, 
+                                    images_val, args, images_train, annotations_train)
         results.append(("Float16 Q",) + res)
+    if "prune" in args.tech or 'all' in args.tech : 
+        res = weight_pruning(args.model_path, args.model_name, tflite_models_dir, valid_set, 
+                            images_val, args, images_train, annotations_train, apply_quan=False)
+        results.append(("Weight pruning",) + res)
+    if "prune_quan" in args.tech or 'all' in args.tech : 
+        res = weight_pruning(args.model_path, args.model_name, tflite_models_dir, valid_set, 
+                            images_val, args, images_train, annotations_train, apply_quan=True)
+        results.append(("Weight pruning + Q",) + res)
 
-    
-
+        
     df = pd.DataFrame(results)
     df.columns = ["Method", "Model size (MB)", "MSE", "Inference time (s)"]
     df.to_csv("model_evaluation.csv", index=False)

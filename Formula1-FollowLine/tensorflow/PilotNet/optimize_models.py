@@ -335,7 +335,7 @@ def load_data(args):
     valid_gen = DatasetSequence(images_val, annotations_val, args.batch_size,
                                 augmentations=AUGMENTATIONS_TEST)
 
-    return train_gen, valid_gen, images_train, annotations_train, images_val, annotations_val
+    return train_gen, valid_gen, np.array(images_train), np.array(annotations_train), np.array(images_val), np.array(annotations_val)
 
 def parse_args():
     parser = argparse.ArgumentParser()

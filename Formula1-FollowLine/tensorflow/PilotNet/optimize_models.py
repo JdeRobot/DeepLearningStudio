@@ -192,6 +192,27 @@ def integer_float_quantization(model_path, model_name, tflite_models_dir, valid_
     print("Inference time (s):", inf_time)
     return model_size, mse, inf_time
 
+def float16_quantization(model_path, model_name, tflite_models_dir, valid_set, images_val, batch_size):
+    print()
+    print("********* Start Float16 Quantization ***********")
+    # Post-training dynamic range quantization
+    model = tf.keras.models.load_model(model_path)
+    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+    converter.optimizations = [tf.lite.Optimize.DEFAULT]
+    converter.target_spec.supported_types = [tf.float16]
+    tflite_model = converter.convert()
+
+    tflite_model_quant_file = tflite_models_dir/f"{model_name}_float16_quant.tflite"
+    tflite_model_quant_file.write_bytes(tflite_model) # save model
+    
+    model_size, mse, inf_time = evaluate_model(tflite_model_quant_file, tflite_model, valid_set, images_val, batch_size)
+    print("********** Float16 Q stats **********")
+    print("Model size (MB):", model_size)
+    print("MSE:", mse)
+    print("Inference time (s):", inf_time)
+    return model_size, mse, inf_time
+
+
 def load_data(args):
 
     img_shape = tuple(map(int, args.img_shape.split(',')))
@@ -277,6 +298,9 @@ if __name__ == '__main__':
     if "int_flt_quan" in args.tech or 'all' in args.tech : 
         res = integer_float_quantization(args.model_path, args.model_name, tflite_models_dir, valid_set, images_val, args.batch_size)
         results.append(("Integer (float fallback) Q",) + res)
+    if "float16_quan" in args.tech or 'all' in args.tech : 
+        res = float16_quantization(args.model_path, args.model_name, tflite_models_dir, valid_set, images_val, args.batch_size)
+        results.append(("Float16 Q",) + res)
 
 
     df = pd.DataFrame(results)

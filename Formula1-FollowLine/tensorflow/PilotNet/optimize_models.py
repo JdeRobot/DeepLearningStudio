@@ -245,7 +245,7 @@ def quantization_aware_train(model_path, model_name, tflite_models_dir, valid_se
     q_aware_model.compile(optimizer=Adam(learning_rate=args.learning_rate), loss="mse", metrics=['mse', 'mae'])
     q_aware_model.summary() # every layer has `quant` prefix
     # use subset of data to train; here 1%
-    ridx = np.random.randint(0, len(images_train), len(images_train)*0.01)
+    ridx = np.random.randint(0, len(images_train), int(len(images_train)*0.01))
     images_train, annotations_train = images_train[ridx], annotations_train[ridx]
     # fine-tune pre-trained model with quantization aware training
     q_aware_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=2, validation_split=0.1)

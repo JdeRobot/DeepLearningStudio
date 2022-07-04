@@ -31,12 +31,12 @@ def measure_inference_time(tflite_model, images_val):
         # Pre-processing: add batch dimension and convert to 'dtype' to match with
         # the model's input data format.
         # Check if the input type is quantized, then rescale input data to uint8
+        test_image = np.expand_dims(images_val[i], axis=0)
         if input_details['dtype'] == np.uint8:
             input_scale, input_zero_point = input_details["quantization"]
-            test_images = test_images / input_scale + input_zero_point
+            test_image = test_image / input_scale + input_zero_point
         
-        test_image = np.expand_dims(images_val[i], axis=0).astype(input_details["dtype"])
-        interpreter.set_tensor(input_details["index"], test_image)
+        interpreter.set_tensor(input_details["index"], test_image.astype(input_details["dtype"]))
 
         start_t = time.time()
         # Run inference.
@@ -76,6 +76,9 @@ def measure_mse(tflite_model, images_val, valid_set, batch_size):
         interpreter.invoke()
         # Post-processing
         output = interpreter.get_tensor(output_details["index"])
+        if output_details['dtype'] == np.uint8:
+            output = output.astype(np.float32)
+            test_labels = test_labels.astype(np.float32)
         metric += np.mean(tf.keras.losses.mse(test_labels, output).numpy())
 
     return metric/(len(valid_set)-1)
@@ -92,10 +95,11 @@ def evaluate_model(model_path, tflite_model, valid_set, images_val, batch_size):
         accuracy, model_size, inf_time
     '''
     model_size = os.path.getsize(model_path) / float(2**20)
-    
-    mse = measure_mse(tflite_model, images_val, valid_set, batch_size)
 
+    mse = measure_mse(tflite_model, images_val, valid_set, batch_size)
+    
     inf_time = measure_inference_time(tflite_model, images_val)
+
 
     return model_size, mse, inf_time
 
@@ -139,7 +143,7 @@ def integer_only_quantization(model_path, model_name, tflite_models_dir, valid_s
     print()
     print("********* Start Integer Quantization ***********")
     def representative_data_gen():
-        for input_value in tf.data.Dataset.from_tensor_slices(images_val).batch(1).take(100):
+        for input_value in tf.data.Dataset.from_tensor_slices(np.array(images_val, dtype=np.float32)).batch(1).take(100):
             yield [input_value]
 
     # Post-training integer only quantization
@@ -164,6 +168,29 @@ def integer_only_quantization(model_path, model_name, tflite_models_dir, valid_s
     print("Inference time (s):", inf_time)
     return model_size, mse, inf_time
 
+def integer_float_quantization(model_path, model_name, tflite_models_dir, valid_set, images_val, batch_size):
+    print()
+    print("********* Start Integer (float fallback) Quantization ***********")
+    def representative_data_gen():
+        for input_value in tf.data.Dataset.from_tensor_slices(np.array(images_val, dtype=np.float32)).batch(1).take(100):
+            yield [input_value]
+
+    # Post-training integer only quantization
+    model = tf.keras.models.load_model(model_path)
+    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+    converter.optimizations = [tf.lite.Optimize.DEFAULT]
+    converter.representative_dataset = representative_data_gen
+    tflite_model = converter.convert()
+
+    tflite_model_quant_file = tflite_models_dir/f"{model_name}_intflt_quant.tflite"
+    tflite_model_quant_file.write_bytes(tflite_model) # save model
+    
+    model_size, mse, inf_time = evaluate_model(tflite_model_quant_file, tflite_model, valid_set, images_val, batch_size)
+    print("********** Integer (float fallback) Q stats **********")
+    print("Model size (MB):", model_size)
+    print("MSE:", mse)
+    print("Inference time (s):", inf_time)
+    return model_size, mse, inf_time
 
 def load_data(args):
 
@@ -206,7 +233,7 @@ def parse_args():
     # parser.add_argument('--res_path', default='Result_Model_3.csv', help="Path(+filename) to store the results" )
     parser.add_argument('--eval_base', type=bool, default=False, help="If set to True, it will calculate accuracy, size and inference time for original model.")
     parser.add_argument("--tech", action='append', default=[], help="Techniques to apply for model compression. Options are: \n"+
-                               "'dynamic_quan', 'int_quan', 'float16_quan' and 'all' .")
+                               "'dynamic_quan', 'int_quan', 'int_flt_quan', 'float16_quan' and 'all' .")
     
     args = parser.parse_args()
     return args
@@ -247,6 +274,9 @@ if __name__ == '__main__':
     if "int_quan" in args.tech or 'all' in args.tech : 
         res = integer_only_quantization(args.model_path, args.model_name, tflite_models_dir, valid_set, images_val, args.batch_size)
         results.append(("Integer only Q",) + res)
+    if "int_flt_quan" in args.tech or 'all' in args.tech : 
+        res = integer_float_quantization(args.model_path, args.model_name, tflite_models_dir, valid_set, images_val, args.batch_size)
+        results.append(("Integer (float fallback) Q",) + res)
 
 
     df = pd.DataFrame(results)

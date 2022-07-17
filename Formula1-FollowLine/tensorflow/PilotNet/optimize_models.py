@@ -389,7 +389,7 @@ def CQAT(model_path, model_name, tflite_models_dir, valid_set, images_val, args,
     converter.optimizations = [tf.lite.Optimize.DEFAULT]
     tflite_model = converter.convert()
 
-    tflite_model_cqat_file = tflite_models_dir/f"{model_name}cqat_model.tflite"
+    tflite_model_cqat_file = tflite_models_dir/f"{model_name}_cqat_model.tflite"
     tflite_model_cqat_file.write_bytes(tflite_model) # save model
     
     model_size, mse, inf_time = evaluate_model(tflite_model_cqat_file, tflite_model, valid_set, images_val, args.batch_size)
@@ -399,6 +399,78 @@ def CQAT(model_path, model_name, tflite_models_dir, valid_set, images_val, args,
     print("Inference time (s):", inf_time)
     return model_size, mse, inf_time
 
+def PQAT(model_path, model_name, tflite_models_dir, valid_set, images_val, args, images_train, annotations_train):
+    '''
+        Pruning preserving quantization aware training (PQAT)
+    '''
+    print()
+    print("********* Start Pruning preserving Quantization Aware Training ***********")
+
+    model = tf.keras.models.load_model(model_path) # load original model
+
+    ## Pruning
+    prune_low_magnitude = tfmot.sparsity.keras.prune_low_magnitude
+
+    pruning_params = {
+        'pruning_schedule': tfmot.sparsity.keras.ConstantSparsity(0.5, begin_step=0, frequency=100)
+    }
+
+    callbacks = [
+    tfmot.sparsity.keras.UpdatePruningStep()
+    ]
+
+    pruned_model = prune_low_magnitude(model, **pruning_params)
+
+    # Use smaller learning rate for fine-tuning
+    pruned_model.compile(optimizer=Adam(learning_rate=args.learning_rate/100), loss="mse", metrics=['mse', 'mae'])
+    pruned_model.summary()
+    pruned_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=3, validation_split=0.1)
+    
+    stripped_pruned_model = tfmot.sparsity.keras.strip_pruning(pruned_model)
+
+    # CQAT
+    quant_aware_annotate_model = tfmot.quantization.keras.quantize_annotate_model(
+                stripped_pruned_model)
+    cqat_model = tfmot.quantization.keras.quantize_apply(
+                quant_aware_annotate_model,
+                tfmot.experimental.combine.Default8BitClusterPreserveQuantizeScheme())
+
+    cqat_model.compile(optimizer=Adam(learning_rate=args.learning_rate), loss="mse", metrics=['mse', 'mae'])
+    print('Train pqat model:')
+    cqat_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=1, validation_split=0.1)
+
+    # ### Quantize model - dense and conv2d (batchnorm not support)
+    # # Helper function uses `quantize_annotate_layer` to annotate that only the specified layers be Q 
+    # def apply_quantization_to_layers(layer):
+    #     if isinstance(layer, tf.keras.layers.Dense):
+    #         return tfmot.quantization.keras.quantize_annotate_layer(layer)
+    #     if isinstance(layer, tf.keras.layers.Conv2D):
+    #         return tfmot.quantization.keras.quantize_annotate_layer(layer)
+    #     return layer
+    # # Use `tf.keras.models.clone_model` to apply `apply_quantization_to_dense` 
+    # # to the layers of the model.
+    # annotated_model = tf.keras.models.clone_model(
+    #     model,
+    #     clone_function=apply_quantization_to_layers,
+    # )
+    # # Now that the Dense layers are annotated,
+    # # `quantize_apply` actually makes the model quantization aware.
+    # q_aware_model = tfmot.quantization.keras.quantize_apply(annotated_model)
+    
+    # Create quantized model for TFLite backend - quantized model with int8 weights and uint8 activations
+    converter = tf.lite.TFLiteConverter.from_keras_model(cqat_model)
+    converter.optimizations = [tf.lite.Optimize.DEFAULT]
+    tflite_model = converter.convert()
+
+    tflite_model_cqat_file = tflite_models_dir/f"{model_name}_pqat_model.tflite"
+    tflite_model_cqat_file.write_bytes(tflite_model) # save model
+    
+    model_size, mse, inf_time = evaluate_model(tflite_model_cqat_file, tflite_model, valid_set, images_val, args.batch_size)
+    print("********** Pruning preserving Quantization Aware Training stats **********")
+    print("Model size (MB):", model_size)
+    print("MSE:", mse)
+    print("Inference time (s):", inf_time)
+    return model_size, mse, inf_time
 
 
 def load_data(args):
@@ -443,7 +515,7 @@ def parse_args():
     # parser.add_argument('--res_path', default='Result_Model_3.csv', help="Path(+filename) to store the results" )
     parser.add_argument('--eval_base', type=bool, default=False, help="If set to True, it will calculate accuracy, size and inference time for original model.")
     parser.add_argument("--tech", action='append', default=[], help="Techniques to apply for model compression. Options are: \n"+
-                               "'dynamic_quan', 'int_quan', 'int_flt_quan', 'float16_quan', 'quan_aware', 'prune', 'prune_quan', 'clust_qat' and 'all' .")
+                               "'dynamic_quan', 'int_quan', 'int_flt_quan', 'float16_quan', 'quan_aware', 'prune', 'prune_quan', 'clust_qat', 'prune_qat' and 'all' .")
     
     args = parser.parse_args()
     return args
@@ -506,6 +578,10 @@ if __name__ == '__main__':
         res = CQAT(args.model_path, args.model_name, tflite_models_dir, valid_set, 
                                     images_val, args, images_train, annotations_train)
         results.append(("CQAT",) + res)
+    if "prune_qat" in args.tech or 'all' in args.tech : 
+        res = PQAT(args.model_path, args.model_name, tflite_models_dir, valid_set, 
+                                    images_val, args, images_train, annotations_train)
+        results.append(("PQAT",) + res)
 
         
     df = pd.DataFrame(results)

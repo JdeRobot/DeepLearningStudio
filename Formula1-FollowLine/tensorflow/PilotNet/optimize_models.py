@@ -356,33 +356,28 @@ def CQAT(model_path, model_name, tflite_models_dir, valid_set, images_val, args,
     stripped_clustered_model = tfmot.clustering.keras.strip_clustering(clustered_model)
 
     # CQAT
-    quant_aware_annotate_model = tfmot.quantization.keras.quantize_annotate_model(
-                stripped_clustered_model)
-    cqat_model = tfmot.quantization.keras.quantize_apply(
-                quant_aware_annotate_model,
+    ### Quantize model - dense and conv2d (batchnorm not support)
+    # Helper function uses `quantize_annotate_layer` to annotate that only the specified layers be Q 
+    def apply_quantization_to_layers(layer):
+        if isinstance(layer, tf.keras.layers.Dense):
+            return tfmot.quantization.keras.quantize_annotate_layer(layer)
+        if isinstance(layer, tf.keras.layers.Conv2D):
+            return tfmot.quantization.keras.quantize_annotate_layer(layer)
+        return layer
+    # Use `tf.keras.models.clone_model` to apply `apply_quantization_to_dense` 
+    # to the layers of the model.
+    annotated_model = tf.keras.models.clone_model(
+        stripped_clustered_model,
+        clone_function=apply_quantization_to_layers,
+    )
+    # Now that the Dense layers are annotated,
+    # `quantize_apply` actually makes the model quantization aware.
+    cqat_model = tfmot.quantization.keras.quantize_apply(annotated_model,
                 tfmot.experimental.combine.Default8BitClusterPreserveQuantizeScheme())
 
     cqat_model.compile(optimizer=Adam(learning_rate=args.learning_rate), loss="mse", metrics=['mse', 'mae'])
     print('Train cqat model:')
     cqat_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=1, validation_split=0.1)
-
-    # ### Quantize model - dense and conv2d (batchnorm not support)
-    # # Helper function uses `quantize_annotate_layer` to annotate that only the specified layers be Q 
-    # def apply_quantization_to_layers(layer):
-    #     if isinstance(layer, tf.keras.layers.Dense):
-    #         return tfmot.quantization.keras.quantize_annotate_layer(layer)
-    #     if isinstance(layer, tf.keras.layers.Conv2D):
-    #         return tfmot.quantization.keras.quantize_annotate_layer(layer)
-    #     return layer
-    # # Use `tf.keras.models.clone_model` to apply `apply_quantization_to_dense` 
-    # # to the layers of the model.
-    # annotated_model = tf.keras.models.clone_model(
-    #     model,
-    #     clone_function=apply_quantization_to_layers,
-    # )
-    # # Now that the Dense layers are annotated,
-    # # `quantize_apply` actually makes the model quantization aware.
-    # q_aware_model = tfmot.quantization.keras.quantize_apply(annotated_model)
     
     # Create quantized model for TFLite backend - quantized model with int8 weights and uint8 activations
     converter = tf.lite.TFLiteConverter.from_keras_model(cqat_model)
@@ -423,39 +418,40 @@ def PQAT(model_path, model_name, tflite_models_dir, valid_set, images_val, args,
     # Use smaller learning rate for fine-tuning
     pruned_model.compile(optimizer=Adam(learning_rate=args.learning_rate/100), loss="mse", metrics=['mse', 'mae'])
     pruned_model.summary()
-    pruned_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=3, validation_split=0.1)
+    pruned_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=3, validation_split=0.1, callbacks=callbacks)
     
     stripped_pruned_model = tfmot.sparsity.keras.strip_pruning(pruned_model)
 
-    # CQAT
-    quant_aware_annotate_model = tfmot.quantization.keras.quantize_annotate_model(
-                stripped_pruned_model)
-    pqat_model = tfmot.quantization.keras.quantize_apply(
-              quant_aware_annotate_model,
-              tfmot.experimental.combine.Default8BitPrunePreserveQuantizeScheme())
+    # PQAT
+    # quant_aware_annotate_model = tfmot.quantization.keras.quantize_annotate_model(
+    #             stripped_pruned_model)
+    # pqat_model = tfmot.quantization.keras.quantize_apply(
+    #           quant_aware_annotate_model,
+    #           tfmot.experimental.combine.Default8BitPrunePreserveQuantizeScheme())
 
+    ### Quantize model - dense and conv2d (batchnorm not support)
+    # Helper function uses `quantize_annotate_layer` to annotate that only the specified layers be Q 
+    def apply_quantization_to_layers(layer):
+        if isinstance(layer, tf.keras.layers.Dense):
+            return tfmot.quantization.keras.quantize_annotate_layer(layer)
+        if isinstance(layer, tf.keras.layers.Conv2D):
+            return tfmot.quantization.keras.quantize_annotate_layer(layer)
+        return layer
+    # Use `tf.keras.models.clone_model` to apply `apply_quantization_to_dense` 
+    # to the layers of the model.
+    annotated_model = tf.keras.models.clone_model(
+        stripped_pruned_model,
+        clone_function=apply_quantization_to_layers,
+    )
+    # Now that the Dense layers are annotated,
+    # `quantize_apply` actually makes the model quantization aware.
+    pqat_model = tfmot.quantization.keras.quantize_apply(annotated_model,
+              tfmot.experimental.combine.Default8BitPrunePreserveQuantizeScheme())
+    
     pqat_model.compile(optimizer=Adam(learning_rate=args.learning_rate), loss="mse", metrics=['mse', 'mae'])
     print('Train pqat model:')
     pqat_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=1, validation_split=0.1)
 
-    # ### Quantize model - dense and conv2d (batchnorm not support)
-    # # Helper function uses `quantize_annotate_layer` to annotate that only the specified layers be Q 
-    # def apply_quantization_to_layers(layer):
-    #     if isinstance(layer, tf.keras.layers.Dense):
-    #         return tfmot.quantization.keras.quantize_annotate_layer(layer)
-    #     if isinstance(layer, tf.keras.layers.Conv2D):
-    #         return tfmot.quantization.keras.quantize_annotate_layer(layer)
-    #     return layer
-    # # Use `tf.keras.models.clone_model` to apply `apply_quantization_to_dense` 
-    # # to the layers of the model.
-    # annotated_model = tf.keras.models.clone_model(
-    #     model,
-    #     clone_function=apply_quantization_to_layers,
-    # )
-    # # Now that the Dense layers are annotated,
-    # # `quantize_apply` actually makes the model quantization aware.
-    # q_aware_model = tfmot.quantization.keras.quantize_apply(annotated_model)
-    
     # Create quantized model for TFLite backend - quantized model with int8 weights and uint8 activations
     converter = tf.lite.TFLiteConverter.from_keras_model(pqat_model)
     converter.optimizations = [tf.lite.Optimize.DEFAULT]
@@ -494,7 +490,7 @@ def PCQAT(model_path, model_name, tflite_models_dir, valid_set, images_val, args
 
     # Use smaller learning rate for fine-tuning
     pruned_model.compile(optimizer=Adam(learning_rate=args.learning_rate/100), loss="mse", metrics=['mse', 'mae'])
-    pruned_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=3, validation_split=0.1)
+    pruned_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=3, validation_split=0.1, callbacks=callbacks)
     
     stripped_pruned_model = tfmot.sparsity.keras.strip_pruning(pruned_model)
 
@@ -521,33 +517,34 @@ def PCQAT(model_path, model_name, tflite_models_dir, valid_set, images_val, args
     stripped_clustered_model = tfmot.clustering.keras.strip_clustering(sparsity_clustered_model)
 
     ## PCQAT
-    quant_aware_annotate_model = tfmot.quantization.keras.quantize_annotate_model(
-                stripped_pruned_model)
-    pcqat_model = tfmot.quantization.keras.quantize_apply(
-                quant_aware_annotate_model,
+    # quant_aware_annotate_model = tfmot.quantization.keras.quantize_annotate_model(
+    #             stripped_clustered_model)
+    # pcqat_model = tfmot.quantization.keras.quantize_apply(
+    #             quant_aware_annotate_model,
+    #             tfmot.experimental.combine.Default8BitClusterPreserveQuantizeScheme(preserve_sparsity=True))
+
+    ### Quantize model - dense and conv2d (batchnorm not support)
+    # Helper function uses `quantize_annotate_layer` to annotate that only the specified layers be Q 
+    def apply_quantization_to_layers(layer):
+        if isinstance(layer, tf.keras.layers.Dense):
+            return tfmot.quantization.keras.quantize_annotate_layer(layer)
+        if isinstance(layer, tf.keras.layers.Conv2D):
+            return tfmot.quantization.keras.quantize_annotate_layer(layer)
+        return layer
+    # Use `tf.keras.models.clone_model` to apply `apply_quantization_to_dense` 
+    # to the layers of the model.
+    annotated_model = tf.keras.models.clone_model(
+        stripped_clustered_model,
+        clone_function=apply_quantization_to_layers,
+    )
+    # Now that the Dense layers are annotated,
+    # `quantize_apply` actually makes the model quantization aware.
+    pcqat_model = tfmot.quantization.keras.quantize_apply(annotated_model,
                 tfmot.experimental.combine.Default8BitClusterPreserveQuantizeScheme(preserve_sparsity=True))
 
     pcqat_model.compile(optimizer=Adam(learning_rate=args.learning_rate), loss="mse", metrics=['mse', 'mae'])
-    print('Train pqat model:')
+    print('Train pcqat model:')
     pcqat_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=1, validation_split=0.1)
-
-    # ### Quantize model - dense and conv2d (batchnorm not support)
-    # # Helper function uses `quantize_annotate_layer` to annotate that only the specified layers be Q 
-    # def apply_quantization_to_layers(layer):
-    #     if isinstance(layer, tf.keras.layers.Dense):
-    #         return tfmot.quantization.keras.quantize_annotate_layer(layer)
-    #     if isinstance(layer, tf.keras.layers.Conv2D):
-    #         return tfmot.quantization.keras.quantize_annotate_layer(layer)
-    #     return layer
-    # # Use `tf.keras.models.clone_model` to apply `apply_quantization_to_dense` 
-    # # to the layers of the model.
-    # annotated_model = tf.keras.models.clone_model(
-    #     model,
-    #     clone_function=apply_quantization_to_layers,
-    # )
-    # # Now that the Dense layers are annotated,
-    # # `quantize_apply` actually makes the model quantization aware.
-    # q_aware_model = tfmot.quantization.keras.quantize_apply(annotated_model)
     
     # Create quantized model for TFLite backend - quantized model with int8 weights and uint8 activations
     converter = tf.lite.TFLiteConverter.from_keras_model(pcqat_model)

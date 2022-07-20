@@ -8,7 +8,6 @@ The algorithms are modular and can adapt to other datasets. They are both implem
 
 Two possible datasets:
 * The dataset for training is available in the following [link](https://drive.google.com/file/d/1EL2Pzzdoj7jLRRi9DXNDVCwZZ0zGGu7H/view?usp=sharing).
-* The **10fps** dataset for training is available in the following [link](https://drive.google.com/file/d/1NxSsbpUqlRisMFSVtIiVZV-QSck3ohKU/view?usp=sharing). It includes timestamp for each sample.
 
 It's generated from running an explicitly programmed brain over different circuits. It's divided as follows:
 
@@ -27,8 +26,11 @@ It's generated from running an explicitly programmed brain over different circui
 | Nurburgring  | Anticlockwise        | 4045      |
 | Only curves      | Recorded curves from different circuits       | 3008	|
 | Difficult situations 1-2     | Recorded difficult situations from different circuits       | 4292	|
-| Montmeló      | Clockwise       | 10507	|
-| **TOTAL**      | -       | **92280** |
+| Montmeló      | Clockwise       | 4777	|
+| Montmeló      | Anticlockwise       | 4809	|
+| Montreal      | Clockwise       | 8049	|
+| Montreal      | Anticlockwise       | 8257	|
+| **TOTAL**      | -       | **73393** |
 
 
 The model weights avaiable here only used the following part of the whole dataset for training/validation:

@@ -61,7 +61,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
         if image != path_to_data + 'many_curves_01_04_2022_clockwise_1/data.csv':
             new_list_images_many_curves_1.append(image)
     list_images_many_curves_1 = new_list_images_many_curves_1
-    images_paths_many_curves_1 = sorted(list_images_many_curves_1, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    images_paths_many_curves_1 = sorted(list_images_many_curves_1, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_many_curves_1 = pandas.read_csv(many_curves_1_name_file)
     array_annotations_many_curves_1 = parse_csv(array_annotations_many_curves_1)
@@ -102,7 +102,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
         if image != path_to_data + 'nurburgring_01_04_2022_clockwise_1/data.csv':
             new_list_images_nurburgring_1.append(image)
     list_images_nurburgring_1 = new_list_images_nurburgring_1
-    images_paths_nurburgring_1 = sorted(list_images_nurburgring_1, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    images_paths_nurburgring_1 = sorted(list_images_nurburgring_1, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_nurburgring_1 = pandas.read_csv(nurburgring_1_name_file)
     array_annotations_nurburgring_1 = parse_csv(array_annotations_nurburgring_1)
@@ -142,7 +142,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
         if image != path_to_data + 'monaco_01_04_2022_clockwise_1/data.csv':
             new_list_images_monaco_1.append(image)
     list_images_monaco_1 = new_list_images_monaco_1
-    images_paths_monaco_1 = sorted(list_images_monaco_1, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    images_paths_monaco_1 = sorted(list_images_monaco_1, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_monaco_1 = pandas.read_csv(monaco_1_name_file)
     array_annotations_monaco_1 = parse_csv(array_annotations_monaco_1)
@@ -183,7 +183,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_extended_simple_1.append(image)
     list_images_extended_simple_1 = new_list_images_extended_simple_1
     images_paths_extended_simple_1 = sorted(list_images_extended_simple_1,
-                                            key=lambda x: int(x.split('/')[6].split('.png')[0]))
+                                            key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_extended_simple_1 = pandas.read_csv(extended_simple_1_name_file)
     array_annotations_extended_simple_1 = parse_csv(array_annotations_extended_simple_1)
@@ -224,7 +224,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
         if image != path_to_data + 'only_curves_01_04_2022/nurburgring_1/data.csv':
             new_list_images_only_curves_1.append(image)
     list_images_only_curves_1 = new_list_images_only_curves_1
-    images_paths_only_curves_1 = sorted(list_images_only_curves_1, key=lambda x: int(x.split('/')[7].split('.png')[0]))
+    images_paths_only_curves_1 = sorted(list_images_only_curves_1, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_only_curves_1 = pandas.read_csv(only_curves_1_name_file)
     array_annotations_only_curves_1 = parse_csv(array_annotations_only_curves_1)
@@ -265,7 +265,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
         if image != path_to_data + 'only_curves_01_04_2022/nurburgring_2/data.csv':
             new_list_images_only_curves_2.append(image)
     list_images_only_curves_2 = new_list_images_only_curves_2
-    images_paths_only_curves_2 = sorted(list_images_only_curves_2, key=lambda x: int(x.split('/')[7].split('.png')[0]))
+    images_paths_only_curves_2 = sorted(list_images_only_curves_2, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_only_curves_2 = pandas.read_csv(only_curves_2_name_file)
     array_annotations_only_curves_2 = parse_csv(array_annotations_only_curves_2)
@@ -306,7 +306,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
         if image != path_to_data + 'only_curves_01_04_2022/nurburgring_3/data.csv':
             new_list_images_only_curves_3.append(image)
     list_images_only_curves_3 = new_list_images_only_curves_3
-    images_paths_only_curves_3 = sorted(list_images_only_curves_3, key=lambda x: int(x.split('/')[7].split('.png')[0]))
+    images_paths_only_curves_3 = sorted(list_images_only_curves_3, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_only_curves_3 = pandas.read_csv(only_curves_3_name_file)
     array_annotations_only_curves_3 = parse_csv(array_annotations_only_curves_3)
@@ -347,7 +347,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
         if image != path_to_data + 'only_curves_01_04_2022/nurburgring_4/data.csv':
             new_list_images_only_curves_4.append(image)
     list_images_only_curves_4 = new_list_images_only_curves_4
-    images_paths_only_curves_4 = sorted(list_images_only_curves_4, key=lambda x: int(x.split('/')[7].split('.png')[0]))
+    images_paths_only_curves_4 = sorted(list_images_only_curves_4, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_only_curves_4 = pandas.read_csv(only_curves_4_name_file)
     array_annotations_only_curves_4 = parse_csv(array_annotations_only_curves_4)
@@ -388,7 +388,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
         if image != path_to_data + 'only_curves_01_04_2022/nurburgring_5/data.csv':
             new_list_images_only_curves_5.append(image)
     list_images_only_curves_5 = new_list_images_only_curves_5
-    images_paths_only_curves_5 = sorted(list_images_only_curves_5, key=lambda x: int(x.split('/')[7].split('.png')[0]))
+    images_paths_only_curves_5 = sorted(list_images_only_curves_5, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_only_curves_5 = pandas.read_csv(only_curves_5_name_file)
     array_annotations_only_curves_5 = parse_csv(array_annotations_only_curves_5)
@@ -429,7 +429,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
         if image != path_to_data + 'only_curves_01_04_2022/nurburgring_6/data.csv':
             new_list_images_only_curves_6.append(image)
     list_images_only_curves_6 = new_list_images_only_curves_6
-    images_paths_only_curves_6 = sorted(list_images_only_curves_6, key=lambda x: int(x.split('/')[7].split('.png')[0]))
+    images_paths_only_curves_6 = sorted(list_images_only_curves_6, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_only_curves_6 = pandas.read_csv(only_curves_6_name_file)
     array_annotations_only_curves_6 = parse_csv(array_annotations_only_curves_6)
@@ -470,7 +470,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
         if image != path_to_data + 'only_curves_01_04_2022/monaco_1/data.csv':
             new_list_images_only_curves_7.append(image)
     list_images_only_curves_7 = new_list_images_only_curves_7
-    images_paths_only_curves_7 = sorted(list_images_only_curves_7, key=lambda x: int(x.split('/')[7].split('.png')[0]))
+    images_paths_only_curves_7 = sorted(list_images_only_curves_7, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_only_curves_7 = pandas.read_csv(only_curves_7_name_file)
     array_annotations_only_curves_7 = parse_csv(array_annotations_only_curves_7)
@@ -511,7 +511,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
         if image != path_to_data + 'only_curves_01_04_2022/monaco_2/data.csv':
             new_list_images_only_curves_8.append(image)
     list_images_only_curves_8 = new_list_images_only_curves_8
-    images_paths_only_curves_8 = sorted(list_images_only_curves_8, key=lambda x: int(x.split('/')[7].split('.png')[0]))
+    images_paths_only_curves_8 = sorted(list_images_only_curves_8, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_only_curves_8 = pandas.read_csv(only_curves_8_name_file)
     array_annotations_only_curves_8 = parse_csv(array_annotations_only_curves_8)
@@ -552,7 +552,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
         if image != path_to_data + 'only_curves_01_04_2022/monaco_3/data.csv':
             new_list_images_only_curves_9.append(image)
     list_images_only_curves_9 = new_list_images_only_curves_9
-    images_paths_only_curves_9 = sorted(list_images_only_curves_9, key=lambda x: int(x.split('/')[7].split('.png')[0]))
+    images_paths_only_curves_9 = sorted(list_images_only_curves_9, key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_only_curves_9 = pandas.read_csv(only_curves_9_name_file)
     array_annotations_only_curves_9 = parse_csv(array_annotations_only_curves_9)
@@ -594,7 +594,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_only_curves_10.append(image)
     list_images_only_curves_10 = new_list_images_only_curves_10
     images_paths_only_curves_10 = sorted(list_images_only_curves_10,
-                                         key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                         key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_only_curves_10 = pandas.read_csv(only_curves_10_name_file)
     array_annotations_only_curves_10 = parse_csv(array_annotations_only_curves_10)
@@ -636,7 +636,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_only_curves_11.append(image)
     list_images_only_curves_11 = new_list_images_only_curves_11
     images_paths_only_curves_11 = sorted(list_images_only_curves_11,
-                                         key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                         key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_only_curves_11 = pandas.read_csv(only_curves_11_name_file)
     array_annotations_only_curves_11 = parse_csv(array_annotations_only_curves_11)
@@ -678,7 +678,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_only_curves_12.append(image)
     list_images_only_curves_12 = new_list_images_only_curves_12
     images_paths_only_curves_12 = sorted(list_images_only_curves_12,
-                                         key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                         key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_only_curves_12 = pandas.read_csv(only_curves_12_name_file)
     array_annotations_only_curves_12 = parse_csv(array_annotations_only_curves_12)
@@ -720,7 +720,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_1.append(image)
     list_images_difficult_situations_1 = new_list_images_difficult_situations_1
     images_paths_difficult_situations_1 = sorted(list_images_difficult_situations_1,
-                                                 key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                 key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_1 = pandas.read_csv(difficult_situations_1_name_file)
     array_annotations_difficult_situations_1 = parse_csv(array_annotations_difficult_situations_1)
@@ -762,7 +762,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_2.append(image)
     list_images_difficult_situations_2 = new_list_images_difficult_situations_2
     images_paths_difficult_situations_2 = sorted(list_images_difficult_situations_2,
-                                                 key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                 key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_2 = pandas.read_csv(difficult_situations_2_name_file)
     array_annotations_difficult_situations_2 = parse_csv(array_annotations_difficult_situations_2)
@@ -804,7 +804,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_3.append(image)
     list_images_difficult_situations_3 = new_list_images_difficult_situations_3
     images_paths_difficult_situations_3 = sorted(list_images_difficult_situations_3,
-                                                 key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                 key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_3 = pandas.read_csv(difficult_situations_3_name_file)
     array_annotations_difficult_situations_3 = parse_csv(array_annotations_difficult_situations_3)
@@ -846,7 +846,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_4.append(image)
     list_images_difficult_situations_4 = new_list_images_difficult_situations_4
     images_paths_difficult_situations_4 = sorted(list_images_difficult_situations_4,
-                                                 key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                 key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_4 = pandas.read_csv(difficult_situations_4_name_file)
     array_annotations_difficult_situations_4 = parse_csv(array_annotations_difficult_situations_4)
@@ -888,7 +888,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_5.append(image)
     list_images_difficult_situations_5 = new_list_images_difficult_situations_5
     images_paths_difficult_situations_5 = sorted(list_images_difficult_situations_5,
-                                                 key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                 key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_5 = pandas.read_csv(difficult_situations_5_name_file)
     array_annotations_difficult_situations_5 = parse_csv(array_annotations_difficult_situations_5)
@@ -930,7 +930,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_6.append(image)
     list_images_difficult_situations_6 = new_list_images_difficult_situations_6
     images_paths_difficult_situations_6 = sorted(list_images_difficult_situations_6,
-                                                 key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                 key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_6 = pandas.read_csv(difficult_situations_6_name_file)
     array_annotations_difficult_situations_6 = parse_csv(array_annotations_difficult_situations_6)
@@ -972,7 +972,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_7.append(image)
     list_images_difficult_situations_7 = new_list_images_difficult_situations_7
     images_paths_difficult_situations_7 = sorted(list_images_difficult_situations_7,
-                                                 key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                 key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_7 = pandas.read_csv(difficult_situations_7_name_file)
     array_annotations_difficult_situations_7 = parse_csv(array_annotations_difficult_situations_7)
@@ -1014,7 +1014,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_8.append(image)
     list_images_difficult_situations_8 = new_list_images_difficult_situations_8
     images_paths_difficult_situations_8 = sorted(list_images_difficult_situations_8,
-                                                 key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                 key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_8 = pandas.read_csv(difficult_situations_8_name_file)
     array_annotations_difficult_situations_8 = parse_csv(array_annotations_difficult_situations_8)
@@ -1056,7 +1056,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_9.append(image)
     list_images_difficult_situations_9 = new_list_images_difficult_situations_9
     images_paths_difficult_situations_9 = sorted(list_images_difficult_situations_9,
-                                                 key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                 key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_9 = pandas.read_csv(difficult_situations_9_name_file)
     array_annotations_difficult_situations_9 = parse_csv(array_annotations_difficult_situations_9)
@@ -1098,7 +1098,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_10.append(image)
     list_images_difficult_situations_10 = new_list_images_difficult_situations_10
     images_paths_difficult_situations_10 = sorted(list_images_difficult_situations_10,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                  key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_10 = pandas.read_csv(difficult_situations_10_name_file)
     array_annotations_difficult_situations_10 = parse_csv(array_annotations_difficult_situations_10)
@@ -1140,7 +1140,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_11.append(image)
     list_images_difficult_situations_11 = new_list_images_difficult_situations_11
     images_paths_difficult_situations_11 = sorted(list_images_difficult_situations_11,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                  key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_11 = pandas.read_csv(difficult_situations_11_name_file)
     array_annotations_difficult_situations_11 = parse_csv(array_annotations_difficult_situations_11)
@@ -1182,7 +1182,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_12.append(image)
     list_images_difficult_situations_12 = new_list_images_difficult_situations_12
     images_paths_difficult_situations_12 = sorted(list_images_difficult_situations_12,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                  key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_12 = pandas.read_csv(difficult_situations_12_name_file)
     array_annotations_difficult_situations_12 = parse_csv(array_annotations_difficult_situations_12)
@@ -1224,7 +1224,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_13.append(image)
     list_images_difficult_situations_13 = new_list_images_difficult_situations_13
     images_paths_difficult_situations_13 = sorted(list_images_difficult_situations_13,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                  key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_13 = pandas.read_csv(difficult_situations_13_name_file)
     array_annotations_difficult_situations_13 = parse_csv(array_annotations_difficult_situations_13)
@@ -1266,7 +1266,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_14.append(image)
     list_images_difficult_situations_14 = new_list_images_difficult_situations_14
     images_paths_difficult_situations_14 = sorted(list_images_difficult_situations_14,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                  key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_14 = pandas.read_csv(difficult_situations_14_name_file)
     array_annotations_difficult_situations_14 = parse_csv(array_annotations_difficult_situations_14)
@@ -1308,7 +1308,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_15.append(image)
     list_images_difficult_situations_15 = new_list_images_difficult_situations_15
     images_paths_difficult_situations_15 = sorted(list_images_difficult_situations_15,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                  key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_15 = pandas.read_csv(difficult_situations_15_name_file)
     array_annotations_difficult_situations_15 = parse_csv(array_annotations_difficult_situations_15)
@@ -1350,7 +1350,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_16.append(image)
     list_images_difficult_situations_16 = new_list_images_difficult_situations_16
     images_paths_difficult_situations_16 = sorted(list_images_difficult_situations_16,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                  key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_16 = pandas.read_csv(difficult_situations_16_name_file)
     array_annotations_difficult_situations_16 = parse_csv(array_annotations_difficult_situations_16)
@@ -1392,7 +1392,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_17.append(image)
     list_images_difficult_situations_17 = new_list_images_difficult_situations_17
     images_paths_difficult_situations_17 = sorted(list_images_difficult_situations_17,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                  key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_17 = pandas.read_csv(difficult_situations_17_name_file)
     array_annotations_difficult_situations_17 = parse_csv(array_annotations_difficult_situations_17)
@@ -1434,7 +1434,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_18.append(image)
     list_images_difficult_situations_18 = new_list_images_difficult_situations_18
     images_paths_difficult_situations_18 = sorted(list_images_difficult_situations_18,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                  key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_18 = pandas.read_csv(difficult_situations_18_name_file)
     array_annotations_difficult_situations_18 = parse_csv(array_annotations_difficult_situations_18)
@@ -1476,7 +1476,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_19.append(image)
     list_images_difficult_situations_19 = new_list_images_difficult_situations_19
     images_paths_difficult_situations_19 = sorted(list_images_difficult_situations_19,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                  key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_19 = pandas.read_csv(difficult_situations_19_name_file)
     array_annotations_difficult_situations_19 = parse_csv(array_annotations_difficult_situations_19)
@@ -1518,7 +1518,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_20.append(image)
     list_images_difficult_situations_20 = new_list_images_difficult_situations_20
     images_paths_difficult_situations_20 = sorted(list_images_difficult_situations_20,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                  key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_20 = pandas.read_csv(difficult_situations_20_name_file)
     array_annotations_difficult_situations_20 = parse_csv(array_annotations_difficult_situations_20)
@@ -1560,7 +1560,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_21.append(image)
     list_images_difficult_situations_21 = new_list_images_difficult_situations_21
     images_paths_difficult_situations_21 = sorted(list_images_difficult_situations_21,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                  key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_21 = pandas.read_csv(difficult_situations_21_name_file)
     array_annotations_difficult_situations_21 = parse_csv(array_annotations_difficult_situations_21)
@@ -1602,7 +1602,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_22.append(image)
     list_images_difficult_situations_22 = new_list_images_difficult_situations_22
     images_paths_difficult_situations_22 = sorted(list_images_difficult_situations_22,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                  key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_22 = pandas.read_csv(difficult_situations_22_name_file)
     array_annotations_difficult_situations_22 = parse_csv(array_annotations_difficult_situations_22)
@@ -1644,7 +1644,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_23.append(image)
     list_images_difficult_situations_23 = new_list_images_difficult_situations_23
     images_paths_difficult_situations_23 = sorted(list_images_difficult_situations_23,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                  key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_23 = pandas.read_csv(difficult_situations_23_name_file)
     array_annotations_difficult_situations_23 = parse_csv(array_annotations_difficult_situations_23)
@@ -1686,7 +1686,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_24.append(image)
     list_images_difficult_situations_24 = new_list_images_difficult_situations_24
     images_paths_difficult_situations_24 = sorted(list_images_difficult_situations_24,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                  key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_24 = pandas.read_csv(difficult_situations_24_name_file)
     array_annotations_difficult_situations_24 = parse_csv(array_annotations_difficult_situations_24)
@@ -1728,7 +1728,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_25.append(image)
     list_images_difficult_situations_25 = new_list_images_difficult_situations_25
     images_paths_difficult_situations_25 = sorted(list_images_difficult_situations_25,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                  key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_25 = pandas.read_csv(difficult_situations_25_name_file)
     array_annotations_difficult_situations_25 = parse_csv(array_annotations_difficult_situations_25)
@@ -1770,7 +1770,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_26.append(image)
     list_images_difficult_situations_26 = new_list_images_difficult_situations_26
     images_paths_difficult_situations_26 = sorted(list_images_difficult_situations_26,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                  key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_26 = pandas.read_csv(difficult_situations_26_name_file)
     array_annotations_difficult_situations_26 = parse_csv(array_annotations_difficult_situations_26)
@@ -1812,7 +1812,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape):
             new_list_images_difficult_situations_27.append(image)
     list_images_difficult_situations_27 = new_list_images_difficult_situations_27
     images_paths_difficult_situations_27 = sorted(list_images_difficult_situations_27,
-                                                  key=lambda x: int(x.split('/')[7].split('.png')[0]))
+                                                  key=lambda x: int(x.split('/')[-1].split('.png')[0]))
 
     array_annotations_difficult_situations_27 = pandas.read_csv(difficult_situations_27_name_file)
     array_annotations_difficult_situations_27 = parse_csv(array_annotations_difficult_situations_27)
@@ -2428,7 +2428,67 @@ def add_extreme_sequences(array_x, array_y):
     array_x = shown_array_imgs
     array_y = shown_array_annotations
     return array_x, array_y
+    
+def add_homography_transforms(array_x, array_y):
+    pts_src = np.array([[0, 256], [286, 238], [353, 238],[639, 256]])
+    pts_dst_list = [
+        np.array([[0, 260],[287, 242],[355, 242],[639, 260]]),
+        np.array([[0, 264],[286, 245],[353, 245],[639, 264]]),
+        np.array([[0, 266],[287, 248],[353, 248],[639, 266]]),
+        np.array([[0, 273],[286, 255],[353, 255],[639, 273]]),
+        np.array([[0, 290],[286, 271],[353, 271],[639, 290]]),
+        np.array([[0, 304],[286, 286],[353, 286],[639, 304]]),
+        np.array([[0, 321],[287, 303],[353, 303],[639, 321]]),
+        np.array([[0, 253],[287, 236],[352, 236],[639, 253]]),
+        np.array([[0, 251],[286, 232],[353, 232],[639, 251]]),
+        np.array([[0, 247],[286, 229],[353, 229],[639, 247]]),
+        np.array([[0, 242],[286, 223],[353, 223],[639, 242]]),
+        np.array([[0, 225],[286, 208],[353, 208],[639, 225]]),
+        np.array([[0, 210],[286, 190],[353, 190],[639, 210]]),
+        np.array([[0, 191],[286, 174],[353, 174],[639, 191]])
+    ]
+    
+    h_matrix_list = []
+    for pts_dst in pts_dst_list:
+        h_matrix_list.append(cv2.findHomography(pts_src, pts_dst)[0])
+    
+    
+    new_array_x_homography = []
+    new_array_y_homography = []
+    for x, big_imgs in enumerate(array_x):
+        new_big_imgs = []
+        new_big_anns = []
+        for y, big_img in enumerate(big_imgs):
+            h_matrix = random.choice(h_matrix_list)
+            big_ann = array_y[x][y]
 
+            try:
+                big_img = cv2.warpPerspective(big_img, h_matrix, (big_img.shape[1], big_img.shape[0]), 
+                                              borderMode = cv2.BORDER_REPLICATE) 
+            except:
+                pass
+
+            new_big_imgs.append(big_img)
+            new_big_anns.append(big_ann)
+
+        new_array_x_homography.append(new_big_imgs)
+        new_array_y_homography.append(new_big_anns)
+
+    new_array_x = new_array_x_homography
+    new_array_y = new_array_y_homography
+    
+    shown_array_imgs = []
+    shown_array_annotations = []
+    for new_x, new_y in zip(new_array_x, new_array_y):
+        shown_array_imgs += [new_x]
+        shown_array_annotations += [new_y]
+
+    print(len(shown_array_imgs))
+    print(len(shown_array_annotations))
+
+    array_x = shown_array_imgs
+    array_y = shown_array_annotations
+    return array_x, array_y
 
 def separate_dataset_into_train_validation(array_x, array_y):
     images_train, images_validation, annotations_train, annotations_validation = train_test_split(array_x, array_y,
@@ -2457,8 +2517,11 @@ def separate_dataset_into_train_validation(array_x, array_y):
 def process_dataset(path_to_data, type_image, data_type, img_shape):
     array_imgs, array_annotations = get_images_and_annotations(path_to_data, type_image, img_shape)
     array_x, array_y = separate_dataset_into_sequences(array_imgs, array_annotations)
+    
+    array_x, array_y = add_homography_transforms(array_x, array_y)
     if data_type == 'extreme':
         array_x, array_y = add_extreme_sequences(array_x, array_y)
+    
     images_train, annotations_train, images_validation, annotations_validation = separate_dataset_into_train_validation(
         array_x, array_y)
 

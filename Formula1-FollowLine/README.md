@@ -180,6 +180,31 @@ The same workflow as for PyTorch is followed, refer to the previous section
 --img_shape	      IMG_SHAPE	      Image shape
 
 
+# For PilotNet model optimization
+
+-h, --help            show this help message and exit
+--data_dir DATA_DIR   Directory to find Data
+--preprocess PREPROCESS
+					preprocessing information: choose from crop/nocrop and normal/extreme
+--data_augs DATA_AUGS
+					Data Augmentations: 0=No / 1=Normal / 2=Normal+Weather changes
+--img_shape IMG_SHAPE
+					Image shape
+--batch_size BATCH_SIZE
+					Batch size
+--model_path MODEL_PATH
+					Path to directory containing pre-trained models
+--model_name MODEL_NAME
+					Name of model
+--learning_rate LEARNING_RATE
+					Learning rate
+--eval_base EVAL_BASE
+					If set to True, it will calculate accuracy, size and inference time for original model.
+--tech TECH           Techniques to apply for model compression. Options are: 
+						'dynamic_quan', 'int_quan', 'int_flt_quan', 'float16_quan', 'quan_aware', 'prune', 
+						'prune_quan', 'clust_qat', 'prune_qat', 'prune_clust_qat' and 'all' .
+
+
 ```
 
 ## Running the Code
@@ -234,6 +259,18 @@ python3 train.py --data_dir ../../../../datasets_opencv/ \
     --batch_size 50 \
     --img_shape "3,100,50,3"
 
+# For PilotNet model optimization
+cd PilotNet
+python3 optimize_models.py --data_dir ../../../../datasets_opencv/ \
+	--preprocess crop \
+	--preprocess extreme \
+	--data_augs 2 \
+	--img_shape "200,66,3" \
+	--batch_size 64 \
+	--model_path ../trained_models/pilotnet.h5 \
+	--model_name pilotnet \
+	--eval_base True \
+ 	--tech dynamic_quan 
 ```
 
 The results are saved in  `./` directory and the structure is given below. 

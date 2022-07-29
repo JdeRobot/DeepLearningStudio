@@ -7,7 +7,7 @@ from albumentations import (
     Compose, HorizontalFlip, RandomBrightnessContrast, 
     HueSaturationValue, FancyPCA, RandomGamma, GaussNoise,
     GaussianBlur, ToFloat, Normalize, ColorJitter, ChannelShuffle, Equalize,
-    RandomRain, RandomShadow, RandomSnow, RandomFog, RandomSunFlare,
+    RandomRain, RandomShadow, RandomSnow, RandomFog, RandomSunFlare, ReplayCompose,
 )
 from albumentations.core.composition import OneOf
 

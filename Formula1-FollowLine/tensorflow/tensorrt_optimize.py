@@ -15,7 +15,7 @@ import os
 
 
 
-def converter_and_save(path, precision, save_path, args, calibration_input_fn=None):
+def converter_and_save(path, precision, save_path, args, input_shapes, calibration_input_fn=None):
     """Loads a saved model using a TF-TRT converter, and returns the converter
     """
 
@@ -32,7 +32,7 @@ def converter_and_save(path, precision, save_path, args, calibration_input_fn=No
         max_workspace_size_bytes=8 * (10**9),  # bytes -> 10^9 = Gb
         maximum_cached_engines=100,
         minimum_segment_size=3,
-        allow_build_at_runtime=True
+        # allow_build_at_runtime=True
     )
 
     import pprint
@@ -43,7 +43,7 @@ def converter_and_save(path, precision, save_path, args, calibration_input_fn=No
     converter = trt.TrtGraphConverterV2(
         input_saved_model_dir=str(path),
         conversion_params=params,
-        # use_dynamic_shape=True, dynamic_shape_profile_strategy='Optimal',
+        # use_dynamic_shape=True, dynamic_shape_profile_strategy='Optimal', not in TF 2.4 
     )
 
     if precision == 'int8':
@@ -51,6 +51,13 @@ def converter_and_save(path, precision, save_path, args, calibration_input_fn=No
     else:
         converter.convert() # convert to tensorrt
     print("Conversion complete!!")
+
+    def input_fn():
+        for shapes in input_shapes:
+            # return a list of input tensors
+            yield [np.ones(shape=x).astype(np.float32) for x in shapes]
+
+    converter.build(input_fn)
 
     tftrt_model_file = save_path/f"{args.model_name}_tftrt_{precision}"
     converter.save(str(tftrt_model_file))
@@ -200,9 +207,17 @@ if __name__ == '__main__':
     # load datasets
     train_set, valid_set, images_train, annotations_train, images_val, annotations_val = load_data(args)
 
-    def calibration_input_fn():
+    # provide calibration data for int8 conversion
+    def calibration_input_fn(): 
         for img, label in valid_set:
             yield (img,)
+
+    # prepare input shapes
+    img_shape = list(map(int, args.img_shape.split(',')))
+    input_shapes = [
+                    [[1] + img_shape],
+                    [[int(args.batch_size)] + img_shape],
+                    ]
 
     results = []
 
@@ -213,7 +228,7 @@ if __name__ == '__main__':
 
     if "fp32" in args.precision or 'all' in args.precision:
         # convert and save to TensorRT
-        tftrt_model_file = converter_and_save(args.model_path, "fp32", tftrt_models, args)
+        tftrt_model_file = converter_and_save(args.model_path, "fp32", tftrt_models, args, input_shapes )
         # evaluation model
         res = evaluate_model(tftrt_model_file, valid_set, images_val)
         results.append( ("Precision fp32",) + res)
@@ -221,7 +236,7 @@ if __name__ == '__main__':
 
     if "fp16" in args.precision or 'all' in args.precision:
         # convert and save to TensorRT
-        tftrt_model_file = converter_and_save(args.model_path, "fp16", tftrt_models, args)
+        tftrt_model_file = converter_and_save(args.model_path, "fp16", tftrt_models, args, input_shapes )
         # evaluation model
         res = evaluate_model(tftrt_model_file, valid_set, images_val)
         results.append( ("Precision fp16",) + res)
@@ -229,7 +244,7 @@ if __name__ == '__main__':
 
     if "int8" in args.precision or 'all' in args.precision:
         # convert and save to TensorRT
-        tftrt_model_file = converter_and_save(args.model_path, "int8", tftrt_models, args, calibration_input_fn=calibration_input_fn)
+        tftrt_model_file = converter_and_save(args.model_path, "int8", tftrt_models, args, input_shapes , calibration_input_fn=calibration_input_fn)
         # evaluation model
         res = evaluate_model(tftrt_model_file, valid_set, images_val)
         results.append( ("Precision int8",) + res)

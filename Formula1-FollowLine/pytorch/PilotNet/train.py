@@ -115,10 +115,11 @@ if __name__=="__main__":
     global_iter = 0
     global_val_mse = 1e+5
 
+
     print("*********** Training Started ************")
     for epoch in range(last_epoch, num_epochs):
         pilotModel.train()
-
+        train_loss = 0
         for i, (images, labels) in enumerate(train_loader):
             
             images = FLOAT(images).to(device)
@@ -127,6 +128,7 @@ if __name__=="__main__":
             outputs = pilotModel(images)
             loss = criterion(outputs, labels)
             current_loss = loss.item()
+            train_loss += current_loss
             # Backprop and perform Adam optimisation
             optimizer.zero_grad()
             loss.backward()
@@ -135,10 +137,8 @@ if __name__=="__main__":
             if global_iter % save_iter == 0:
                 torch.save(pilotModel.state_dict(), model_save_dir + '/pilot_net_model_{}.ckpt'.format(random_seed))
             global_iter += 1
-            writer.add_scalar("performance/train_loss", current_loss, epoch+1)
-            writer.add_scalar("training/epochs", epoch+1, epoch+1)
 
-            if print_terminal and (i + 1) % 100 == 0:
+            if print_terminal and (i + 1) % 10 == 0:
                 print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
                     .format(epoch + 1, num_epochs, i + 1, total_step, loss.item()))
         
@@ -146,6 +146,7 @@ if __name__=="__main__":
         with open(model_save_dir+'/args.json', 'w') as fp:
             json.dump({'last_epoch': epoch}, fp)
 
+        writer.add_scalar("performance/train_loss", train_loss/len(train_loader), epoch+1)
 
         # Validation 
         pilotModel.eval()
@@ -169,14 +170,14 @@ if __name__=="__main__":
             mssg = "Not Improved!!"
 
         print('Epoch [{}/{}], Validation Loss: {:.4f}'.format(epoch + 1, num_epochs, val_loss), mssg)
-            
+                
 
+    # pilotModel = best_model # allot the best model on validation 
     # Test the model
     transformations_val = createTransform([]) # only need Normalize()
     test_set = PilotNetDataset(args.test_dir, transformations_val, preprocessing=args.preprocess)
     test_loader = DataLoader(test_set, batch_size=batch_size)
     print("Check performance on testset")
-    pilotModel = best_model # allot the best model on validation 
     pilotModel.eval()
     with torch.no_grad():
         test_loss = 0

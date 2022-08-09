@@ -13,77 +13,90 @@ import json
 import numpy as np
 from copy import deepcopy
 import pandas as pd
+import time
 
 
-# def measure_inference_time(tflite_model, images_val):
-#     # measure average inference time
-#     interpreter = tf.lite.Interpreter(model_content=tflite_model)
-#     interpreter.allocate_tensors()
-#     input_details = interpreter.get_input_details()[0]
-#     output_details = interpreter.get_output_details()[0]
-    
-#     inf_time = []
-#     r_idx = np.random.randint(0, len(images_val), 1000)
-#     for i in tqdm(r_idx):
-#         # Pre-processing: add batch dimension and convert to 'dtype' to match with
-#         # the model's input data format.
-#         # Check if the input type is quantized, then rescale input data to uint8
-#         test_image = np.expand_dims(images_val[i], axis=0)
-#         if input_details['dtype'] == np.uint8:
-#             input_scale, input_zero_point = input_details["quantization"]
-#             test_image = test_image / input_scale + input_zero_point
-        
-#         interpreter.set_tensor(input_details["index"], test_image.astype(input_details["dtype"]))
+# Device Selection (CPU/GPU)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+FLOAT = torch.FloatTensor
 
-#         start_t = time.time()
-#         # Run inference.
-#         interpreter.invoke()
-#         # pred = tflite_model.predict(img, verbose=0)
-#         inf_time.append(time.time() - start_t)
-#         # Post-processing
-#         output = interpreter.get_tensor(output_details["index"])
-        
-#     return np.mean(inf_time)
 
-def measure_mse(quant_model, val_loader):
+def measure_inference_time(model, val_set):
     # measure average inference time
+    
+    # GPU warm-up
+    r_idx = np.random.randint(0, len(val_set), 50)
+    for i in r_idx:
+        image, _ = val_set[i]
+        image = torch.unsqueeze(image, 0).to(device)
+        _ = model(image) 
+    
+    # actual inference cal
+    inf_time = []
+    r_idx = np.random.randint(0, len(val_set), 1000)
+    for i in tqdm(r_idx):
+        # preprocessing
+        image, _ = val_set[i]
+        image = torch.unsqueeze(image, 0).to(device)
+        # Run inference.
+        start_t = time.time()
+        _ = model(image) 
+        inf_time.append(time.time() - start_t)
+        
+    return np.mean(inf_time)
+
+def measure_mse(model, val_loader):
     criterion = nn.MSELoss()
 
-    quant_model.eval()
+    model.eval()
     with torch.no_grad():
         total_loss = 0
-        for images, labels in val_loader:
+        for images, labels in tqdm(val_loader):
             images = FLOAT(images).to(device)
             labels = FLOAT(labels.float()).to(device)
-            outputs =  quant_model(images)
+            outputs =  model(images)
             loss = criterion(outputs, labels)
             total_loss += loss.item()
         
         MSE = total_loss/len(val_loader)
-        print('Average MSE of the model on the test images: {} %'.format( MSE))
+        # print('Average MSE of the model on the test images: {} %'.format( MSE))
 
     return MSE
 
-def evaluate_model(qmodel_path, quant_model, val_loader):
+def evaluate_model(model_path, opt_model, val_set, val_loader):
     '''
     Calculate accuracy, model size and inference time for the given model.
     Args:
-        model_path: path to saved tflite model
-        tflite_model: converted model instance (to tflite)
-        valid_set: dataset to do test for accuracy
+        model_path: path to saved quantized model
+        opt_model: converted model instance
+        val_set: dataset to use for inference benchmarking
+        val_loader: Dataset loader for accuracy test
     return:
         accuracy, model_size, inf_time
     '''
-    model_size = os.path.getsize(qmodel_path) / float(2**20)
+    model_size = os.path.getsize(model_path) / float(2**20)
 
-    mse = measure_mse(quant_model, val_loader)
+    mse = measure_mse(opt_model, val_loader)
     
-    # inf_time = measure_inference_time(quant_model, val_loader)
-    inf_time = -1
+    inf_time = measure_inference_time(opt_model,  val_set)
+
     return model_size, mse, inf_time
 
 
-def dynamic_quantization(model, model_save_dir, val_loader):
+def evaluate_baseline(base_model, model_path, val_set, val_loader):
+    print()
+    print('*'*8, 'Baseline evaluation', '*'*8)
+
+    model_size, mse, inf_time = evaluate_model(model_path, base_model,  val_set, val_loader)
+    
+    print("********** Baseline stats **********")
+    print("Model size (MB):", model_size)
+    print("MSE:", mse)
+    print("Inference time (s):", inf_time)
+    return model_size, mse, inf_time
+
+
+def dynamic_quantization(model, model_save_dir, val_set, val_loader):
     print()
     print("********* Start Dynamic range Quantization ***********")
     # Post-training dynamic range quantization
@@ -92,10 +105,12 @@ def dynamic_quantization(model, model_save_dir, val_loader):
                     model=model, qconfig_spec={nn.Linear}, dtype=torch.qint8, inplace=False #can add nn.LSTM in qconfig_spec for LSTM layers
                     )
 
+    raise ValueError('Need to check storage method for optimized models')
+    
     qmodel_path = model_save_dir + '/dynamic_quan.ckpt'
     torch.save(quant_model.state_dict(), qmodel_path)
     
-    model_size, mse, inf_time = evaluate_model(qmodel_path, quant_model, val_loader)
+    model_size, mse, inf_time = evaluate_model(qmodel_path, quant_model,  val_set, val_loader)
     print("********** Dynamic range Q stats **********")
     print("Model size (MB):", model_size)
     print("MSE:", mse)
@@ -109,10 +124,10 @@ def parse_args():
     parser.add_argument("--train_dir", action='append', help="Directory to find Data")
     parser.add_argument("--val_dir", action='append', help="Directory to find Data")
     parser.add_argument("--preprocess", action='append', default=None, help="preprocessing information: choose from crop/nocrop and normal/extreme")
+    parser.add_argument("--data_augs", action='append', type=str, default=None, help="Data Augmentations")
     parser.add_argument("--base_dir", type=str, default='optimized_models', help="Directory to save everything")
     parser.add_argument("--model_dir", type=str, default='trained_models/', help="Directory to trained models")
-    parser.add_argument("--data_augs", action='append', type=str, default=None, help="Data Augmentations")
-    parser.add_argument("--num_epochs", type=int, default=100, help="Number of Epochs")
+    parser.add_argument("--num_epochs", type=int, default=1, help="Number of Epochs")
     parser.add_argument("--lr", type=float, default=1e-3, help="Learning rate for Policy Net")
     parser.add_argument("--batch_size", type=int, default=128, help="Batch size")
     parser.add_argument('--eval_base', type=bool, default=False, help="If set to True, it will calculate accuracy, size and inference time for original model.")
@@ -147,21 +162,16 @@ if __name__=="__main__":
     num_epochs = args.num_epochs
     batch_size = args.batch_size
 
-    # Device Selection (CPU/GPU)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    FLOAT = torch.FloatTensor
-
     # Tensorboard Initialization
     writer = SummaryWriter(log_dir)
 
-    # Define data transformations
-    transformations_train = createTransform(augmentations)
-    transformations_val = createTransform(['None']) # only need Normalize()
-    # Load data
-    train_set = PilotNetDataset(args.train_dir, transformations_train, preprocessing=args.preprocess)
+    # Define data transformations, Load data, DataLoader for batching
+    # transformations_train = createTransform(augmentations)
+    # train_set = PilotNetDataset(args.train_dir, transformations_train, preprocessing=args.preprocess)
+    # train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
+
+    transformations_val = createTransform([]) # only need Normalize()
     val_set = PilotNetDataset(args.val_dir, transformations_val, preprocessing=args.preprocess)
-    # create DataLoader for batching
-    train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_set, batch_size=batch_size)
 
     # Load Model
@@ -169,8 +179,12 @@ if __name__=="__main__":
     pilotModel.load_state_dict(torch.load(args.model_dir))
     
     results = []
+
+    if args.eval_base:
+        res = evaluate_baseline(pilotModel, args.model_dir, val_set, val_loader)
+        results.append(("Baseline",) + res)
     if "dynamic_quan" in args.tech or 'all' in args.tech : 
-        res = dynamic_quantization(pilotModel, model_save_dir, val_loader)
+        res = dynamic_quantization(pilotModel, model_save_dir, val_set, val_loader)
         results.append(("Dynamic Range Q",) + res)
     
     df = pd.DataFrame(results)

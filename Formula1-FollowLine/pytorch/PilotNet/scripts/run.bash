@@ -36,11 +36,11 @@ python train.py \
 	--test_dir '../datasets_opencv/simple_circuit_01_04_2022_clockwise_1/' \
 	--preprocess 'crop' \
 	--preprocess 'extreme' \
-	--base_dir retrain_test \
+	--base_dir retrain_best \
 	--comment 'Retrain to best performance' \
 	--data_augs 'all' \
-	--num_epochs 3 \
-	--lr 5e-4 \
+	--num_epochs 50 \
+	--lr 1e-4 \
 	--val_split 0.1 \
 	--shuffle True \
 	--batch_size 1024 \

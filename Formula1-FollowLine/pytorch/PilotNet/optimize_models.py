@@ -21,7 +21,6 @@ import time
 device = torch.device("cpu") # support available only for cpu
 FLOAT = torch.FloatTensor
 
-
 def measure_inference_time(model, val_set):
     # measure average inference time
     
@@ -108,7 +107,8 @@ def dynamic_quantization(model, model_save_dir, val_set, val_loader):
     # Post-training dynamic range quantization
 
     quant_model = quantize_dynamic(
-                    model=model, qconfig_spec={nn.Linear}, dtype=torch.qint8, inplace=False #can add nn.LSTM in qconfig_spec for LSTM layers
+                    model=model, qconfig_spec={nn.Linear}, dtype=torch.qint8, 
+                    inplace=False #can add nn.LSTM in qconfig_spec for LSTM layers
                     )
     
     qmodel_path = model_save_dir + '/dynamic_quan.pth'
@@ -175,6 +175,62 @@ def static_quantization(model, model_save_dir, val_set, val_loader, train_loader
     return model_size, mse, inf_time
 
 
+def quantization_aware_train(model, model_save_dir, val_set, val_loader, train_loader, args):
+    print()
+    print("********* Start Static Quantization ***********")
+
+    m = deepcopy(model)
+    m.eval()
+    
+    backend = "fbgemm"  # running on a x86 CPU. Use "qnnpack" if running on ARM.
+
+    # fuse modules/layers for reducing memory access, better accuracy and inference
+    module_list = [[f'cn_{i}', f'relu{i}'] for i in range(1,6)]
+    module_list +=  [[f'fc_{i}', f'relu_fc{i}'] for i in range(1,5)]
+    torch.quantization.fuse_modules(m, module_list, inplace=True)
+        
+    """Insert stubs"""
+    m = nn.Sequential(torch.quantization.QuantStub(), 
+                    *nn.Sequential(*(m.children())), # bring every layer on same level of abstraction
+                    torch.quantization.DeQuantStub())
+
+    """Prepare"""
+    m.train()
+    m.qconfig = torch.quantization.get_default_qconfig(backend)
+    torch.quantization.prepare_qat(m, inplace=True)
+
+    """Training Loop"""
+    n_epochs = args.num_epochs
+    criterion = nn.MSELoss()
+    optimizer = torch.optim.Adam(m.parameters(), lr=args.lr)
+
+    for epoch in range(n_epochs):
+        for images, labels in tqdm(train_loader):
+            images = torch.FloatTensor(images)#.to(device)
+            labels = torch.FloatTensor(labels.float())#.to(device)
+            out = m(images)
+            loss = criterion(out, labels)
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+    """Convert"""
+    quant_model = torch.quantization.convert(m)
+    
+    """Save model"""
+    qmodel_path = model_save_dir + '/static_quan.pth'
+    # providing dummy input for tracing; change according to image resolution
+    traced_model = torch.jit.trace(quant_model, torch.rand(1, 3, 200, 66)) 
+    torch.jit.save(traced_model, qmodel_path)
+
+    print("********** QAT stats **********")
+    model_size, mse, inf_time = evaluate_model(qmodel_path, quant_model,  val_set, val_loader)
+    print("Model size (MB):", model_size)
+    print("MSE:", mse)
+    print("Inference time (s):", inf_time)
+
+    return model_size, mse, inf_time
+
 def parse_args():
     parser = argparse.ArgumentParser()
 
@@ -184,12 +240,12 @@ def parse_args():
     parser.add_argument("--data_augs", action='append', type=str, default=None, help="Data Augmentations")
     parser.add_argument("--base_dir", type=str, default='optimized_models', help="Directory to save everything")
     parser.add_argument("--model_dir", type=str, default='trained_models/', help="Directory to trained models")
-    parser.add_argument("--num_epochs", type=int, default=1, help="Number of Epochs")
-    parser.add_argument("--lr", type=float, default=1e-3, help="Learning rate for Policy Net")
+    parser.add_argument("--num_epochs", type=int, default=2, help="Number of Epochs")
+    parser.add_argument("--lr", type=float, default=1e-4, help="Learning rate for Policy Net")
     parser.add_argument("--batch_size", type=int, default=128, help="Batch size")
     parser.add_argument('--eval_base', type=bool, default=False, help="If set to True, it will calculate accuracy, size and inference time for original model.")
     parser.add_argument("--tech", action='append', default=[], help="Techniques to apply for model compression. Options are: \n"+
-                               "'dynamic_quan', 'int_quan', 'int_flt_quan', 'float16_quan', 'quan_aware', 'prune', 'prune_quan', 'clust_qat', 'prune_qat', 'prune_clust_qat' and 'all' .")
+                               "'dynamic_quan', 'static_quan', 'quan_aware', and 'all' .") # 'prune', 'prune_quan', 'clust_qat', 'prune_qat', 'prune_clust_qat'
     
 
     args = parser.parse_args()
@@ -246,6 +302,9 @@ if __name__=="__main__":
     if "static_quan" in args.tech or 'all' in args.tech : 
         res = static_quantization(pilotModel, model_save_dir, val_set, val_loader, train_loader)
         results.append(("Static Q",) + res)
+    if "quan_aware" in args.tech or 'all' in args.tech : 
+        res = quantization_aware_train(pilotModel, model_save_dir, val_set, val_loader, train_loader, args)
+        results.append(("QAT",) + res)
 
     
     

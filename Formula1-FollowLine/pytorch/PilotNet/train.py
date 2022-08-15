@@ -165,6 +165,7 @@ if __name__=="__main__":
         if val_loss < global_val_mse:
             global_val_mse = val_loss
             best_model = deepcopy(pilotModel)
+            torch.save(best_model.state_dict(), model_save_dir + '/pilot_net_model_best_{}.pth'.format(random_seed))
             mssg = "Model Improved!!"
         else:
             mssg = "Not Improved!!"
@@ -172,7 +173,7 @@ if __name__=="__main__":
         print('Epoch [{}/{}], Validation Loss: {:.4f}'.format(epoch + 1, num_epochs, val_loss), mssg)
                 
 
-    # pilotModel = best_model # allot the best model on validation 
+    pilotModel = best_model # allot the best model on validation 
     # Test the model
     transformations_val = createTransform([]) # only need Normalize()
     test_set = PilotNetDataset(args.test_dir, transformations_val, preprocessing=args.preprocess)

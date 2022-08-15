@@ -14,6 +14,7 @@ import numpy as np
 from copy import deepcopy
 import pandas as pd
 import time
+import torch.nn.utils.prune as prune
 
 
 # Device Selection (CPU/GPU)
@@ -231,6 +232,213 @@ def quantization_aware_train(model, model_save_dir, val_set, val_loader, train_l
 
     return model_size, mse, inf_time
 
+
+def local_prune(model, model_save_dir, val_set, val_loader, train_loader, args):
+    print()
+    print("********* Start Local Pruning (Unstructured) ***********")
+
+    ## Prune multiple parameters of the model
+    for name, module in model.named_modules():
+        # prune 20% of connections in all 2D-conv layers
+        if isinstance(module, torch.nn.Conv2d):
+            prune.l1_unstructured(module, name='weight', amount=0.3)
+        # prune 40% of connections in all linear layers
+        elif isinstance(module, torch.nn.Linear):
+            prune.l1_unstructured(module, name='weight', amount=0.5)
+    
+    """Fine-tune Loop"""
+    print("Fine-tuning pruned model .....")
+    n_epochs = args.num_epochs
+    criterion = nn.MSELoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
+
+    for epoch in range(n_epochs):
+        for images, labels in tqdm(train_loader):
+            images = torch.FloatTensor(images).to(device)
+            labels = torch.FloatTensor(labels.float()).to(device)
+            out = model(images)
+            loss = criterion(out, labels)
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+    
+    ## remove re-parameterization to make pruning permanent
+    for name, module in model.named_modules():
+        if isinstance(module, torch.nn.Conv2d):
+            prune.remove(module, name='weight')
+        elif isinstance(module, torch.nn.Linear):
+            prune.remove(module, name='weight')
+    
+    """Save model"""
+    model_path = model_save_dir + '/local_prune.pth'
+    # providing dummy input for tracing; change according to image resolution
+    traced_model = torch.jit.trace(model, torch.rand(1, 3, 200, 66)) 
+    torch.jit.save(traced_model, model_path)
+
+    print("********** Local Prune stats **********")
+    model_size, mse, inf_time = evaluate_model(model_path, model, val_set, val_loader)
+    print("Model size (MB):", model_size)
+    print("MSE:", mse)
+    print("Inference time (s):", inf_time)
+
+    return model_size, mse, inf_time
+
+
+def global_prune(model, model_save_dir, val_set, val_loader, train_loader, args):
+    print()
+    print("********* Start Global Pruning (Unstructured) ***********")
+
+    # collect modules to prune (here conv2d and linear layers)
+    parameters_to_prune = []
+    for module_name, module in model.named_modules():
+        if isinstance(module, torch.nn.Conv2d) or isinstance(module, torch.nn.Linear):
+            parameters_to_prune.append((module, "weight"))
+
+    ## Global prune
+    # zero-out low tensors with lowest value according to pruning_method
+    prune.global_unstructured(
+        parameters_to_prune,
+        pruning_method=prune.L1Unstructured,
+        amount=0.3,
+    )
+        
+    """Fine-tune Loop"""
+    print("Fine-tuning pruned model .....")
+    n_epochs = args.num_epochs
+    criterion = nn.MSELoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
+
+    for epoch in range(n_epochs):
+        for images, labels in tqdm(train_loader):
+            images = torch.FloatTensor(images).to(device)
+            labels = torch.FloatTensor(labels.float()).to(device)
+            out = model(images)
+            loss = criterion(out, labels)
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+    
+
+    ## remove re-parameterization to make pruning permanent
+    for name, module in model.named_modules():
+        if isinstance(module, torch.nn.Conv2d):
+            prune.remove(module, name='weight')
+        elif isinstance(module, torch.nn.Linear):
+            prune.remove(module, name='weight')
+    
+    """Save model"""
+    model_path = model_save_dir + '/global_prune.pth'
+    # providing dummy input for tracing; change according to image resolution
+    traced_model = torch.jit.trace(model, torch.rand(1, 3, 200, 66)) 
+    torch.jit.save(traced_model, model_path)
+
+    print("********** global Prune stats **********")
+    model_size, mse, inf_time = evaluate_model(model_path, model, val_set, val_loader)
+    print("Model size (MB):", model_size)
+    print("MSE:", mse)
+    print("Inference time (s):", inf_time)
+
+    return model_size, mse, inf_time
+
+
+
+def prune_quan(model, model_save_dir, val_set, val_loader, train_loader, args):
+    print()
+    print("********* Start Pruning + Quantization ***********")
+
+    """ Pruning steps """
+    ## Prune multiple parameters of the model
+    for name, module in model.named_modules():
+        # prune 20% of connections in all 2D-conv layers
+        if isinstance(module, torch.nn.Conv2d):
+            prune.l1_unstructured(module, name='weight', amount=0.3)
+        # prune 40% of connections in all linear layers
+        elif isinstance(module, torch.nn.Linear):
+            prune.l1_unstructured(module, name='weight', amount=0.5)
+    
+    """Fine-tune Loop"""
+    print("Fine-tuning pruned model .....")
+    n_epochs = args.num_epochs
+    criterion = nn.MSELoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
+
+    for epoch in range(n_epochs):
+        for images, labels in tqdm(train_loader):
+            images = torch.FloatTensor(images).to(device)
+            labels = torch.FloatTensor(labels.float()).to(device)
+            out = model(images)
+            loss = criterion(out, labels)
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+    
+    ## remove re-parameterization to make pruning permanent
+    for name, module in model.named_modules():
+        if isinstance(module, torch.nn.Conv2d):
+            prune.remove(module, name='weight')
+        elif isinstance(module, torch.nn.Linear):
+            prune.remove(module, name='weight')
+    
+    """ Quantization steps """
+    m = deepcopy(model)
+    m.eval()
+    
+    backend = "fbgemm"  # running on a x86 CPU. Use "qnnpack" if running on ARM.
+
+    # fuse modules/layers for reducing memory access, better accuracy and inference
+    module_list = [[f'cn_{i}', f'relu{i}'] for i in range(1,6)]
+    module_list +=  [[f'fc_{i}', f'relu_fc{i}'] for i in range(1,5)]
+    torch.quantization.fuse_modules(m, module_list, inplace=True)
+        
+    """Insert stubs"""
+    m = nn.Sequential(torch.quantization.QuantStub(), 
+                    *nn.Sequential(*(m.children())), # bring every layer on same level of abstraction
+                    torch.quantization.DeQuantStub())
+
+    """Prepare"""
+    m.train()
+    m.qconfig = torch.quantization.get_default_qconfig(backend)
+    torch.quantization.prepare_qat(m, inplace=True)
+
+    """Training Loop"""
+    n_epochs = args.num_epochs
+    criterion = nn.MSELoss()
+    optimizer = torch.optim.Adam(m.parameters(), lr=args.lr)
+
+    for epoch in range(n_epochs):
+        for images, labels in tqdm(train_loader):
+            images = torch.FloatTensor(images)#.to(device)
+            labels = torch.FloatTensor(labels.float())#.to(device)
+            out = m(images)
+            loss = criterion(out, labels)
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+    """Convert"""
+    quant_model = torch.quantization.convert(m)
+    
+    """Save model"""
+    qmodel_path = model_save_dir + '/prune_quan.pth'
+    # providing dummy input for tracing; change according to image resolution
+    traced_model = torch.jit.trace(quant_model, torch.rand(1, 3, 200, 66)) 
+    torch.jit.save(traced_model, qmodel_path)
+
+    print("********** Prune + Quanzation stats **********")
+    model_size, mse, inf_time = evaluate_model(qmodel_path, quant_model,  val_set, val_loader)
+    print("Model size (MB):", model_size)
+    print("MSE:", mse)
+    print("Inference time (s):", inf_time)
+
+    return model_size, mse, inf_time
+
+
+
+def set_device(args):
+    if args.device_type == 'cuda':
+        global device 
+        device = torch.device('cuda')
+
 def parse_args():
     parser = argparse.ArgumentParser()
 
@@ -243,19 +451,23 @@ def parse_args():
     parser.add_argument("--num_epochs", type=int, default=2, help="Number of Epochs")
     parser.add_argument("--lr", type=float, default=1e-4, help="Learning rate for Policy Net")
     parser.add_argument("--batch_size", type=int, default=128, help="Batch size")
+    parser.add_argument("--device_type", type=str, default='cpu', help="Decide which hardware to use for computation - 'cuda' or 'cpu'.")
     parser.add_argument('--eval_base', type=bool, default=False, help="If set to True, it will calculate accuracy, size and inference time for original model.")
     parser.add_argument("--tech", action='append', default=[], help="Techniques to apply for model compression. Options are: \n"+
-                               "'dynamic_quan', 'static_quan', 'quan_aware', and 'all' .") # 'prune', 'prune_quan', 'clust_qat', 'prune_qat', 'prune_clust_qat'
+                               "'dynamic_quan', 'static_quan', 'quan_aware', 'local_prune' and 'all' .") # 'prune', 'prune_quan', 'clust_qat', 'prune_qat', 'prune_clust_qat'
     
 
     args = parser.parse_args()
     return args
+
 
 if __name__=="__main__":
 
     args = parse_args()
 
     exp_setup = vars(args)
+
+    set_device(args)    
 
     # Base Directory
     # path_to_data = args.data_dir
@@ -305,8 +517,15 @@ if __name__=="__main__":
     if "quan_aware" in args.tech or 'all' in args.tech : 
         res = quantization_aware_train(pilotModel, model_save_dir, val_set, val_loader, train_loader, args)
         results.append(("QAT",) + res)
-
-    
+    if "local_prune" in args.tech or 'all' in args.tech : 
+        res = local_prune(pilotModel, model_save_dir, val_set, val_loader, train_loader, args)
+        results.append(("Local Prune",) + res)
+    if "global_prune" in args.tech or 'all' in args.tech : 
+        res = global_prune(pilotModel, model_save_dir, val_set, val_loader, train_loader, args)
+        results.append(("Global Prune",) + res)
+    if "prune_quan" in args.tech or 'all' in args.tech : 
+        res = prune_quan(pilotModel, model_save_dir, val_set, val_loader, train_loader, args)
+        results.append(("Prune + Quantization",) + res)
     
     df = pd.DataFrame(results)
     df.columns = ["Method", "Model size (MB)", "MSE", "Inference time (s)"]

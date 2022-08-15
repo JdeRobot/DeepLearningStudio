@@ -37,8 +37,8 @@ python optimize_models.py \
 	--preprocess 'crop' \
 	--preprocess 'extreme' \
 	--data_augs 'all' \
-	--model_dir experiments/retrain_best/trained_models/pilot_net_model_121.pt \
-	--num_epochs 3 \
+	--model_dir experiments/retrain_best/trained_models/pilot_net_model_best_121.pth \
+	--num_epochs 20 \
 	--batch_size 1024 \
 	--lr 1e-4 \
 	--eval_base True \

@@ -177,7 +177,7 @@ def static_quantization(model, model_save_dir, val_set, val_loader, train_loader
 
 def quantization_aware_train(model, model_save_dir, val_set, val_loader, train_loader, args):
     print()
-    print("********* Start Static Quantization ***********")
+    print("********* Start Quantization Aware Training ***********")
 
     m = deepcopy(model)
     m.eval()
@@ -218,7 +218,7 @@ def quantization_aware_train(model, model_save_dir, val_set, val_loader, train_l
     quant_model = torch.quantization.convert(m)
     
     """Save model"""
-    qmodel_path = model_save_dir + '/static_quan.pth'
+    qmodel_path = model_save_dir + '/quan_aware.pth'
     # providing dummy input for tracing; change according to image resolution
     traced_model = torch.jit.trace(quant_model, torch.rand(1, 3, 200, 66)) 
     torch.jit.save(traced_model, qmodel_path)

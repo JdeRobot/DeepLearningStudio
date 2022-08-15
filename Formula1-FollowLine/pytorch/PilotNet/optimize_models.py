@@ -454,7 +454,7 @@ def parse_args():
     parser.add_argument("--device_type", type=str, default='cpu', help="Decide which hardware to use for computation - 'cuda' or 'cpu'.")
     parser.add_argument('--eval_base', type=bool, default=False, help="If set to True, it will calculate accuracy, size and inference time for original model.")
     parser.add_argument("--tech", action='append', default=[], help="Techniques to apply for model compression. Options are: \n"+
-                               "'dynamic_quan', 'static_quan', 'quan_aware', 'local_prune' and 'all' .") # 'prune', 'prune_quan', 'clust_qat', 'prune_qat', 'prune_clust_qat'
+                               "'dynamic_quan', 'static_quan', 'quan_aware', 'local_prune', 'global_prune', 'prune_quan' and 'all' .") 
     
 
     args = parser.parse_args()

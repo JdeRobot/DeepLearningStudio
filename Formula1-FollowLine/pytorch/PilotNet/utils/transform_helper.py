@@ -27,7 +27,7 @@ def createTransform(augmentations):
         for data_aug in all_augs_dict.keys():
             action = all_augs_dict[data_aug]
             augs_to_compose.append(action)
-    else:
+    elif len(augmentations) > 0:
         for data_aug in augmentations:
             action = all_augs_dict[data_aug]
             augs_to_compose.append(action)

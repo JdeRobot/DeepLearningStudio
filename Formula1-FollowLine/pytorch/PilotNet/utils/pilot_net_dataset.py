@@ -26,6 +26,7 @@ class PilotNetDataset(Dataset):
             type_image = 'cropped'
             data_type = None
         
+        print('*'*8, "Loading Datasets", '*'*8)    
         for path in path_to_data: 
             all_images, all_data = load_data(path)
             self.images = get_images(all_images, type_image, self.images)        

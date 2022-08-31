@@ -251,7 +251,7 @@ def quantization_aware_train(model_path, model_name, tflite_models_dir, valid_se
     q_aware_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=2, validation_split=0.1)
     
     # Create quantized model for TFLite backend - quantized model with int8 weights and uint8 activations
-    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+    converter = tf.lite.TFLiteConverter.from_keras_model(q_aware_model)
     converter.optimizations = [tf.lite.Optimize.DEFAULT]
     tflite_model = converter.convert()
 

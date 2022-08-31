@@ -321,7 +321,18 @@ python3 optimize_models.py --data_dir ../../../../datasets_opencv/ \
 	--model_name pilotnet \
 	--eval_base True \
  	--tech dynamic_quan 
-```
+
+## TensorRT (TF-TRT) optimization
+python3 tensorrt_optimize.py --data_dir ../../../datasets_opencv/ \
+	--preprocess crop \
+	--preprocess extreme \
+	--data_augs 2 \
+	--img_shape "200,66,3" \
+	--batch_size 64 \
+	--model_path trained_models/pilotnet.h5 \
+	--model_name pilotnet \
+	--eval_base True \
+ 	--precision all
 
 The results are saved in  `./` directory and the structure is given below. 
 Tensorboard can be launched with `logs/fit` directory.

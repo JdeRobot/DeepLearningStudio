@@ -41,20 +41,29 @@ Models for both approaches that work for all the circuits in [BehaviorMetrics](h
 
 ### Performance of  optimized PilotNet networks
 
-Method  | Model size (MB) | MSE  | Inference time (s)
---- | --- | --- | --- 
-PilotNet (original tf format) | 195 | 0.041 | 0.0364
-Baseline (tflite format)| 64.9173469543457 | 0.04108056542969754 | 0.007913553237915039 
-Dynamic Range Q | **16.242530822753906** | **0.04098070281274293** | 0.004902467966079712
-Float16 Q | 32.464256286621094 | 0.041072421023905605 | 0.007940708875656129
-Q aware training | **16.242530822753906** | **0.04098070281274293** | **0.004691281318664551**
-Weight pruning | 64.9173469543457 | 0.04257505210072217 | 0.0077278904914855956
-Weight pruning + Q | **16.242530822753906** | 0.042606822364652304 | 0.004810283422470093
-Integer only Q | 16.244918823242188 | 28157.721509850544 | 0.007908073902130127
-Integer (float fallback) Q | 16.244888305664062 | 0.04507085706016211 | 0.00781548523902893
-CQAT | 16.250564575195312 | 0.0393811650675438 | 0.007680371761322021
-PQAT | 16.250564575195312 | 0.043669467093106665 | 0.007949142932891846
-PCQAT | 16.250564575195312 | 0.039242053481006144 | 0.007946955680847167
+Method  | Model size (MB) | MSE  | Inference time (s) | Download link
+--- | --- | --- | --- | ---
+PilotNet (original tf format) | 195 | 0.041 | 0.0364 | [link](https://drive.google.com/file/d/15b7W1kP0utLnc1olB1PD3-7Gll7nXgSy/view?usp=sharing)
+Baseline (tflite format)| 64.9173469543457 | 0.04108056542969754 | 0.007913553237915039 | [link](https://drive.google.com/file/d/1VYkX9938_fDKtzess4iWisryFxFKy6FW/view?usp=sharing)
+Dynamic Range Q | **16.242530822753906** | **0.04098070281274293** | 0.004902467966079712 | [link](https://drive.google.com/file/d/1byV8yAzoxwk-Cj8FfmtSSBK2Lfbx6KQ3/view?usp=sharing)
+Float16 Q | 32.464256286621094 | 0.041072421023905605 | 0.007940708875656129 | [link](https://drive.google.com/file/d/1Dq217ZVT60kpVbtEHnqx3hQZconO7CQp/view?usp=sharing)
+Q aware training | 16.250564575195312 | 0.042138221871067326 | 0.009550530910491944 | [link](https://drive.google.com/file/d/1jSeQijCt7Uzg5d3JhfuDZyf3so2MkGO0/view?usp=sharing)
+Weight pruning | 64.9173469543457 | 0.04257505210072217 | 0.0077278904914855956 | [link](https://drive.google.com/file/d/1DTlqzicJ1ZhBGGpXPD9vpfwnJZSJSwLv/view?usp=sharing)
+Weight pruning + Q | **16.242530822753906** | 0.042606822364652304 | 0.004810283422470093 | [link](https://drive.google.com/file/d/1DTlqzicJ1ZhBGGpXPD9vpfwnJZSJSwLv/view?usp=sharing)
+Integer only Q | 16.244918823242188 | 28157.721509850544 | 0.007908073902130127 | [link](https://drive.google.com/file/d/14IS6ZG_cKpYIfM6magC8z8XdyyLNMRa1/view?usp=sharing)
+Integer (float fallback) Q | 16.244888305664062 | 0.04507085706016211 | 0.00781548523902893 | [link](https://drive.google.com/file/d/1VT5I30lBlObjIXnU424zZZJXQxQSPvif/view?usp=sharing)
+CQAT | 16.250564575195312 | 0.0393811650675438 | 0.007680371761322021 | [link](https://drive.google.com/file/d/1N4WPaO4Uw5kPcOOZ6-AmVpU9IfYA08a7/view?usp=sharing)
+PQAT | 16.250564575195312 | 0.043669467093106665 | 0.007949142932891846 | [link](https://drive.google.com/file/d/1RZkVP2ocT0dKGVLfF6Q1VZhsJWnJv1qY/view?usp=sharing)
+PCQAT | 16.250564575195312 | 0.039242053481006144 | 0.007946955680847167 | [link](https://drive.google.com/file/d/1vMpOad4yGbubjd-Ry0JlU17jjop3McTy/view?usp=sharing)
 
 *Q = Quantization*
 *All the results are for models converted to tflite models if not specified.* <br>
+
+### TensorRT (TF-TRT)
+
+Method | Model size (MB) | MSE | Inference time (s) | Download link
+--- | --- | --- | --- | ---
+Baseline | 195 | 0.041032556329194385 | 0.0012623071670532227 | [link](https://drive.google.com/file/d/1LsDDEJvnVmHqZNUSrwOG2QRXoRYt94iw/view?usp=sharing)
+Precision fp32 | 260 | 0.04103255125749467 | 0.0013057808876037597 | [link](https://drive.google.com/file/d/1HCLQ-LAP8s6xw4zNj3b1H8d6B_NAFw0b/view?usp=sharing)
+Precision fp16 | 260 | 0.04103255125749467 | 0.0021804444789886475 | [link](https://drive.google.com/file/d/19GTbQ_w9rBAnsv0ISEuOifHwl7krZXaK/view?usp=sharing)
+Precision int8 | 260 | 0.04103255125749467 | **0.0011799652576446533** | [link](https://drive.google.com/file/d/1xip8XWpQ0B0-Oi97-L1nCZctdASKx-cm/view?usp=sharing)

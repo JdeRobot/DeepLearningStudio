@@ -8,3 +8,14 @@ python3 train.py --data_dir ../../../../datasets_opencv/ \
 	--learning_rate 0.0001 \
 	--batch_size 50 \
 	--img_shape "200,66,3"
+
+# python3 optimize_models.py --data_dir ../datasets_opencv/ \
+# 	--preprocess crop \
+# 	--preprocess extreme \
+# 	--data_augs 2 \
+# 	--img_shape "200,66,3" \
+# 	--batch_size 32 \
+# 	--model_path ../trained_models/pilotnet.h5 \
+# 	--model_name pilotnet \
+#  	--tech dynamic_quan \
+# 	--eval_base True

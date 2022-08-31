@@ -58,3 +58,12 @@ PCQAT | 16.250564575195312 | 0.039242053481006144 | 0.007946955680847167 | [link
 
 *Q = Quantization*
 *All the results are for models converted to tflite models if not specified.* <br>
+
+### TensorRT (TF-TRT)
+
+Method | Model size (MB) | MSE | Inference time (s) | Download link
+--- | --- | --- | --- | ---
+Baseline | 195 | 0.041032556329194385 | 0.0012623071670532227 | [link](https://drive.google.com/file/d/1LsDDEJvnVmHqZNUSrwOG2QRXoRYt94iw/view?usp=sharing)
+Precision fp32 | 260 | 0.04103255125749467 | 0.0013057808876037597 | [link](https://drive.google.com/file/d/1HCLQ-LAP8s6xw4zNj3b1H8d6B_NAFw0b/view?usp=sharing)
+Precision fp16 | 260 | 0.04103255125749467 | 0.0021804444789886475 | [link](https://drive.google.com/file/d/19GTbQ_w9rBAnsv0ISEuOifHwl7krZXaK/view?usp=sharing)
+Precision int8 | 260 | 0.04103255125749467 | **0.0011799652576446533** | [link](https://drive.google.com/file/d/1xip8XWpQ0B0-Oi97-L1nCZctdASKx-cm/view?usp=sharing)

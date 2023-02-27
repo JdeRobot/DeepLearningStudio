@@ -40,3 +40,4 @@ typing_extensions==4.2.0
 urllib3==1.26.9
 Werkzeug==2.1.2
 zipp==3.8.0
+tensorflow-model-optimization==0.7.3

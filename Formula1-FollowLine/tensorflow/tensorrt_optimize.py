@@ -4,8 +4,10 @@ import tensorflow as tf
 from tensorflow.python.compiler.tensorrt import trt_convert as trt
 import pathlib
 import argparse
-from PilotNet.utils.dataset import get_augmentations, DatasetSequence
-from PilotNet.utils.processing import process_dataset
+#from PilotNet.utils.dataset import get_augmentations, DatasetSequence
+from PilotNet.utils.carla_dataset import get_augmentations, DatasetSequence
+#from PilotNet.utils.processing import process_dataset
+from PilotNet.utils.processing_carla import process_dataset
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
@@ -39,6 +41,12 @@ def converter_and_save(path, precision, save_path, args, input_shapes, calibrati
     print("%" * 85)
     pprint.pprint(params)
     print("%" * 85)
+
+    print('--------------')
+    print(str(path))
+    print('--------------')
+    print(params)
+    print('--------------')
 
     converter = trt.TrtGraphConverterV2(
         input_saved_model_dir=str(path),

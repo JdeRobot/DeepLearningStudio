@@ -81,7 +81,8 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
             new_list_images_carla_dataset.append(image)
     list_images_carla_dataset = new_list_images_carla_dataset
 
-    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    #images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[5].split('.png')[0]))
 
     array_annotations_carla_dataset_1 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_1 = parse_csv(array_annotations_carla_dataset_1)
@@ -132,7 +133,8 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
             new_list_images_carla_dataset.append(image)
     list_images_carla_dataset = new_list_images_carla_dataset
 
-    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    #images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[5].split('.png')[0]))
 
     array_annotations_carla_dataset_2 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_2 = parse_csv(array_annotations_carla_dataset_2)
@@ -181,7 +183,8 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
             new_list_images_carla_dataset.append(image)
     list_images_carla_dataset = new_list_images_carla_dataset
 
-    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    #images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[5].split('.png')[0]))
 
     array_annotations_carla_dataset_3 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_3 = parse_csv(array_annotations_carla_dataset_3)
@@ -231,7 +234,8 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
             new_list_images_carla_dataset.append(image)
     list_images_carla_dataset = new_list_images_carla_dataset
 
-    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    #images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[5].split('.png')[0]))
 
     array_annotations_carla_dataset_4 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_4 = parse_csv(array_annotations_carla_dataset_4)
@@ -282,7 +286,8 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
             new_list_images_carla_dataset.append(image)
     list_images_carla_dataset = new_list_images_carla_dataset
 
-    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    #images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[5].split('.png')[0]))
 
     array_annotations_carla_dataset_5 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_5 = parse_csv(array_annotations_carla_dataset_5)
@@ -331,7 +336,8 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
             new_list_images_carla_dataset.append(image)
     list_images_carla_dataset = new_list_images_carla_dataset
 
-    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    #images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[5].split('.png')[0]))
 
     array_annotations_carla_dataset_6 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_6 = parse_csv(array_annotations_carla_dataset_6)
@@ -381,7 +387,8 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
             new_list_images_carla_dataset.append(image)
     list_images_carla_dataset = new_list_images_carla_dataset
 
-    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    #images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[5].split('.png')[0]))
 
     array_annotations_carla_dataset_7 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_7 = parse_csv(array_annotations_carla_dataset_7)
@@ -430,7 +437,8 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
             new_list_images_carla_dataset.append(image)
     list_images_carla_dataset = new_list_images_carla_dataset
 
-    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    #images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[5].split('.png')[0]))
 
     array_annotations_carla_dataset_8 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_8 = parse_csv(array_annotations_carla_dataset_8)
@@ -479,7 +487,8 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
             new_list_images_carla_dataset.append(image)
     list_images_carla_dataset = new_list_images_carla_dataset
 
-    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    #images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[6].split('.png')[0]))
+    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[5].split('.png')[0]))
 
     array_annotations_carla_dataset_9 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_9 = parse_csv(array_annotations_carla_dataset_9)

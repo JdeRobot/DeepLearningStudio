@@ -14,7 +14,11 @@ import pandas as pd
 import copy
 import os
 
-
+gpus = tf.config.experimental.list_physical_devices('GPU')
+for gpu in gpus:
+    print('GPU:')
+    print(gpu)
+    tf.config.experimental.set_memory_growth(gpu, True)
 
 
 def converter_and_save(path, precision, save_path, args, input_shapes, calibration_input_fn=None):

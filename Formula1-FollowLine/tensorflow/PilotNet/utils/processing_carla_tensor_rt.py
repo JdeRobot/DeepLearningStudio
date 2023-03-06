@@ -11,7 +11,6 @@ from sklearn.model_selection import train_test_split
 def get_images(folder_prefix, list_images, image_shape):
     # Read the images
     array_imgs = []
-    #image_shape = (150,50)
     image_shape = (50, 150)
     for name in list_images:
         try:
@@ -532,8 +531,8 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
         array_annotations_carla_dataset_4 + array_annotations_carla_dataset_5 + array_annotations_carla_dataset_6 + \
         array_annotations_carla_dataset_7 + array_annotations_carla_dataset_8 + array_annotations_carla_dataset_9 
    
-    array_imgs = images_carla_dataset_1 + images_carla_dataset_2
-    array_annotations = array_annotations_carla_dataset_1 + array_annotations_carla_dataset_2
+    #array_imgs = images_carla_dataset_1 + images_carla_dataset_2
+    #array_annotations = array_annotations_carla_dataset_1 + array_annotations_carla_dataset_2
 
     return array_imgs, array_annotations
 
@@ -544,11 +543,7 @@ def process_dataset(path_to_data, type_image, data_type, img_shape, optimize_mod
         images_train, annotations_train, images_validation, annotations_validation = separate_dataset_into_train_validation(
             array_imgs, array_annotations)
     else:
-        print('llega')
         images_train, annotations_train = get_images_and_annotations(path_to_data, type_image, img_shape, data_type)
-        # images_train, annotations_train = [], []
         images_validation, annotations_validation = get_images_and_annotations(path_to_data, type_image, img_shape, data_type)
-        print(len(images_validation))
-        #dddd
 
     return images_train, annotations_train, images_validation, annotations_validation

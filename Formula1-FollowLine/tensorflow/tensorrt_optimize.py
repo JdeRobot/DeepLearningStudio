@@ -7,7 +7,7 @@ import argparse
 #from PilotNet.utils.dataset import get_augmentations, DatasetSequence
 from PilotNet.utils.carla_dataset import get_augmentations, DatasetSequence
 #from PilotNet.utils.processing import process_dataset
-from PilotNet.utils.processing_carla import process_dataset
+from PilotNet.utils.processing_carla_tensor_rt import process_dataset
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
@@ -47,6 +47,10 @@ def converter_and_save(path, precision, save_path, args, input_shapes, calibrati
     print('--------------')
     print(params)
     print('--------------')
+    print(input_shapes)
+    print('--------------')
+    print(calibration_input_fn)
+    print('--------------CALIBRATION INPUT----')
 
     converter = trt.TrtGraphConverterV2(
         input_saved_model_dir=str(path),
@@ -70,7 +74,8 @@ def converter_and_save(path, precision, save_path, args, input_shapes, calibrati
     tftrt_model_file = save_path/f"{args.model_name}_tftrt_{precision}"
     converter.save(str(tftrt_model_file))
     print("TF-TRT model saved!")
-
+    print(str(tftrt_model_file))
+    #jkdhflakjfhdlkjdhaflkdsj
     return tftrt_model_file
 
 
@@ -139,6 +144,7 @@ def evaluate_model(tftrt_model_file, valid_set, images_val):
         accuracy, model_size, inf_time
     '''
     print("Model evaluation started ......")
+    print(str(tftrt_model_file))
     # load model
     tftrt_model = tf.saved_model.load(str(tftrt_model_file))
     # model size
@@ -218,6 +224,7 @@ if __name__ == '__main__':
     # provide calibration data for int8 conversion
     def calibration_input_fn(): 
         for img, label in valid_set:
+            print(img.shape)
             yield (img,)
 
     # prepare input shapes
@@ -243,6 +250,9 @@ if __name__ == '__main__':
         print(res)
 
     if "fp16" in args.precision or 'all' in args.precision:
+        print('-------------------------------------')
+        print(input_shapes)
+        print('-------------------------------------')
         # convert and save to TensorRT
         tftrt_model_file = converter_and_save(args.model_path, "fp16", tftrt_models, args, input_shapes )
         # evaluation model

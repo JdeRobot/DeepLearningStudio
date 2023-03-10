@@ -1,7 +1,7 @@
 from torch.utils.data.dataset import Dataset
 from torchvision import transforms
 from PIL import Image
-from utils.processing import *
+from utils.processing_carla import *
 from pathlib import Path
 
 class PilotNetDataset(Dataset):
@@ -29,8 +29,8 @@ class PilotNetDataset(Dataset):
         print('*'*8, "Loading Datasets", '*'*8)    
         for path in path_to_data: 
             all_images, all_data = load_data(path)
-            self.images = get_images(all_images, type_image, self.images)        
-            self.labels = parse_csv(all_data, self.labels)
+            self.images = get_images(all_images, type_image, self.images)
+            self.labels += all_data
 
         self.labels, self.images = preprocess_data(self.labels, self.images, data_type)
 

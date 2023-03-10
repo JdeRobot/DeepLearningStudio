@@ -176,7 +176,10 @@ if __name__=="__main__":
     pilotModel = best_model # allot the best model on validation 
     # Test the model
     transformations_val = createTransform([]) # only need Normalize()
-    test_set = PilotNetDataset(args.test_dir, transformations_val, preprocessing=args.preprocess)
+    if args.test_dir != None:
+        test_set = PilotNetDataset(args.test_dir, transformations_val, preprocessing=args.preprocess)
+    else:
+        test_set = PilotNetDataset(path_to_data, transformations_val, preprocessing=args.preprocess)
     test_loader = DataLoader(test_set, batch_size=batch_size)
     print("Check performance on testset")
     pilotModel.eval()

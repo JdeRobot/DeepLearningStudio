@@ -24,7 +24,8 @@ def get_images(list_images, type_image, array_imgs):
     for name in tqdm(list_images):
         img = cv2.imread(name)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        img = cv2.resize(img, (200,66))
+        #img = cv2.resize(img, (200,66))
+        img = cv2.resize(img, (66,200))
         array_imgs.append(img)
 
     print('--------')

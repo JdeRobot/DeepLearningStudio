@@ -5,7 +5,7 @@ import torchvision
 from torch.utils.data import DataLoader, SubsetRandomSampler
 from torch.utils.tensorboard import SummaryWriter
 import os
-from utils.processing import *
+from utils.processing_carla import *
 from utils.pilot_net_dataset import PilotNetDataset, PilotNetDatasetTest
 from utils.pilotnet import PilotNet
 from utils.transform_helper import createTransform

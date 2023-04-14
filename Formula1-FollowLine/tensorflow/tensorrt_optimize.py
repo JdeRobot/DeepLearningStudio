@@ -4,21 +4,15 @@ import tensorflow as tf
 from tensorflow.python.compiler.tensorrt import trt_convert as trt
 import pathlib
 import argparse
-#from PilotNet.utils.dataset import get_augmentations, DatasetSequence
-from PilotNet.utils.carla_dataset import get_augmentations, DatasetSequence
-#from PilotNet.utils.processing import process_dataset
-from PilotNet.utils.processing_carla_tensor_rt import process_dataset
+from PilotNet.utils.dataset import get_augmentations, DatasetSequence
+from PilotNet.utils.processing import process_dataset
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
 import copy
 import os
 
-gpus = tf.config.experimental.list_physical_devices('GPU')
-for gpu in gpus:
-    print('GPU:')
-    print(gpu)
-    tf.config.experimental.set_memory_growth(gpu, True)
+
 
 
 def converter_and_save(path, precision, save_path, args, input_shapes, calibration_input_fn=None):
@@ -68,6 +62,7 @@ def converter_and_save(path, precision, save_path, args, input_shapes, calibrati
     tftrt_model_file = save_path/f"{args.model_name}_tftrt_{precision}"
     converter.save(str(tftrt_model_file))
     print("TF-TRT model saved!")
+
     return tftrt_model_file
 
 

@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader, SubsetRandomSampler
 from torch.utils.tensorboard import SummaryWriter
 import os
 from utils.processing_carla import *
-from utils.pilot_net_dataset import PilotNetDataset
+from utils.pilot_net_dataset import PilotNetDataset, PilotNetDatasetTest
 from utils.pilotnet import PilotNet
 from utils.transform_helper import createTransform
 import argparse
@@ -497,7 +497,7 @@ if __name__=="__main__":
     train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
 
     transformations_val = createTransform([]) # only need Normalize()
-    val_set = PilotNetDataset(args.val_dir, transformations_val, preprocessing=args.preprocess)
+    val_set = PilotNetDatasetTest(args.val_dir, transformations_val, preprocessing=args.preprocess)
     val_loader = DataLoader(val_set, batch_size=batch_size)
 
     # Load Model

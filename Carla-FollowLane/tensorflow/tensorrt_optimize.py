@@ -49,6 +49,7 @@ def converter_and_save(path, precision, save_path, args, input_shapes, calibrati
     converter = trt.TrtGraphConverterV2(
         input_saved_model_dir=str(path),
         conversion_params=params,
+        
         # use_dynamic_shape=True, dynamic_shape_profile_strategy='Optimal', not in TF 2.4 
     )
 
@@ -213,7 +214,8 @@ if __name__ == '__main__':
     train_set, valid_set, images_train, annotations_train, images_val, annotations_val = load_data(args)
 
     # provide calibration data for int8 conversion
-    def calibration_input_fn(): 
+    def calibration_input_fn():
+        # If this throws an error, try with smaller batch_sizes (=1)
         for img, label in valid_set:
             yield (img,)
 

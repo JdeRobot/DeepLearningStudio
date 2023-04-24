@@ -39,7 +39,6 @@ def parse_csv(data, array):
 
 def preprocess_data(array, imgs, data_type):
     # Data augmentation
-    # Take the image and just flip it and negate the measurement
 
     array_annotations = array
     array_imgs = imgs

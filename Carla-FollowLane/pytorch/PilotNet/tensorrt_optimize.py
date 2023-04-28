@@ -88,7 +88,11 @@ trt_mod = torch_tensorrt.compile(pilotModel, inputs=[torch_tensorrt.Input((1, 3,
 )
 
 
-torch.jit.save(trt_mod, 'trt_mod.pth')
+data = iter(testing_dataloader)
+images, _ = next(data)
+trt_mod = torch.jit.trace(pilotModel, images.to("cuda"))
+torch.jit.save(trt_mod, 'trt_mod.jit.pt')
+#torch.jit.save(trt_mod, 'trt_mod.pth')
 
 def measure_inference_time(model, val_set):
     # measure average inference time
@@ -150,7 +154,7 @@ def evaluate_model(model_path, opt_model, val_set, val_loader):
 
     return model_size, mse, inf_time
 
-model_size, mse, inf_time = evaluate_model('trt_mod.pth', trt_mod, dataset, testing_dataloader)
+model_size, mse, inf_time = evaluate_model('trt_mod.jit.pt', trt_mod, dataset, testing_dataloader)
 
 print("Model size (MB):", model_size)
 print("MSE:", mse)

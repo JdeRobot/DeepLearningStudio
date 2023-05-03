@@ -87,6 +87,7 @@ trt_mod = torch_tensorrt.compile(pilotModel, inputs=[torch_tensorrt.Input((1, 3,
                                     # })
 )
 
+
 data = iter(testing_dataloader)
 images, _ = next(data)
 trt_mod = torch.jit.trace(pilotModel, images.to("cuda"))

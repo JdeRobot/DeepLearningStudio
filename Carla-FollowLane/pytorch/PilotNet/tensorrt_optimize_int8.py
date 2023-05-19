@@ -277,7 +277,7 @@ save_checkpoint({'epoch': epoch + 1,
 quant_nn.TensorQuantizer.use_fb_fake_quant = True
 with torch.no_grad():
     data = iter(testing_dataloader)
-    images, _ = data.next()
+    images, _ = next(data)
     jit_model = torch.jit.trace(pilotModel, images.to("cuda"))
     torch.jit.save(jit_model, "trained_vgg16_qat.jit.pt")
 

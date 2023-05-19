@@ -76,7 +76,7 @@ calibrator = torch_tensorrt.ptq.DataLoaderCalibrator(
 )
 
 trt_mod = torch_tensorrt.compile(pilotModel, inputs=[torch_tensorrt.Input((1, 3, 200, 66))],
-                                    enabled_precisions={torch.float},
+                                    enabled_precisions={torch.half},
                                     calibrator=calibrator,
                                     #device={
                                     #     "device_type": torch_tensorrt.DeviceType.GPU,

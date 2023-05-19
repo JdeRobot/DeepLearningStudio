@@ -106,11 +106,16 @@ def dynamic_quantization(model, model_save_dir, val_set, val_loader):
     print()
     print("********* Start Dynamic range Quantization ***********")
     # Post-training dynamic range quantization
+    print('Here is the floating point version of this module:')
+    print(model)
 
     quant_model = quantize_dynamic(
-                    model=model, qconfig_spec={nn.Linear}, dtype=torch.qint8, 
+                    model=model, qconfig_spec={nn.Linear, nn.Conv2d}, dtype=torch.qint8, 
                     inplace=False #can add nn.LSTM in qconfig_spec for LSTM layers
                     )
+    print('')
+    print('and now the quantized version:')
+    print(quant_model)
     
     qmodel_path = model_save_dir + '/dynamic_quan.pth'
     # providing dummy input for tracing; change according to image resolution
@@ -234,17 +239,18 @@ def quantization_aware_train(model, model_save_dir, val_set, val_loader, train_l
 
 
 def local_prune(model, model_save_dir, val_set, val_loader, train_loader, args):
+    # https://pytorch.org/tutorials/intermediate/pruning_tutorial.html
     print()
     print("********* Start Local Pruning (Unstructured) ***********")
 
     ## Prune multiple parameters of the model
     for name, module in model.named_modules():
-        # prune 20% of connections in all 2D-conv layers
+        # prune 40% of connections in all 2D-conv layers
         if isinstance(module, torch.nn.Conv2d):
-            prune.l1_unstructured(module, name='weight', amount=0.3)
-        # prune 40% of connections in all linear layers
+            prune.l1_unstructured(module, name='weight', amount=0.4)
+        # prune 20% of connections in all linear layers
         elif isinstance(module, torch.nn.Linear):
-            prune.l1_unstructured(module, name='weight', amount=0.5)
+            prune.l1_unstructured(module, name='weight', amount=0.2)
     
     """Fine-tune Loop"""
     print("Fine-tuning pruned model .....")

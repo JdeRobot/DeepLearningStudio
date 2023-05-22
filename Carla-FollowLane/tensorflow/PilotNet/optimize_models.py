@@ -81,7 +81,9 @@ def measure_mse(tflite_model, images_val, valid_set, batch_size):
         # Post-processing
         output = interpreter.get_tensor(output_details["index"])
         if output_details['dtype'] == np.uint8:
+            output_scale, input_zero_point = output_details["quantization"]
             output = output.astype(np.float32)
+            output = output * output_scale + input_zero_point
             test_labels = test_labels.astype(np.float32)
         metric += np.mean(tf.keras.losses.mse(test_labels, output).numpy())
 
@@ -109,6 +111,7 @@ def evaluate_model(model_path, tflite_model, valid_set, images_val, batch_size):
 def convert_baseline(model_path, model_name, tflite_models_dir, valid_set, images_val, batch_size):
     # convertering original model to tflite
     model = tf.keras.models.load_model(model_path)
+    print(model.summary())
     converter = tf.lite.TFLiteConverter.from_keras_model(model)
     tflite_model = converter.convert()
     tflite_model_file = tflite_models_dir/f"{model_name}_model.tflite"
@@ -174,8 +177,11 @@ def integer_only_quantization(model_path, model_name, tflite_models_dir, valid_s
 def integer_float_quantization(model_path, model_name, tflite_models_dir, valid_set, images_val, batch_size):
     print()
     print("********* Start Integer (float fallback) Quantization ***********")
+    print(images_val.shape)
+    print('*************')
     def representative_data_gen():
-        for input_value in tf.data.Dataset.from_tensor_slices(np.array(images_val, dtype=np.float32)).batch(1).take(100):
+        for input_value in tf.data.Dataset.from_tensor_slices(np.array(images_val, dtype=np.float32)).batch(1).take(1000):
+            #print(input_value.shape)
             yield [input_value]
 
     # Post-training integer only quantization
@@ -184,6 +190,12 @@ def integer_float_quantization(model_path, model_name, tflite_models_dir, valid_
     converter.optimizations = [tf.lite.Optimize.DEFAULT]
     converter.representative_dataset = representative_data_gen
     tflite_model = converter.convert()
+
+    interpreter = tf.lite.Interpreter(model_content=tflite_model)
+    input_type = interpreter.get_input_details()[0]['dtype']
+    print('input: ', input_type)
+    output_type = interpreter.get_output_details()[0]['dtype']
+    print('output: ', output_type)
 
     tflite_model_quant_file = tflite_models_dir/f"{model_name}_intflt_quant.tflite"
     tflite_model_quant_file.write_bytes(tflite_model) # save model
@@ -220,6 +232,9 @@ def float16_quantization(model_path, model_name, tflite_models_dir, valid_set, i
 def quantization_aware_train(model_path, model_name, tflite_models_dir, valid_set, images_val, args, images_train, annotations_train):
     print()
     print("********* Start Quantization Aware Training ***********")
+
+    # https://www.tensorflow.org/model_optimization/guide/quantization/training_example#clone_and_fine-tune_pre-trained_model_with_quantization_aware_training
+    # https://www.tensorflow.org/model_optimization/guide/quantization/training_comprehensive_guide.md
 
     model = tf.keras.models.load_model(model_path) # load original model
     # quantize_model = tfmot.quantization.keras.quantize_model
@@ -283,7 +298,7 @@ def weight_pruning(model_path, model_name, tflite_models_dir, valid_set, images_
     # Define model for pruning.
     pruning_params = {
         'pruning_schedule': tfmot.sparsity.keras.PolynomialDecay(initial_sparsity=0.50,
-                                                                final_sparsity=0.80,
+                                                                final_sparsity=0.61,
                                                                 begin_step=0,
                                                                 end_step=end_step)
     }
@@ -588,6 +603,20 @@ def load_data(args):
     # Validation data
     valid_gen = DatasetSequence(images_val, annotations_val, args.batch_size,
                                 augmentations=AUGMENTATIONS_TEST)
+
+    
+    new_images_train = []
+    for image in images_train:
+        augmented_image = AUGMENTATIONS_TEST(image=image)['image']
+        new_images_train.append(augmented_image)
+    images_train = new_images_train
+
+    new_images_val = []
+    for image in images_val:
+        augmented_image = AUGMENTATIONS_TEST(image=image)['image']
+        new_images_val.append(augmented_image)
+    images_val = new_images_val
+    
 
     return train_gen, valid_gen, np.array(images_train), np.array(annotations_train), np.array(images_val), np.array(annotations_val)
 

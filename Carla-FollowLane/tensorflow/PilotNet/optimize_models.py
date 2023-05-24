@@ -83,7 +83,7 @@ def measure_mse(tflite_model, images_val, valid_set, batch_size):
         if output_details['dtype'] == np.uint8:
             output_scale, input_zero_point = output_details["quantization"]
             output = output.astype(np.float32)
-            output = output * output_scale + input_zero_point
+            output = (output - input_zero_point) * output_scale
             test_labels = test_labels.astype(np.float32)
         metric += np.mean(tf.keras.losses.mse(test_labels, output).numpy())
 
@@ -148,7 +148,7 @@ def integer_only_quantization(model_path, model_name, tflite_models_dir, valid_s
     print()
     print("********* Start Integer Quantization ***********")
     def representative_data_gen():
-        for input_value in tf.data.Dataset.from_tensor_slices(np.array(images_val, dtype=np.float32)).batch(1).take(100):
+        for input_value in tf.data.Dataset.from_tensor_slices(np.array(images_val, dtype=np.float32)).batch(1).take(10000):
             yield [input_value]
 
     # Post-training integer only quantization
@@ -180,8 +180,7 @@ def integer_float_quantization(model_path, model_name, tflite_models_dir, valid_
     print(images_val.shape)
     print('*************')
     def representative_data_gen():
-        for input_value in tf.data.Dataset.from_tensor_slices(np.array(images_val, dtype=np.float32)).batch(1).take(1000):
-            #print(input_value.shape)
+        for input_value in tf.data.Dataset.from_tensor_slices(np.array(images_val, dtype=np.float32)).batch(1).take(10000):
             yield [input_value]
 
     # Post-training integer only quantization
@@ -262,10 +261,12 @@ def quantization_aware_train(model_path, model_name, tflite_models_dir, valid_se
     q_aware_model.compile(optimizer=Adam(learning_rate=args.learning_rate), loss="mse", metrics=['mse', 'mae'])
     q_aware_model.summary() # every layer has `quant` prefix
     # use subset of data to train; here 1%
-    ridx = np.random.randint(0, len(images_train), int(len(images_train)*0.01))
+    #ridx = np.random.randint(0, len(images_train), int(len(images_train)*0.01))
+    ridx = np.random.randint(0, len(images_train), int(len(images_train)*0.1))
     images_train, annotations_train = images_train[ridx], annotations_train[ridx]
     # fine-tune pre-trained model with quantization aware training
-    q_aware_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=2, validation_split=0.1)
+    #q_aware_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=2, validation_split=0.1)
+    q_aware_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=20, validation_split=0.1)
     
     # Create quantized model for TFLite backend - quantized model with int8 weights and uint8 activations
     converter = tf.lite.TFLiteConverter.from_keras_model(q_aware_model)
@@ -297,8 +298,8 @@ def weight_pruning(model_path, model_name, tflite_models_dir, valid_set, images_
     end_step = np.ceil(num_images / args.batch_size).astype(np.int32) * epochs
     # Define model for pruning.
     pruning_params = {
-        'pruning_schedule': tfmot.sparsity.keras.PolynomialDecay(initial_sparsity=0.50,
-                                                                final_sparsity=0.61,
+        'pruning_schedule': tfmot.sparsity.keras.PolynomialDecay(initial_sparsity=0.30,
+                                                                final_sparsity=0.40,
                                                                 begin_step=0,
                                                                 end_step=end_step)
     }
@@ -435,7 +436,7 @@ def PQAT(model_path, model_name, tflite_models_dir, valid_set, images_val, args,
     # Use smaller learning rate for fine-tuning
     pruned_model.compile(optimizer=Adam(learning_rate=args.learning_rate/100), loss="mse", metrics=['mse', 'mae'])
     pruned_model.summary()
-    pruned_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=3, validation_split=0.1, callbacks=callbacks)
+    pruned_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=5, validation_split=0.1, callbacks=callbacks)
     
     stripped_pruned_model = tfmot.sparsity.keras.strip_pruning(pruned_model)
 
@@ -467,7 +468,7 @@ def PQAT(model_path, model_name, tflite_models_dir, valid_set, images_val, args,
     
     pqat_model.compile(optimizer=Adam(learning_rate=args.learning_rate), loss="mse", metrics=['mse', 'mae'])
     print('Train pqat model:')
-    pqat_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=1, validation_split=0.1)
+    pqat_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=3, validation_split=0.1)
 
     # Create quantized model for TFLite backend - quantized model with int8 weights and uint8 activations
     converter = tf.lite.TFLiteConverter.from_keras_model(pqat_model)
@@ -507,7 +508,7 @@ def PCQAT(model_path, model_name, tflite_models_dir, valid_set, images_val, args
 
     # Use smaller learning rate for fine-tuning
     pruned_model.compile(optimizer=Adam(learning_rate=args.learning_rate/100), loss="mse", metrics=['mse', 'mae'])
-    pruned_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=3, validation_split=0.1, callbacks=callbacks)
+    pruned_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=5, validation_split=0.1, callbacks=callbacks)
     
     stripped_pruned_model = tfmot.sparsity.keras.strip_pruning(pruned_model)
 
@@ -529,7 +530,7 @@ def PCQAT(model_path, model_name, tflite_models_dir, valid_set, images_val, args
     sparsity_clustered_model = cluster_weights(stripped_pruned_model, **clustering_params)
     # training
     sparsity_clustered_model.compile(optimizer=Adam(learning_rate=args.learning_rate), loss="mse", metrics=['mse', 'mae'])
-    sparsity_clustered_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=3, validation_split=0.1)
+    sparsity_clustered_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=5, validation_split=0.1)
     
     stripped_clustered_model = tfmot.clustering.keras.strip_clustering(sparsity_clustered_model)
 
@@ -561,7 +562,7 @@ def PCQAT(model_path, model_name, tflite_models_dir, valid_set, images_val, args
 
     pcqat_model.compile(optimizer=Adam(learning_rate=args.learning_rate), loss="mse", metrics=['mse', 'mae'])
     print('Train pcqat model:')
-    pcqat_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=1, validation_split=0.1)
+    pcqat_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=3, validation_split=0.1)
     
     # Create quantized model for TFLite backend - quantized model with int8 weights and uint8 activations
     converter = tf.lite.TFLiteConverter.from_keras_model(pcqat_model)

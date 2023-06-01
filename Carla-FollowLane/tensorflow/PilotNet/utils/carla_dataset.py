@@ -4,7 +4,7 @@ import numpy as np
 
 from tensorflow.keras.utils import Sequence
 from albumentations import (
-    Compose, HorizontalFlip, RandomBrightnessContrast, 
+    Compose, HorizontalFlip, RandomBrightnessContrast, Affine,
     HueSaturationValue, FancyPCA, RandomGamma, GaussNoise,
     GaussianBlur, ToFloat, Normalize, ColorJitter, ChannelShuffle, Equalize,
     RandomRain, RandomShadow, RandomSnow, RandomFog, RandomSunFlare, ReplayCompose,
@@ -39,26 +39,12 @@ class DatasetSequence(Sequence):
 def get_augmentations(data_augs):
     if data_augs == 1:
         AUGMENTATIONS_TRAIN = ReplayCompose([
+            Affine(p=0.5, rotate=0, translate_percent={'x':(-0.2, 0.2)}),
             RandomBrightnessContrast(),
             HueSaturationValue(),
             FancyPCA(),
             RandomGamma(),
             GaussianBlur(),
-            Normalize()
-        ])
-    elif data_augs == 2:
-        AUGMENTATIONS_TRAIN = ReplayCompose([
-            RandomBrightnessContrast(),
-            HueSaturationValue(),
-            FancyPCA(),
-            RandomGamma(),
-            GaussianBlur(),
-            OneOf([
-                RandomRain(),
-                RandomSnow(),
-                RandomFog(),
-                RandomSunFlare()
-            ]),
             Normalize()
         ])
     else:

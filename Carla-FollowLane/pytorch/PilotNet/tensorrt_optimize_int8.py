@@ -157,19 +157,9 @@ train_indices, val_split = indices[split:], indices[:split]
 
 # Creating PT data samplers and loaders:
 test_sampler = SubsetRandomSampler(val_split)
-#testing_dataloader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
 testing_dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
 ###################################################
-'''
-calibrator = torch_tensorrt.ptq.DataLoaderCalibrator(
-    testing_dataloader,
-    cache_file="./calibration.cache",
-    use_cache=False,
-    algo_type=torch_tensorrt.ptq.CalibrationAlgo.ENTROPY_CALIBRATION_2,
-    device=torch.device(device),
-)
-'''
 
 import pytorch_quantization
 from pytorch_quantization import nn as quant_nn
@@ -193,14 +183,9 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 # Declare Learning rate
-#lr = 0.1
 lr = 0.0001
 state = {}
 state["lr"] = lr
-
-# Use cross entropy loss for classification and SGD optimizer
-#crit = nn.CrossEntropyLoss()
-#opt = optim.SGD(pilotModel.parameters(), lr=state["lr"], momentum=0.9, weight_decay=1e-4)
 
 crit = nn.MSELoss()
 opt = torch.optim.Adam(pilotModel.parameters(), lr=state["lr"])
@@ -217,25 +202,15 @@ def adjust_lr(optimizer, epoch):
 
 
 def train(model, dataloader, crit, opt, epoch):
-#     global writer
     model.train()
     running_loss = 0.0
     for batch, (data, labels) in enumerate(dataloader):
-        '''
-        data, labels = data.cuda(), labels.cuda(non_blocking=True)
-        opt.zero_grad()
-        out = model(data)
-        loss = crit(out, labels)
-        loss.backward()
-        opt.step()
-        '''
         images = FLOAT(data).to(device)
         labels = FLOAT(labels.float()).to(device)
         # Run the forward pass
         outputs = model(images)
         loss = crit(outputs, labels)
         current_loss = loss.item()
-        #train_loss += current_loss
         # Backprop and perform Adam optimisation
         opt.zero_grad()
         loss.backward()
@@ -249,29 +224,16 @@ def train(model, dataloader, crit, opt, epoch):
             running_loss = 0.0
         
 def test(model, dataloader, crit, epoch):
-    global writer
-    global classes
     total = 0
-    #correct = 0
     loss = 0.0
-    #class_probs = []
-    #class_preds = []
     model.eval()
     with torch.no_grad():
         for data, labels in dataloader:
             data = FLOAT(data).to(device)
             labels = FLOAT(labels.float()).to(device)
-            #data, labels = data.cuda(), labels.cuda(non_blocking=True)
             out = model(data)
             loss += crit(out, labels)
-            #preds = torch.max(out, 1)[1]
-            #class_probs.append([F.softmax(i, dim=0) for i in out])
-            #class_preds.append(preds)
             total += labels.size(0)
-            #correct += (preds == labels).sum().item()
-
-    #test_probs = torch.cat([torch.stack(batch) for batch in class_probs])
-    #test_preds = torch.cat(class_preds)
 
     return loss / total #, correct / total
 
@@ -287,14 +249,12 @@ for epoch in range(num_epochs):
     print('Epoch: [%5d / %5d] LR: %f' % (epoch + 1, num_epochs, state["lr"]))
 
     train(pilotModel, testing_dataloader, crit, opt, epoch)
-    #test_loss, test_acc = test(pilotModel, testing_dataloader, crit, epoch)
     test_loss = test(pilotModel, testing_dataloader, crit, epoch)
 
     print("Test Loss: {:.5f}".format(test_loss))
     
 save_checkpoint({'epoch': epoch + 1,
                  'model_state_dict': pilotModel.state_dict(),
-                 #'acc': test_acc,
                  'opt_state_dict': opt.state_dict(),
                  'state': state},
                 ckpt_path="pilotNet_qat_ckpt")

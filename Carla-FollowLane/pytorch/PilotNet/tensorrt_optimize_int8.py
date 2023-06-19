@@ -122,6 +122,7 @@ inputs = [torch.rand(1, 3, 200, 66)] # Input should be a tensor
 print(inputs[0].shape)
 
 augmentations = 'all'
+#augmentations = ''
 
 path_to_data = [
     '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_31_10_anticlockwise_town_01_previous_v/',
@@ -156,10 +157,11 @@ train_indices, val_split = indices[split:], indices[:split]
 
 # Creating PT data samplers and loaders:
 test_sampler = SubsetRandomSampler(val_split)
-testing_dataloader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
+#testing_dataloader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
+testing_dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
 ###################################################
-
+'''
 calibrator = torch_tensorrt.ptq.DataLoaderCalibrator(
     testing_dataloader,
     cache_file="./calibration.cache",
@@ -167,7 +169,7 @@ calibrator = torch_tensorrt.ptq.DataLoaderCalibrator(
     algo_type=torch_tensorrt.ptq.CalibrationAlgo.ENTROPY_CALIBRATION_2,
     device=torch.device(device),
 )
-
+'''
 
 import pytorch_quantization
 from pytorch_quantization import nn as quant_nn
@@ -179,9 +181,10 @@ from pytorch_quantization import calib
 with torch.no_grad():
     calibrate_model(
         model=pilotModel,
-        model_name="vgg16",
+        model_name="pilotNet",
         data_loader=testing_dataloader,
-        num_calib_batch=32,
+        #num_calib_batch=32,
+        num_calib_batch=1,
         calibrator="max",
         hist_percentile=[99.9, 99.99, 99.999, 99.9999],
         out_dir="./")
@@ -190,13 +193,18 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 # Declare Learning rate
-lr = 0.1
+#lr = 0.1
+lr = 0.0001
 state = {}
 state["lr"] = lr
 
 # Use cross entropy loss for classification and SGD optimizer
-crit = nn.CrossEntropyLoss()
-opt = optim.SGD(pilotModel.parameters(), lr=state["lr"], momentum=0.9, weight_decay=1e-4)
+#crit = nn.CrossEntropyLoss()
+#opt = optim.SGD(pilotModel.parameters(), lr=state["lr"], momentum=0.9, weight_decay=1e-4)
+
+crit = nn.MSELoss()
+opt = torch.optim.Adam(pilotModel.parameters(), lr=state["lr"])
+
 # Adjust learning rate based on epoch number
 def adjust_lr(optimizer, epoch):
     global state
@@ -213,42 +221,59 @@ def train(model, dataloader, crit, opt, epoch):
     model.train()
     running_loss = 0.0
     for batch, (data, labels) in enumerate(dataloader):
+        '''
         data, labels = data.cuda(), labels.cuda(non_blocking=True)
         opt.zero_grad()
         out = model(data)
         loss = crit(out, labels)
         loss.backward()
         opt.step()
+        '''
+        images = FLOAT(data).to(device)
+        labels = FLOAT(labels.float()).to(device)
+        # Run the forward pass
+        outputs = model(images)
+        loss = crit(outputs, labels)
+        current_loss = loss.item()
+        #train_loss += current_loss
+        # Backprop and perform Adam optimisation
+        opt.zero_grad()
+        loss.backward()
+        opt.step()
+
 
         running_loss += loss.item()
         if batch % 500 == 499:
-            print("Batch: [%5d | %5d] loss: %.3f" % (batch + 1, len(dataloader), running_loss / 100))
+            #print("Batch: [%5d | %5d] loss: %.3f" % (batch + 1, len(dataloader), running_loss / 100))
+            print("Batch: [%5d | %5d] loss: %.3f" % (batch + 1, len(dataloader), running_loss / 500))
             running_loss = 0.0
         
 def test(model, dataloader, crit, epoch):
     global writer
     global classes
     total = 0
-    correct = 0
+    #correct = 0
     loss = 0.0
-    class_probs = []
-    class_preds = []
+    #class_probs = []
+    #class_preds = []
     model.eval()
     with torch.no_grad():
         for data, labels in dataloader:
-            data, labels = data.cuda(), labels.cuda(non_blocking=True)
+            data = FLOAT(data).to(device)
+            labels = FLOAT(labels.float()).to(device)
+            #data, labels = data.cuda(), labels.cuda(non_blocking=True)
             out = model(data)
             loss += crit(out, labels)
-            preds = torch.max(out, 1)[1]
-            class_probs.append([F.softmax(i, dim=0) for i in out])
-            class_preds.append(preds)
+            #preds = torch.max(out, 1)[1]
+            #class_probs.append([F.softmax(i, dim=0) for i in out])
+            #class_preds.append(preds)
             total += labels.size(0)
-            correct += (preds == labels).sum().item()
+            #correct += (preds == labels).sum().item()
 
-    test_probs = torch.cat([torch.stack(batch) for batch in class_probs])
-    test_preds = torch.cat(class_preds)
+    #test_probs = torch.cat([torch.stack(batch) for batch in class_probs])
+    #test_preds = torch.cat(class_preds)
 
-    return loss / total, correct / total
+    return loss / total #, correct / total
 
 def save_checkpoint(state, ckpt_path="checkpoint.pth"):
     torch.save(state, ckpt_path)
@@ -256,22 +281,23 @@ def save_checkpoint(state, ckpt_path="checkpoint.pth"):
 
 
 # Finetune the QAT model for 1 epoch
-num_epochs=1
+num_epochs=10
 for epoch in range(num_epochs):
     adjust_lr(opt, epoch)
     print('Epoch: [%5d / %5d] LR: %f' % (epoch + 1, num_epochs, state["lr"]))
 
     train(pilotModel, testing_dataloader, crit, opt, epoch)
-    test_loss, test_acc = test(pilotModel, testing_dataloader, crit, epoch)
+    #test_loss, test_acc = test(pilotModel, testing_dataloader, crit, epoch)
+    test_loss = test(pilotModel, testing_dataloader, crit, epoch)
 
-    print("Test Loss: {:.5f} Test Acc: {:.2f}%".format(test_loss, 100 * test_acc))
+    print("Test Loss: {:.5f}".format(test_loss))
     
 save_checkpoint({'epoch': epoch + 1,
                  'model_state_dict': pilotModel.state_dict(),
-                 'acc': test_acc,
+                 #'acc': test_acc,
                  'opt_state_dict': opt.state_dict(),
                  'state': state},
-                ckpt_path="vgg16_qat_ckpt")
+                ckpt_path="pilotNet_qat_ckpt")
 
 
 quant_nn.TensorQuantizer.use_fb_fake_quant = True
@@ -279,18 +305,18 @@ with torch.no_grad():
     data = iter(testing_dataloader)
     images, _ = next(data)
     jit_model = torch.jit.trace(pilotModel, images.to("cuda"))
-    torch.jit.save(jit_model, "trained_vgg16_qat.jit.pt")
+    torch.jit.save(jit_model, "trained_pilotNet_qat.jit.pt")
 
 
-qat_model = torch.jit.load("trained_vgg16_qat.jit.pt").eval()
+qat_model = torch.jit.load("trained_pilotNet_qat.jit.pt").eval()
 
 compile_spec = {"inputs": [torch_tensorrt.Input([1, 3, 200, 66])],
                 "enabled_precisions": torch.int8,
                 }
 trt_mod = torch_tensorrt.compile(qat_model, **compile_spec)
 
-test_loss, test_acc = test(trt_mod, testing_dataloader, crit, 0)
-print("VGG QAT accuracy using TensorRT: {:.2f}%".format(100 * test_acc))
+test_loss = test(trt_mod, testing_dataloader, crit, 0)
+print("PilotNet QAT Loss using TensorRT: {:.5f}%".format(test_loss))
 
 
 import time
@@ -329,3 +355,71 @@ def benchmark(model, input_shape=(1024, 1, 32, 32), dtype='fp32', nwarmup=50, nr
 
 
 benchmark(jit_model, input_shape=(16, 3, 200, 66))
+
+
+
+def measure_inference_time(model, val_set):
+    # measure average inference time
+    
+    # GPU warm-up
+    r_idx = np.random.randint(0, len(val_set), 50)
+    for i in r_idx:
+        image, _ = val_set[i]
+        image = torch.unsqueeze(image, 0).to(device)
+        _ = model(image) 
+    
+    # actual inference call
+    inf_time = []
+    r_idx = np.random.randint(0, len(val_set), 1000)
+    for i in tqdm(r_idx):
+        # preprocessing
+        image, _ = val_set[i]
+        image = torch.unsqueeze(image, 0).to(device)
+        # Run inference.
+        start_t = time.time()
+        _ = model(image) 
+        inf_time.append(time.time() - start_t)
+        
+    return np.mean(inf_time)
+
+def measure_mse(model, val_loader):
+    criterion = nn.MSELoss()
+
+    model.eval()
+    with torch.no_grad():
+        total_loss = 0
+        for images, labels in tqdm(val_loader):
+            images = FLOAT(images).to(device)
+            labels = FLOAT(labels.float()).to(device)
+            outputs =  model(images).clone().detach().to(dtype=torch.float16)
+            loss = criterion(outputs, labels)
+            total_loss += loss.item()
+
+        MSE = total_loss/len(val_loader)
+
+    return MSE
+
+def evaluate_model(model_path, opt_model, val_set, val_loader):
+    '''
+    Calculate accuracy, model size and inference time for the given model.
+    Args:
+        model_path: path to saved quantized model
+        opt_model: converted model instance
+        val_set: dataset to use for inference benchmarking
+        val_loader: Dataset loader for accuracy test
+    return:
+        accuracy, model_size, inf_time
+    '''
+    model_size = os.path.getsize(model_path) / float(2**20)
+
+    mse = measure_mse(opt_model, val_loader)
+    
+    inf_time = measure_inference_time(opt_model,  val_set)
+
+    return model_size, mse, inf_time
+
+model_size, mse, inf_time = evaluate_model('trained_pilotNet_qat.jit.pt', trt_mod, dataset, testing_dataloader)
+
+print("Model size (MB):", model_size)
+print("MSE:", mse)
+print("Inference time (s):", inf_time)

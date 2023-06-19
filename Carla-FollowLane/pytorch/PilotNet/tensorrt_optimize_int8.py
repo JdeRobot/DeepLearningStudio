@@ -1,5 +1,4 @@
 # Code adapted from: https://github.com/pytorch/TensorRT/blob/main/notebooks/vgg-qat.ipynb
-
 import os
 import time
 import torch
@@ -26,17 +25,7 @@ from pytorch_quantization.tensor_quant import QuantDescriptor
 from pytorch_quantization import calib
 from pytorch_quantization import nn as quant_nn
 
-
 FLOAT = torch.FloatTensor
-
-image_shape = np.array([200,66, 3])
-device = 'cuda'
-model_dir = '/docker-tensorrt/pilot_net_model_best_123.pth'
-
-########################################################
-
-quant_modules.initialize()
-
 
 def compute_amax(model, **kwargs):
     # Load calib result
@@ -118,83 +107,6 @@ def calibrate_model(model, model_name, data_loader, num_calib_batch, calibrator,
                 torch.save(model.state_dict(), calib_output)
 
 
-
-#####################3
-
-
-
-pilotModel = PilotNet(image_shape, 3).eval().to(device)
-pilotModel.load_state_dict(torch.load(model_dir))
-
-
-inputs = [torch.rand(1, 3, 200, 66)] # Input should be a tensor
-
-print(inputs[0].shape)
-
-augmentations = 'all'
-#augmentations = ''
-
-path_to_data = [
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_31_10_anticlockwise_town_01_previous_v/',
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_31_10_clockwise_town_01_previous_v/',
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_clockwise_town_01_previous_v_extreme/',
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_clockwise_town_01_previous_v_extreme/',
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_anticlockwise_town_03_previous_v/',
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_clockwise_town_03_previous_v/',
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_anticlockwise_town_05_previous_v/',
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_clockwise_town_05_previous_v/',
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_anticlockwise_town_07_previous_v/',
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_clockwise_town_07_previous_v/',  
-    ]
-val_split = 0.3
-shuffle_dataset = True 
-random_seed = 123
-batch_size = 1
-
-# Define data transformations
-transformations = createTransform(augmentations)
-# Load data
-dataset = PilotNetDatasetTest(path_to_data, transformations, preprocessing=['extreme'])
-
-# Creating data indices for training and validation splits:
-dataset_size = len(dataset)
-indices = list(range(dataset_size))
-split = int(np.floor(val_split * dataset_size))
-if shuffle_dataset:
-    np.random.seed(random_seed)
-    np.random.shuffle(indices)
-train_indices, val_split = indices[split:], indices[:split]
-
-# Creating PT data samplers and loaders:
-test_sampler = SubsetRandomSampler(val_split)
-testing_dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
-
-###################################################
-
-
-
-#Calibrate the model using max calibration technique.
-with torch.no_grad():
-    calibrate_model(
-        model=pilotModel,
-        model_name="pilotNet",
-        data_loader=testing_dataloader,
-        #num_calib_batch=32,
-        num_calib_batch=1,
-        calibrator="max",
-        hist_percentile=[99.9, 99.99, 99.999, 99.9999],
-        out_dir="./")
-
-
-
-# Declare Learning rate
-lr = 0.0001
-state = {}
-state["lr"] = lr
-
-crit = nn.MSELoss()
-opt = torch.optim.Adam(pilotModel.parameters(), lr=state["lr"])
-
 # Adjust learning rate based on epoch number
 def adjust_lr(optimizer, epoch):
     global state
@@ -246,46 +158,6 @@ def save_checkpoint(state, ckpt_path="checkpoint.pth"):
     torch.save(state, ckpt_path)
     print("Checkpoint saved")
 
-
-# Finetune the QAT model for 1 epoch
-num_epochs=10
-for epoch in range(num_epochs):
-    adjust_lr(opt, epoch)
-    print('Epoch: [%5d / %5d] LR: %f' % (epoch + 1, num_epochs, state["lr"]))
-
-    train(pilotModel, testing_dataloader, crit, opt, epoch)
-    test_loss = test(pilotModel, testing_dataloader, crit, epoch)
-
-    print("Test Loss: {:.5f}".format(test_loss))
-    
-save_checkpoint({'epoch': epoch + 1,
-                 'model_state_dict': pilotModel.state_dict(),
-                 'opt_state_dict': opt.state_dict(),
-                 'state': state},
-                ckpt_path="pilotNet_qat_ckpt")
-
-
-quant_nn.TensorQuantizer.use_fb_fake_quant = True
-with torch.no_grad():
-    data = iter(testing_dataloader)
-    images, _ = next(data)
-    jit_model = torch.jit.trace(pilotModel, images.to("cuda"))
-    torch.jit.save(jit_model, "trained_pilotNet_qat.jit.pt")
-
-
-qat_model = torch.jit.load("trained_pilotNet_qat.jit.pt").eval()
-
-compile_spec = {"inputs": [torch_tensorrt.Input([1, 3, 200, 66])],
-                "enabled_precisions": torch.int8,
-                }
-trt_mod = torch_tensorrt.compile(qat_model, **compile_spec)
-
-test_loss = test(trt_mod, testing_dataloader, crit, 0)
-print("PilotNet QAT Loss using TensorRT: {:.5f}%".format(test_loss))
-
-
-cudnn.benchmark = True
-
 # Helper function to benchmark the model
 def benchmark(model, input_shape=(1024, 1, 32, 32), dtype='fp32', nwarmup=50, nruns=1000):
     input_data = torch.randn(input_shape)
@@ -313,9 +185,6 @@ def benchmark(model, input_shape=(1024, 1, 32, 32), dtype='fp32', nwarmup=50, nr
     print("Input shape:", input_data.size())
     print("Output shape:", output.shape)
     print('Average batch time: %.2f ms'%(np.mean(timings)*1000))
-
-
-benchmark(jit_model, input_shape=(16, 3, 200, 66))
 
 
 
@@ -379,8 +248,117 @@ def evaluate_model(model_path, opt_model, val_set, val_loader):
 
     return model_size, mse, inf_time
 
-model_size, mse, inf_time = evaluate_model('trained_pilotNet_qat.jit.pt', trt_mod, dataset, testing_dataloader)
 
-print("Model size (MB):", model_size)
-print("MSE:", mse)
-print("Inference time (s):", inf_time)
+
+if __name__=="__main__":
+    image_shape = np.array([200,66, 3])
+    device = 'cuda'
+    model_dir = '/docker-tensorrt/pilot_net_model_best_123.pth'
+    quant_modules.initialize()
+
+    pilotModel = PilotNet(image_shape, 3).eval().to(device)
+    pilotModel.load_state_dict(torch.load(model_dir))
+
+    augmentations = 'all'
+    #augmentations = ''
+
+    path_to_data = [
+        '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_31_10_anticlockwise_town_01_previous_v/',
+        '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_31_10_clockwise_town_01_previous_v/',
+        '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_clockwise_town_01_previous_v_extreme/',
+        '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_clockwise_town_01_previous_v_extreme/',
+        '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_anticlockwise_town_03_previous_v/',
+        '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_clockwise_town_03_previous_v/',
+        '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_anticlockwise_town_05_previous_v/',
+        '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_clockwise_town_05_previous_v/',
+        '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_anticlockwise_town_07_previous_v/',
+        '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_clockwise_town_07_previous_v/',  
+        ]
+    val_split = 0.3
+    shuffle_dataset = True 
+    random_seed = 123
+    batch_size = 1
+
+    # Define data transformations
+    transformations = createTransform(augmentations)
+    # Load data
+    dataset = PilotNetDatasetTest(path_to_data, transformations, preprocessing=['extreme'])
+
+    # Creating data indices for training and validation splits:
+    dataset_size = len(dataset)
+    indices = list(range(dataset_size))
+    split = int(np.floor(val_split * dataset_size))
+    if shuffle_dataset:
+        np.random.seed(random_seed)
+        np.random.shuffle(indices)
+    train_indices, val_split = indices[split:], indices[:split]
+
+    # Creating PT data samplers and loaders:
+    test_sampler = SubsetRandomSampler(val_split)
+    testing_dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+
+    #Calibrate the model using max calibration technique.
+    with torch.no_grad():
+        calibrate_model(
+            model=pilotModel,
+            model_name="pilotNet",
+            data_loader=testing_dataloader,
+            #num_calib_batch=32,
+            num_calib_batch=1,
+            calibrator="max",
+            hist_percentile=[99.9, 99.99, 99.999, 99.9999],
+            out_dir="./")
+
+    # Declare Learning rate
+    lr = 0.0001
+    state = {}
+    state["lr"] = lr
+
+    crit = nn.MSELoss()
+    opt = torch.optim.Adam(pilotModel.parameters(), lr=state["lr"])
+
+    # Finetune the QAT model for 1 epoch
+    num_epochs=10
+    for epoch in range(num_epochs):
+        adjust_lr(opt, epoch)
+        print('Epoch: [%5d / %5d] LR: %f' % (epoch + 1, num_epochs, state["lr"]))
+
+        train(pilotModel, testing_dataloader, crit, opt, epoch)
+        test_loss = test(pilotModel, testing_dataloader, crit, epoch)
+
+        print("Test Loss: {:.5f}".format(test_loss))
+        
+    save_checkpoint({'epoch': epoch + 1,
+                    'model_state_dict': pilotModel.state_dict(),
+                    'opt_state_dict': opt.state_dict(),
+                    'state': state},
+                    ckpt_path="pilotNet_qat_ckpt")
+
+
+    quant_nn.TensorQuantizer.use_fb_fake_quant = True
+    with torch.no_grad():
+        data = iter(testing_dataloader)
+        images, _ = next(data)
+        jit_model = torch.jit.trace(pilotModel, images.to("cuda"))
+        torch.jit.save(jit_model, "trained_pilotNet_qat.jit.pt")
+
+
+    qat_model = torch.jit.load("trained_pilotNet_qat.jit.pt").eval()
+
+    compile_spec = {"inputs": [torch_tensorrt.Input([1, 3, 200, 66])],
+                    "enabled_precisions": torch.int8,
+                    }
+    trt_mod = torch_tensorrt.compile(qat_model, **compile_spec)
+
+    test_loss = test(trt_mod, testing_dataloader, crit, 0)
+    print("PilotNet QAT Loss using TensorRT: {:.5f}%".format(test_loss))
+
+    cudnn.benchmark = True
+
+    benchmark(jit_model, input_shape=(16, 3, 200, 66))
+
+    model_size, mse, inf_time = evaluate_model('trained_pilotNet_qat.jit.pt', trt_mod, dataset, testing_dataloader)
+
+    print("Model size (MB):", model_size)
+    print("MSE:", mse)
+    print("Inference time (s):", inf_time)

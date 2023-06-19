@@ -5,9 +5,13 @@ import time
 import torch
 import torch_tensorrt
 import torchvision
+import pytorch_quantization
 
 import numpy as np
 import torch.nn as nn
+import torch.optim as optim
+import torch.nn.functional as F
+import torch.backends.cudnn as cudnn
 
 from torch.utils.data import DataLoader, SubsetRandomSampler
 from torchvision import transforms
@@ -17,6 +21,12 @@ from utils.pilot_net_dataset import PilotNetDataset, PilotNetDatasetTest
 from utils.transform_helper import createTransform
 from utils.pilotnet import PilotNet
 
+from pytorch_quantization import quant_modules
+from pytorch_quantization.tensor_quant import QuantDescriptor
+from pytorch_quantization import calib
+from pytorch_quantization import nn as quant_nn
+
+
 FLOAT = torch.FloatTensor
 
 image_shape = np.array([200,66, 3])
@@ -24,7 +34,7 @@ device = 'cuda'
 model_dir = '/docker-tensorrt/pilot_net_model_best_123.pth'
 
 ########################################################
-from pytorch_quantization import quant_modules
+
 quant_modules.initialize()
 
 
@@ -161,11 +171,7 @@ testing_dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
 ###################################################
 
-import pytorch_quantization
-from pytorch_quantization import nn as quant_nn
-from pytorch_quantization import quant_modules
-from pytorch_quantization.tensor_quant import QuantDescriptor
-from pytorch_quantization import calib
+
 
 #Calibrate the model using max calibration technique.
 with torch.no_grad():
@@ -179,8 +185,7 @@ with torch.no_grad():
         hist_percentile=[99.9, 99.99, 99.999, 99.9999],
         out_dir="./")
 
-import torch.optim as optim
-import torch.nn.functional as F
+
 
 # Declare Learning rate
 lr = 0.0001
@@ -279,10 +284,6 @@ test_loss = test(trt_mod, testing_dataloader, crit, 0)
 print("PilotNet QAT Loss using TensorRT: {:.5f}%".format(test_loss))
 
 
-import time
-import numpy as np
-
-import torch.backends.cudnn as cudnn
 cudnn.benchmark = True
 
 # Helper function to benchmark the model

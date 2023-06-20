@@ -208,7 +208,7 @@ def measure_inference_time(model, val_set):
         image = torch.unsqueeze(image, 0).to(device)
         # Run inference.
         start_t = time.time()
-        _ = model(image) 
+        _ = model(image)
         inf_time.append(time.time() - start_t)
         
     return np.mean(inf_time)
@@ -356,9 +356,10 @@ if __name__=="__main__":
 
     qat_model = torch.jit.load(args.model_name + "_qat.jit.pt").eval()
 
-    compile_spec = {"inputs": [torch_tensorrt.Input([1, 3, 200, 66])],
-                    "enabled_precisions": torch.int8,
-                    }
+    compile_spec = {
+        "inputs": [torch_tensorrt.Input([1, 3, 200, 66])],
+        "enabled_precisions": torch.int8,
+    }
     trt_mod = torch_tensorrt.compile(qat_model, **compile_spec)
 
     test_loss = test(trt_mod, testing_dataloader, crit, 0)
@@ -367,6 +368,7 @@ if __name__=="__main__":
     cudnn.benchmark = True
 
     benchmark(jit_model, input_shape=(batch_size, image_shape[2], image_shape[0], image_shape[1]))
+    benchmark(trt_mod, input_shape=(batch_size, image_shape[2], image_shape[0], image_shape[1]))
 
     model_size, mse, inf_time = evaluate_model('trained_pilotNet_qat.jit.pt', trt_mod, dataset, testing_dataloader)
 

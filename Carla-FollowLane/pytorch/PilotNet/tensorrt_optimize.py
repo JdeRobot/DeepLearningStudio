@@ -75,8 +75,11 @@ calibrator = torch_tensorrt.ptq.DataLoaderCalibrator(
     device=torch.device(device),
 )
 
-trt_mod = torch_tensorrt.compile(pilotModel, inputs=[torch_tensorrt.Input((1, 3, 200, 66))],
-                                    enabled_precisions={torch.half},
+trt_mod = torch_tensorrt.compile(pilotModel, 
+                                    #inputs=[torch_tensorrt.Input((1, 3, 200, 66), dtype=torch.half)],
+                                    inputs=[torch_tensorrt.Input((1, 3, 200, 66), dtype=torch.float32)],
+                                    #enabled_precisions={torch.half},
+                                    enabled_precisions={torch.float32},
                                     calibrator=calibrator,
                                     #device={
                                     #     "device_type": torch_tensorrt.DeviceType.GPU,
@@ -90,11 +93,41 @@ trt_mod = torch_tensorrt.compile(pilotModel, inputs=[torch_tensorrt.Input((1, 3,
 
 data = iter(testing_dataloader)
 images, _ = next(data)
-trt_mod = torch.jit.trace(pilotModel, images.to("cuda"))
-torch.jit.save(trt_mod, 'trt_mod.jit.pt')
-#torch.jit.save(trt_mod, 'trt_mod.pth')
+traced_model = torch.jit.trace(pilotModel, images.to("cuda"))
+torch.jit.save(traced_model, 'trt_mod.jit.pt')
 
-def measure_inference_time(model, val_set):
+def benchmark(model, input_shape=(1024, 1, 224, 224), dtype='fp32', nwarmup=50, nruns=10000):
+    input_data = torch.randn(input_shape)
+    input_data = input_data.to("cuda")
+    if dtype=='fp16':
+        input_data = input_data.half()
+
+    print("Warm up ...")
+    with torch.no_grad():
+        for _ in range(nwarmup):
+            features = model(input_data)
+    torch.cuda.synchronize()
+    print("Start timing ...")
+    timings = []
+    with torch.no_grad():
+        for i in range(1, nruns+1):
+            start_time = time.time()
+            features = model(input_data)
+            torch.cuda.synchronize()
+            end_time = time.time()
+            timings.append(end_time - start_time)
+            if i%10==0:
+                print('Iteration %d/%d, ave batch time %.2f ms'%(i, nruns, np.mean(timings)*1000))
+
+    print("Input shape:", input_data.size())
+    print("Output features size:", features.size())
+    print('Average batch time: %.2f ms'%(np.mean(timings)*1000))
+
+
+benchmark(trt_mod, input_shape=(1, 3, 200, 66), nruns=100)
+#benchmark(trt_mod, input_shape=(1, 3, 200, 66), dtype='fp16', nruns=100)
+
+def measure_inference_time(model, val_set, dtype):
     # measure average inference time
     
     # GPU warm-up
@@ -102,6 +135,8 @@ def measure_inference_time(model, val_set):
     for i in r_idx:
         image, _ = val_set[i]
         image = torch.unsqueeze(image, 0).to(device)
+        if dtype=='fp16':
+            image = image.half()
         _ = model(image) 
     
     # actual inference call
@@ -113,12 +148,14 @@ def measure_inference_time(model, val_set):
         image = torch.unsqueeze(image, 0).to(device)
         # Run inference.
         start_t = time.time()
+        if dtype=='fp16':
+            image = image.half()
         _ = model(image) 
         inf_time.append(time.time() - start_t)
         
     return np.mean(inf_time)
 
-def measure_mse(model, val_loader):
+def measure_mse(model, val_loader, dtype):
     criterion = nn.MSELoss()
 
     model.eval()
@@ -127,6 +164,8 @@ def measure_mse(model, val_loader):
         for images, labels in tqdm(val_loader):
             images = FLOAT(images).to(device)
             labels = FLOAT(labels.float()).to(device)
+            if dtype=='fp16':
+                images = images.half()
             outputs =  model(images).clone().detach().to(dtype=torch.float16)
             loss = criterion(outputs, labels)
             total_loss += loss.item()
@@ -135,7 +174,7 @@ def measure_mse(model, val_loader):
 
     return MSE
 
-def evaluate_model(model_path, opt_model, val_set, val_loader):
+def evaluate_model(model_path, opt_model, val_set, val_loader, dtype='fp32'):
     '''
     Calculate accuracy, model size and inference time for the given model.
     Args:
@@ -148,13 +187,16 @@ def evaluate_model(model_path, opt_model, val_set, val_loader):
     '''
     model_size = os.path.getsize(model_path) / float(2**20)
 
-    mse = measure_mse(opt_model, val_loader)
+    mse = measure_mse(opt_model, val_loader, dtype)
     
-    inf_time = measure_inference_time(opt_model,  val_set)
+    inf_time = measure_inference_time(opt_model,  val_set, dtype)
 
     return model_size, mse, inf_time
 
+#model_size, mse, inf_time = evaluate_model('trt_mod.jit.pt', trt_mod, dataset, testing_dataloader)
 model_size, mse, inf_time = evaluate_model('trt_mod.jit.pt', trt_mod, dataset, testing_dataloader)
+#model_size, mse, inf_time = evaluate_model('trt_mod.jit.pt', trt_mod, dataset, testing_dataloader, dtype='fp16')
+
 
 print("Model size (MB):", model_size)
 print("MSE:", mse)

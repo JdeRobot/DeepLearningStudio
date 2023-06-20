@@ -285,7 +285,6 @@ if __name__=="__main__":
     augmentations = args.data_augs
     path_to_data = args.data_dir
     val_split = args.val_split
-    #val_split = 0.3
     shuffle_dataset = args.shuffle
     random_seed = args.seed
     batch_size = args.batch_size

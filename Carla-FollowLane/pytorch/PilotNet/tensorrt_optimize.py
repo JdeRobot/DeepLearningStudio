@@ -3,6 +3,7 @@ import time
 import torch
 import torch_tensorrt
 import torchvision
+import argparse
 
 import numpy as np
 import torch.nn as nn
@@ -17,89 +18,10 @@ from utils.pilotnet import PilotNet
 
 FLOAT = torch.FloatTensor
 
-image_shape = np.array([200,66, 3])
-device = 'cuda'
-model_dir = '/docker-tensorrt/pilot_net_model_best_123.pth'
-
-pilotModel = PilotNet(image_shape, 3).eval().to(device)
-pilotModel.load_state_dict(torch.load(model_dir))
-
-inputs = [torch.rand(1, 3, 200, 66)] # Input should be a tensor
-
-print(inputs[0].shape)
-
-augmentations = 'all'
-
-path_to_data = [
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_31_10_anticlockwise_town_01_previous_v/',
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_31_10_clockwise_town_01_previous_v/',
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_clockwise_town_01_previous_v_extreme/',
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_clockwise_town_01_previous_v_extreme/',
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_anticlockwise_town_03_previous_v/',
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_clockwise_town_03_previous_v/',
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_anticlockwise_town_05_previous_v/',
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_clockwise_town_05_previous_v/',
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_anticlockwise_town_07_previous_v/',
-    '/docker-tensorrt/carla_dataset_previous_v/carla_dataset_test_04_11_clockwise_town_07_previous_v/',  
-    ]
-val_split = 0.3
-shuffle_dataset = True 
-random_seed = 123
-batch_size = 1
-
-# Define data transformations
-transformations = createTransform(augmentations)
-# Load data
-dataset = PilotNetDatasetTest(path_to_data, transformations, preprocessing=['extreme'])
-
-# Creating data indices for training and validation splits:
-dataset_size = len(dataset)
-indices = list(range(dataset_size))
-split = int(np.floor(val_split * dataset_size))
-if shuffle_dataset:
-    np.random.seed(random_seed)
-    np.random.shuffle(indices)
-train_indices, val_split = indices[split:], indices[:split]
-
-# Creating PT data samplers and loaders:
-test_sampler = SubsetRandomSampler(val_split)
-testing_dataloader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
-
-###################################################
-
-calibrator = torch_tensorrt.ptq.DataLoaderCalibrator(
-    testing_dataloader,
-    cache_file="./calibration.cache",
-    use_cache=False,
-    algo_type=torch_tensorrt.ptq.CalibrationAlgo.ENTROPY_CALIBRATION_2,
-    device=torch.device(device),
-)
-
-trt_mod = torch_tensorrt.compile(pilotModel, 
-                                    #inputs=[torch_tensorrt.Input((1, 3, 200, 66), dtype=torch.half)],
-                                    inputs=[torch_tensorrt.Input((1, 3, 200, 66), dtype=torch.float32)],
-                                    #enabled_precisions={torch.half},
-                                    enabled_precisions={torch.float32},
-                                    calibrator=calibrator,
-                                    #device={
-                                    #     "device_type": torch_tensorrt.DeviceType.GPU,
-                                    #     "gpu_id": 0,
-                                    #     "dla_core": 0,
-                                    #     "allow_gpu_fallback": False,
-                                    #     "disable_tf32": False
-                                    # })
-)
-
-
-data = iter(testing_dataloader)
-images, _ = next(data)
-traced_model = torch.jit.trace(pilotModel, images.to("cuda"))
-torch.jit.save(traced_model, 'trt_mod.jit.pt')
-
-def benchmark(model, input_shape=(1024, 1, 224, 224), dtype='fp32', nwarmup=50, nruns=10000):
+def benchmark(model, input_shape=(1024, 1, 224, 224), dtype='float32', nwarmup=50, nruns=10000):
     input_data = torch.randn(input_shape)
     input_data = input_data.to("cuda")
-    if dtype=='fp16':
+    if dtype=='half':
         input_data = input_data.half()
 
     print("Warm up ...")
@@ -124,8 +46,6 @@ def benchmark(model, input_shape=(1024, 1, 224, 224), dtype='fp32', nwarmup=50, 
     print('Average batch time: %.2f ms'%(np.mean(timings)*1000))
 
 
-benchmark(trt_mod, input_shape=(1, 3, 200, 66), nruns=100)
-#benchmark(trt_mod, input_shape=(1, 3, 200, 66), dtype='fp16', nruns=100)
 
 def measure_inference_time(model, val_set, dtype):
     # measure average inference time
@@ -135,7 +55,7 @@ def measure_inference_time(model, val_set, dtype):
     for i in r_idx:
         image, _ = val_set[i]
         image = torch.unsqueeze(image, 0).to(device)
-        if dtype=='fp16':
+        if dtype=='half':
             image = image.half()
         _ = model(image) 
     
@@ -148,7 +68,7 @@ def measure_inference_time(model, val_set, dtype):
         image = torch.unsqueeze(image, 0).to(device)
         # Run inference.
         start_t = time.time()
-        if dtype=='fp16':
+        if dtype=='half':
             image = image.half()
         _ = model(image) 
         inf_time.append(time.time() - start_t)
@@ -164,7 +84,7 @@ def measure_mse(model, val_loader, dtype):
         for images, labels in tqdm(val_loader):
             images = FLOAT(images).to(device)
             labels = FLOAT(labels.float()).to(device)
-            if dtype=='fp16':
+            if dtype=='half':
                 images = images.half()
             outputs =  model(images).clone().detach().to(dtype=torch.float16)
             loss = criterion(outputs, labels)
@@ -174,7 +94,7 @@ def measure_mse(model, val_loader, dtype):
 
     return MSE
 
-def evaluate_model(model_path, opt_model, val_set, val_loader, dtype='fp32'):
+def evaluate_model(model_path, opt_model, val_set, val_loader, dtype='float32'):
     '''
     Calculate accuracy, model size and inference time for the given model.
     Args:
@@ -193,11 +113,97 @@ def evaluate_model(model_path, opt_model, val_set, val_loader, dtype='fp32'):
 
     return model_size, mse, inf_time
 
-#model_size, mse, inf_time = evaluate_model('trt_mod.jit.pt', trt_mod, dataset, testing_dataloader)
-model_size, mse, inf_time = evaluate_model('trt_mod.jit.pt', trt_mod, dataset, testing_dataloader)
-#model_size, mse, inf_time = evaluate_model('trt_mod.jit.pt', trt_mod, dataset, testing_dataloader, dtype='fp16')
 
 
-print("Model size (MB):", model_size)
-print("MSE:", mse)
-print("Inference time (s):", inf_time)
+def parse_args():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("--data_dir", action='append', help="Directory to find Train Data")
+    parser.add_argument("--preprocess", action='append', default=None, help="preprocessing information: choose from crop/nocrop and normal/extreme")
+    parser.add_argument("--data_augs", action='append', type=str, default=None, help="Data Augmentations")
+    parser.add_argument("--shuffle", type=bool, default=False, help="Shuffle dataset")
+    parser.add_argument("--batch_size", type=int, default=1, help="Batch size")
+    parser.add_argument("--seed", type=int, default=123, help="Seed for reproducing")
+    parser.add_argument("--input_shape", type=str, default=(200, 66, 3), help="Image shape")
+    parser.add_argument("--model_dir", type=str, help="Directory to find model")
+    parser.add_argument("--device", type=str, default="cuda", help="Device for training")
+    parser.add_argument("--val_split", type=float, default=0.2, help="Train test Split")
+    parser.add_argument("--model_name", type=str, default="PilotNet", help="Model name")
+    parser.add_argument("--calibration_type", type=str, default="float32", help="Calitration type float32/half")
+
+    args = parser.parse_args()
+    return args
+
+
+if __name__=="__main__":
+    args = parse_args()
+
+    image_shape = np.array(tuple(map(int, args.input_shape.split(','))))
+    device = args.device
+    model_dir = args.model_dir
+
+    pilotModel = PilotNet(image_shape, 3).eval().to(device)
+    pilotModel.load_state_dict(torch.load(model_dir))
+
+    augmentations = args.data_augs
+    path_to_data = args.data_dir
+    val_split = args.val_split
+    shuffle_dataset = args.shuffle
+    random_seed = args.seed
+    batch_size = args.batch_size
+
+
+    # Define data transformations
+    transformations = createTransform(augmentations)
+    # Load data
+    dataset = PilotNetDatasetTest(path_to_data, transformations, preprocessing=args.preprocess)
+
+    # Creating data indices for training and validation splits:
+    dataset_size = len(dataset)
+    indices = list(range(dataset_size))
+    split = int(np.floor(val_split * dataset_size))
+    if shuffle_dataset:
+        np.random.seed(random_seed)
+        np.random.shuffle(indices)
+    train_indices, val_split = indices[split:], indices[:split]
+
+    # Creating PT data samplers and loaders:
+    test_sampler = SubsetRandomSampler(val_split)
+    testing_dataloader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
+
+
+    calibrator = torch_tensorrt.ptq.DataLoaderCalibrator(
+        testing_dataloader,
+        cache_file="./calibration.cache",
+        use_cache=False,
+        algo_type=torch_tensorrt.ptq.CalibrationAlgo.ENTROPY_CALIBRATION_2,
+        device=torch.device(device),
+    )
+
+    if args.calibration_type == 'float32':
+        trt_mod = torch_tensorrt.compile(pilotModel, 
+                                            inputs=[torch_tensorrt.Input((batch_size, image_shape[2], image_shape[0], image_shape[1]), dtype=torch.float32)],
+                                            enabled_precisions={torch.float32},
+                                            calibrator=calibrator,
+        )
+    else:
+        trt_mod = torch_tensorrt.compile(pilotModel, 
+                                            inputs=[torch_tensorrt.Input((batch_size, image_shape[2], image_shape[0], image_shape[1]), dtype=torch.half)],
+                                            enabled_precisions={torch.half},
+                                            calibrator=calibrator,
+        )
+
+    data = iter(testing_dataloader)
+    images, _ = next(data)
+    traced_model = torch.jit.trace(pilotModel, images.to("cuda"))
+    torch.jit.save(traced_model, args.model_name + '_trt_mod.jit.pt')
+
+
+    benchmark(trt_mod, input_shape=(batch_size, image_shape[2], image_shape[0], image_shape[1]), dtype=args.calibration_type, nruns=100)
+
+    model_size, mse, inf_time = evaluate_model(args.model_name + '_trt_mod.jit.pt', trt_mod, dataset, testing_dataloader, dtype=args.calibration_type)
+
+
+    print("Model size (MB):", model_size)
+    print("MSE:", mse)
+    print("Inference time (s):", inf_time)

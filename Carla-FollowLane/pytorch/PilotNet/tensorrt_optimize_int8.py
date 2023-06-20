@@ -366,8 +366,7 @@ if __name__=="__main__":
 
     cudnn.benchmark = True
 
-
-    benchmark(jit_model, input_shape=(batch_size, args.input_shape[2], args.input_shape[0], args.input_shape[1]))
+    benchmark(jit_model, input_shape=(batch_size, image_shape[2], image_shape[0], image_shape[1]))
 
     model_size, mse, inf_time = evaluate_model('trained_pilotNet_qat.jit.pt', trt_mod, dataset, testing_dataloader)
 

@@ -30,7 +30,6 @@ def get_images(list_images, type_image, array_imgs):
     return array_imgs
 
 def parse_csv(data, array):
-    print(data)
     # Process csv
     for v, w in data:
         array.append((float(v), float(w)))
@@ -41,13 +40,7 @@ def preprocess_data(array, imgs, data_type):
     # Data augmentation
 
     array_annotations = array
-    array_imgs = imgs
-    
-    print('**')
-    print(len(array_annotations))
-    print(len(array_imgs))
-    print('**')
-    
+    array_imgs = imgs  
 
     if data_type == 'extreme':
         for i in range(0, len(array_annotations)):
@@ -76,12 +69,6 @@ def preprocess_data(array, imgs, data_type):
                 for j in range(0, num_iter):
                     array_annotations.append(array_annotations[i])
                     array_imgs.append(array_imgs[i])
-
-
-    print('**')
-    print(len(array_annotations))
-    print(len(array_imgs))
-    print('**')
 
     array_annotations = normalize_annotations(array_annotations)
 

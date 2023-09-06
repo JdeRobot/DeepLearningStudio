@@ -4,9 +4,6 @@ from tensorflow.keras.optimizers import Adam
 
 
 def pilotnet_model(img_shape, learning_rate):
-    '''
-    Model of End to End Learning for Self-Driving Cars (NVIDIA)
-    '''
     model = Sequential()
     model.add(BatchNormalization(epsilon=0.001, axis=-1, input_shape=img_shape))
     model.add(Conv2D(24, (5, 5), strides=(2, 2), activation="relu",padding='same'))

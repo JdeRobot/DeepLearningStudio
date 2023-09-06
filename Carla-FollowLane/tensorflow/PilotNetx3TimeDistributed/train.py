@@ -8,7 +8,7 @@ import numpy as np
 
 from utils.dataset import get_augmentations, DatasetSequence
 from utils.processing import process_dataset
-from utils.pilotnet import pilotnet_model
+from utils.pilotnet_x3_time_distributed import pilotnet_x3_time_distributed
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard, CSVLogger
 from tensorflow.python.keras.saving import hdf5_format
 
@@ -65,9 +65,9 @@ if __name__ == "__main__":
 
     print(hparams)
 
-    model_name = 'pilotnet_model'
-    model = pilotnet_model(img_shape, learning_rate)
-    model_filename = timestr + '_pilotnet_model_100_all_n_extreme_3_albumentations_no_crop'
+    model_name = 'pilotnet_x3_time_distributed'
+    model = pilotnet_x3_time_distributed(img_shape, learning_rate)
+    model_filename = timestr + '_pilotnet_x3_time_distributed_100_all_n_extreme_3_albumentations_no_crop'
     model_file = model_filename + '.h5'
 
     AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST = get_augmentations(data_augs)

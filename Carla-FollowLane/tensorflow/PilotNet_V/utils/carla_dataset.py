@@ -27,17 +27,23 @@ class DatasetSequenceAffine(Sequence):
         batch_y = self.y[idx * self.batch_size:(idx + 1) *
                                                self.batch_size]
 
-        # aug = self.augment(image=batch_x[0])
-        new_batch = []
+        new_img_batch = []
+        new_ann_batch = []
         new_batch_y = np.array(batch_y, copy=True)
         for x, img in enumerate(batch_x):
             aug = self.augment(image=img)
-            new_batch.append(aug["image"])
+            velocity_dim = np.full((150, 50), batch_y[x][3])
+            new_img_vel = np.dstack((aug["image"], velocity_dim))
+            new_img_batch.append(new_img_vel)
             if aug["replay"]["transforms"][0]["applied"] == True:
                 x_transformation_value = aug["replay"]["transforms"][0]["translate_percent"]["x"][1]
                 value = aug["replay"]["transforms"][0]["params"]["matrix"].params[0][2]
                 new_value = value / 10 * x_transformation_value
-                new_batch_y[x][1] = new_batch_y[x][1] + new_value
+                new_ann_batch.append(np.array((new_batch_y[x][0], new_batch_y[x][1] + new_value, new_batch_y[x][2])))
+            else:
+                new_ann_batch.append(np.array((new_batch_y[x][0], new_batch_y[x][1], new_batch_y[x][2])))
+
+        new_batch_y = new_ann_batch
 
         return np.stack(new_img_batch, axis=0), np.array(new_batch_y)
 

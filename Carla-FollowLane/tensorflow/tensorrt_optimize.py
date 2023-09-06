@@ -4,9 +4,7 @@ import tensorflow as tf
 from tensorflow.python.compiler.tensorrt import trt_convert as trt
 import pathlib
 import argparse
-#from PilotNet.utils.dataset import get_augmentations, DatasetSequence
 from PilotNet.utils.carla_dataset import get_augmentations, DatasetSequence
-#from PilotNet.utils.processing import process_dataset
 from PilotNet.utils.processing_carla_tensor_rt import process_dataset
 from tqdm import tqdm
 import numpy as np
@@ -49,7 +47,6 @@ def converter_and_save(path, precision, save_path, args, input_shapes, calibrati
     converter = trt.TrtGraphConverterV2(
         input_saved_model_dir=str(path),
         conversion_params=params,
-        
         # use_dynamic_shape=True, dynamic_shape_profile_strategy='Optimal', not in TF 2.4 
     )
 
@@ -151,7 +148,6 @@ def evaluate_model(tftrt_model_file, valid_set, images_val):
 
 
 def load_data(args):
-
     img_shape = tuple(map(int, args.img_shape.split(',')))
 
     if 'no_crop' in args.preprocess:
@@ -191,7 +187,6 @@ def parse_args():
     parser.add_argument("--batch_size", type=int, default=128, help="Batch size")
     parser.add_argument('--model_path', type=str, default='trained_models/pilotnet.h5', help="Path to directory containing pre-trained models")
     parser.add_argument('--model_name', default='pilotnet', help="Name of model" )
-    # parser.add_argument('--res_path', default='Result_Model_3.csv', help="Path(+filename) to store the results" )
     parser.add_argument('--eval_base', type=bool, default=False, help="If set to True, it will calculate accuracy, size and inference time for original model.")
     parser.add_argument('--precision', action='append', type=str, default=[], choices=['int8', 'fp16', 'fp32', 'all'], help='Precisions to apply for model optimization')
     

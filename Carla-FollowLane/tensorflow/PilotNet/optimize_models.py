@@ -7,16 +7,9 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from tensorflow import keras
-# from tensorflow.python.saved_model import tag_constants
-# from tensorflow.python.compiler.tensorrt import trt_convert as trt
-# from tensorflow.keras.applications.resnet50 import ResNet50
-# from tensorflow.keras.preprocessing import image
-# from tensorflow.keras.applications.resnet50 import preprocess_input, decode_predictions
 import pathlib
 import argparse
-#from utils.dataset import get_augmentations, DatasetSequence
 from utils.carla_dataset import get_augmentations, DatasetSequence
-#from utils.processing import process_dataset
 from utils.processing_carla_tf_lite import process_dataset
 from tqdm import tqdm
 import tensorflow_model_optimization as tfmot
@@ -45,7 +38,6 @@ def measure_inference_time(tflite_model, images_val):
         start_t = time.time()
         # Run inference.
         interpreter.invoke()
-        # pred = tflite_model.predict(img, verbose=0)
         inf_time.append(time.time() - start_t)
         # Post-processing
         output = interpreter.get_tensor(output_details["index"])
@@ -236,10 +228,8 @@ def quantization_aware_train(model_path, model_name, tflite_models_dir, valid_se
     # https://www.tensorflow.org/model_optimization/guide/quantization/training_comprehensive_guide.md
 
     model = tf.keras.models.load_model(model_path) # load original model
-    # quantize_model = tfmot.quantization.keras.quantize_model
-    # q_aware_model = quantize_model(model)
 
-    ### Quantize model - dense and conv2d (batchnorm not support)
+    # Quantize model - dense and conv2d (batchnorm not support)
     # Helper function uses `quantize_annotate_layer` to annotate that only the specified layers be Q 
     def apply_quantization_to_layers(layer):
         if isinstance(layer, tf.keras.layers.Dense):
@@ -261,11 +251,9 @@ def quantization_aware_train(model_path, model_name, tflite_models_dir, valid_se
     q_aware_model.compile(optimizer=Adam(learning_rate=args.learning_rate), loss="mse", metrics=['mse', 'mae'])
     q_aware_model.summary() # every layer has `quant` prefix
     # use subset of data to train; here 1%
-    #ridx = np.random.randint(0, len(images_train), int(len(images_train)*0.01))
     ridx = np.random.randint(0, len(images_train), int(len(images_train)*0.1))
     images_train, annotations_train = images_train[ridx], annotations_train[ridx]
     # fine-tune pre-trained model with quantization aware training
-    #q_aware_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=2, validation_split=0.1)
     q_aware_model.fit(images_train, annotations_train, batch_size=args.batch_size, epochs=20, validation_split=0.1)
     
     # Create quantized model for TFLite backend - quantized model with int8 weights and uint8 activations
@@ -374,7 +362,7 @@ def CQAT(model_path, model_name, tflite_models_dir, valid_set, images_val, args,
     stripped_clustered_model = tfmot.clustering.keras.strip_clustering(clustered_model)
 
     # CQAT
-    ### Quantize model - dense and conv2d (batchnorm not support)
+    # Quantize model - dense and conv2d (batchnorm not support)
     # Helper function uses `quantize_annotate_layer` to annotate that only the specified layers be Q 
     def apply_quantization_to_layers(layer):
         if isinstance(layer, tf.keras.layers.Dense):
@@ -441,12 +429,6 @@ def PQAT(model_path, model_name, tflite_models_dir, valid_set, images_val, args,
     stripped_pruned_model = tfmot.sparsity.keras.strip_pruning(pruned_model)
 
     # PQAT
-    # quant_aware_annotate_model = tfmot.quantization.keras.quantize_annotate_model(
-    #             stripped_pruned_model)
-    # pqat_model = tfmot.quantization.keras.quantize_apply(
-    #           quant_aware_annotate_model,
-    #           tfmot.experimental.combine.Default8BitPrunePreserveQuantizeScheme())
-
     ### Quantize model - dense and conv2d (batchnorm not support)
     # Helper function uses `quantize_annotate_layer` to annotate that only the specified layers be Q 
     def apply_quantization_to_layers(layer):
@@ -512,7 +494,7 @@ def PCQAT(model_path, model_name, tflite_models_dir, valid_set, images_val, args
     
     stripped_pruned_model = tfmot.sparsity.keras.strip_pruning(pruned_model)
 
-    ## sparsity preserving clustering
+    # sparsity preserving clustering
     from tensorflow_model_optimization.python.core.clustering.keras.experimental import (
     cluster,
     )
@@ -535,13 +517,8 @@ def PCQAT(model_path, model_name, tflite_models_dir, valid_set, images_val, args
     stripped_clustered_model = tfmot.clustering.keras.strip_clustering(sparsity_clustered_model)
 
     ## PCQAT
-    # quant_aware_annotate_model = tfmot.quantization.keras.quantize_annotate_model(
-    #             stripped_clustered_model)
-    # pcqat_model = tfmot.quantization.keras.quantize_apply(
-    #             quant_aware_annotate_model,
-    #             tfmot.experimental.combine.Default8BitClusterPreserveQuantizeScheme(preserve_sparsity=True))
 
-    ### Quantize model - dense and conv2d (batchnorm not support)
+    # Quantize model - dense and conv2d (batchnorm not support)
     # Helper function uses `quantize_annotate_layer` to annotate that only the specified layers be Q 
     def apply_quantization_to_layers(layer):
         if isinstance(layer, tf.keras.layers.Dense):
@@ -633,28 +610,12 @@ def parse_args():
     parser.add_argument('--model_path', type=str, default='trained_models/pilotnet.h5', help="Path to directory containing pre-trained models")
     parser.add_argument('--model_name', default='pilotnet', help="Name of model" )
     parser.add_argument("--learning_rate", type=float, default=1e-3, help="Learning rate")
-    # parser.add_argument('--res_path', default='Result_Model_3.csv', help="Path(+filename) to store the results" )
     parser.add_argument('--eval_base', type=bool, default=False, help="If set to True, it will calculate accuracy, size and inference time for original model.")
     parser.add_argument("--tech", action='append', default=[], help="Techniques to apply for model compression. Options are: \n"+
                                "'dynamic_quan', 'int_quan', 'int_flt_quan', 'float16_quan', 'quan_aware', 'prune', 'prune_quan', 'clust_qat', 'prune_qat', 'prune_clust_qat' and 'all' .")
     
     args = parser.parse_args()
     return args
-
-# def tensorrt():
-    # model = ResNet50()
-    # model.save('resnet50_saved_model') 
-    # model_path = 'resnet50_saved_model'
-    # print('Converting to TF-TRT FP32...')
-    # conversion_params = trt.DEFAULT_TRT_CONVERSION_PARAMS._replace(precision_mode=trt.TrtPrecisionMode.FP32,
-    #                                                             max_workspace_size_bytes=8000000000)
-
-    # converter = trt.TrtGraphConverterV2(input_saved_model_dir= model_path,
-    #                                     conversion_params=conversion_params)
-    # converter.convert()
-    # converter.save(output_saved_model_dir='pilotnet_TFTRT_FP32')
-    # print('Done Converting to TF-TRT FP32')
-
 
 if __name__ == '__main__':
 

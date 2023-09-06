@@ -7,7 +7,7 @@ import csv
 
 
 def load_data(folder):
-    name_folder = folder #+ '/' #+ '/Images/'
+    name_folder = folder
     name_file = folder + 'dataset.csv'
     file = open(name_file, 'r')
     reader = csv.DictReader(file)

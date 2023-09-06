@@ -23,8 +23,8 @@ device = torch.device("cpu") # support available only for cpu
 FLOAT = torch.FloatTensor
 
 def measure_inference_time(model, val_set):
-    # measure average inference time
-    
+    # Measure average inference time
+
     # GPU warm-up
     r_idx = np.random.randint(0, len(val_set), 50)
     for i in r_idx:
@@ -60,7 +60,6 @@ def measure_mse(model, val_loader):
             total_loss += loss.item()
         
         MSE = total_loss/len(val_loader)
-        # print('Average MSE of the model on the test images: {} %'.format( MSE))
 
     return MSE
 
@@ -92,8 +91,6 @@ def evaluate_baseline(base_model, model_save_dir, val_set, val_loader):
     traced_model = torch.jit.trace(base_model, torch.rand(1, 3, 200, 66)) 
     torch.jit.save(traced_model, model_path)
 
-    # base_model = torch.jit.load(model_path)
-
     print("********** Baseline stats **********")
     model_size, mse, inf_time = evaluate_model(model_path, base_model,  val_set, val_loader)
     print("Model size (MB):", model_size)
@@ -121,7 +118,6 @@ def dynamic_quantization(model, model_save_dir, val_set, val_loader):
     # providing dummy input for tracing; change according to image resolution
     traced_model = torch.jit.trace(quant_model, torch.rand(1, 3, 200, 66)) 
     torch.jit.save(traced_model, qmodel_path)
-    # quant_model = torch.jit.load(qmodel_path)
 
     print("********** Dynamic range Q stats **********")
     model_size, mse, inf_time = evaluate_model(qmodel_path, quant_model,  val_set, val_loader)
@@ -212,8 +208,8 @@ def quantization_aware_train(model, model_save_dir, val_set, val_loader, train_l
 
     for epoch in range(n_epochs):
         for images, labels in tqdm(train_loader):
-            images = torch.FloatTensor(images)#.to(device)
-            labels = torch.FloatTensor(labels.float())#.to(device)
+            images = torch.FloatTensor(images)
+            labels = torch.FloatTensor(labels.float())
             out = m(images)
             loss = criterion(out, labels)
             optimizer.zero_grad()
@@ -300,7 +296,7 @@ def global_prune(model, model_save_dir, val_set, val_loader, train_loader, args)
         if isinstance(module, torch.nn.Conv2d) or isinstance(module, torch.nn.Linear):
             parameters_to_prune.append((module, "weight"))
 
-    ## Global prune
+    # Global prune
     # zero-out low tensors with lowest value according to pruning_method
     prune.global_unstructured(
         parameters_to_prune,
@@ -325,7 +321,7 @@ def global_prune(model, model_save_dir, val_set, val_loader, train_loader, args)
             optimizer.step()
     
 
-    ## remove re-parameterization to make pruning permanent
+    # Remove re-parameterization to make pruning permanent
     for name, module in model.named_modules():
         if isinstance(module, torch.nn.Conv2d):
             prune.remove(module, name='weight')
@@ -334,7 +330,7 @@ def global_prune(model, model_save_dir, val_set, val_loader, train_loader, args)
     
     """Save model"""
     model_path = model_save_dir + '/global_prune.pth'
-    # providing dummy input for tracing; change according to image resolution
+    # Providing dummy input for tracing; change according to image resolution
     traced_model = torch.jit.trace(model, torch.rand(1, 3, 200, 66)) 
     torch.jit.save(traced_model, model_path)
 
@@ -353,12 +349,12 @@ def prune_quan(model, model_save_dir, val_set, val_loader, train_loader, args):
     print("********* Start Pruning + Quantization ***********")
 
     """ Pruning steps """
-    ## Prune multiple parameters of the model
+    # Prune multiple parameters of the model
     for name, module in model.named_modules():
-        # prune 20% of connections in all 2D-conv layers
+        # prune 30% of connections in all 2D-conv layers
         if isinstance(module, torch.nn.Conv2d):
             prune.l1_unstructured(module, name='weight', amount=0.3)
-        # prune 40% of connections in all linear layers
+        # prune 50% of connections in all linear layers
         elif isinstance(module, torch.nn.Linear):
             prune.l1_unstructured(module, name='weight', amount=0.5)
     
@@ -378,7 +374,7 @@ def prune_quan(model, model_save_dir, val_set, val_loader, train_loader, args):
             loss.backward()
             optimizer.step()
     
-    ## remove re-parameterization to make pruning permanent
+    # Remove re-parameterization to make pruning permanent
     for name, module in model.named_modules():
         if isinstance(module, torch.nn.Conv2d):
             prune.remove(module, name='weight')
@@ -471,13 +467,10 @@ if __name__=="__main__":
 
     
     args = parse_args()
-
     exp_setup = vars(args)
-
     set_device(args)
 
     # Base Directory
-    # path_to_data = args.data_dir
     base_dir = './experiments/'+ args.base_dir + '/'
     model_save_dir = base_dir + 'trained_models'
     log_dir = base_dir + 'log'

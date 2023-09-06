@@ -48,7 +48,6 @@ def get_augmentations(data_augs):
         AUGMENTATIONS_TRAIN = ReplayCompose([
             RandomBrightnessContrast(),
             HueSaturationValue(),
-            # FancyPCA(),
             RandomGamma(),
             GaussianBlur(),
             Normalize()
@@ -57,7 +56,6 @@ def get_augmentations(data_augs):
         AUGMENTATIONS_TRAIN = ReplayCompose([
             RandomBrightnessContrast(),
             HueSaturationValue(),
-            # FancyPCA(),
             RandomGamma(),
             GaussianBlur(),
             OneOf([

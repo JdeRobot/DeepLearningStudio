@@ -1,7 +1,6 @@
-# Carla Follow-lane: implementation, and optimization scripts
+# Carla Follow-lane and Traffic-avoidance: implementation scripts
 
-We provide here resources for implementing a follow-lane model for CARLA simulator based on bird-eye-view input view.
-We also provide scripts for optimization of the baseline model for both PyTorch and Tensorflow, with support for TensorRT.
+We provide here resources for implementing a follow-lane and traffic avoidance model for CARLA simulator using a frontal RGB camera as input.
 
 # Dataset
 

@@ -546,14 +546,9 @@ def separate_dataset_into_train_validation(array_x, array_y):
 
     return images_train, annotations_train, images_validation, annotations_validation
 
-def process_dataset(path_to_data, type_image, data_type, img_shape, optimize_mode=False):
-
-    if not optimize_mode:
-        array_imgs, array_annotations = get_images_and_annotations(path_to_data, type_image, img_shape, data_type)
-        images_train, annotations_train, images_validation, annotations_validation = separate_dataset_into_train_validation(
-            array_imgs, array_annotations)
-    else:
-        images_train, annotations_train = get_images_and_annotations(path_to_data, type_image, img_shape, data_type)
-        images_validation, annotations_validation = images_train, annotations_train
+def process_dataset(path_to_data, type_image, data_type, img_shape):
+    array_imgs, array_annotations = get_images_and_annotations(path_to_data, type_image, img_shape, data_type)
+    images_train, annotations_train, images_validation, annotations_validation = separate_dataset_into_train_validation(
+        array_imgs, array_annotations)
 
     return images_train, annotations_train, images_validation, annotations_validation

@@ -93,7 +93,6 @@ class DatasetSequence(Sequence):
 
         new_batch = np.array(new_batch)
 
-
         new_ann_batch = []
         for x, ann in enumerate(batch_y):
             new_ann_batch.append(np.array((ann[2][0], ann[2][1], ann[2][2])))

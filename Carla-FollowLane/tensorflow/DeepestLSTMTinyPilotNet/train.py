@@ -19,7 +19,8 @@ def parse_args():
     parser.add_argument("--data_dir", action='append', help="Directory to find Data")
     parser.add_argument("--preprocess", action='append', default=None,
                         help="preprocessing information: choose from crop/nocrop and normal/extreme")
-    parser.add_argument("--data_augs", type=int, default=0, help="Data Augmentations: 0=No / 1=Normal / 2=Normal+Weather changes")
+    parser.add_argument("--data_augs", type=int, default=0,
+                        help="Data Augmentations: 0=No / 1=Normal / 2=Normal+Weather changes")
     parser.add_argument("--num_epochs", type=int, default=100, help="Number of Epochs")
     parser.add_argument("--batch_size", type=int, default=128, help="Batch size")
     parser.add_argument("--learning_rate", type=float, default=1e-3, help="Learning rate for Policy Net")
@@ -51,7 +52,7 @@ if __name__ == "__main__":
         data_type = 'no_extreme'
 
     images_train, annotations_train, images_val, annotations_val = process_dataset(path_to_data, type_image,
-                                                                                               data_type, img_shape)
+                                                                                   data_type, img_shape)
 
     # Train
     timestr = time.strftime("%Y%m%d-%H%M%S")
@@ -74,7 +75,7 @@ if __name__ == "__main__":
 
     # Training data
     train_gen = DatasetSequenceAffine(images_train, annotations_train, hparams['batch_size'],
-                                augmentations=AUGMENTATIONS_TRAIN)
+                                      augmentations=AUGMENTATIONS_TRAIN)
 
     # Validation data
     valid_gen = DatasetSequence(images_val, annotations_val, hparams['batch_size'],
@@ -99,7 +100,6 @@ if __name__ == "__main__":
         epochs=hparams['n_epochs'],
         verbose=2,
         validation_data=valid_gen,
-        # workers=2, use_multiprocessing=False,
         callbacks=[tensorboard_callback, earlystopping, cp_callback, csv_logger])
 
     # Save model

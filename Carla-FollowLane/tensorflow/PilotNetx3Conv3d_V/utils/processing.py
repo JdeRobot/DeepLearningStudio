@@ -8,6 +8,7 @@ from skimage.io import imread
 from skimage.transform import resize
 from sklearn.model_selection import train_test_split
 
+
 def get_images(folder_prefix, list_images, image_shape):
     # Read the images
     array_imgs = []
@@ -34,7 +35,8 @@ def parse_csv(csv_data):
     timestamp = csv_data['timestamp'].tolist()
     for x, linear_speed in enumerate(linear_speeds):
         try:
-            array.append((float(linear_speed), float(angular_speeds[x]), float(brakes[x]), float(velocity[x]), float(timestamp[x])))
+            array.append((float(linear_speed), float(angular_speeds[x]), float(brakes[x]), float(velocity[x]),
+                          float(timestamp[x])))
         except:
             print('ERROR in value')
     return images_ids, array
@@ -43,25 +45,11 @@ def parse_csv(csv_data):
 def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
     ######################################### 1 #########################################
     carla_dataset_name_file = path_to_data + 'carla_dataset_test_31_10_anticlockwise_town_01_previous_v/dataset.csv'
-    carla_dataset_file = open(carla_dataset_name_file, 'r')
-    data_carla_dataset = carla_dataset_file.read()
-    carla_dataset_file.close()
-
-    array_annotations_carla_dataset_1 = []
-    DIR_carla_dataset_images = path_to_data + 'carla_dataset_test_31_10_anticlockwise_town_01_previous_v/'
-    list_images_carla_dataset = glob.glob(DIR_carla_dataset_images + '*')
-    new_list_images_carla_dataset = []
-    for image in list_images_carla_dataset:
-        if image != path_to_data + 'carla_dataset_test_31_10_anticlockwise_town_01_previous_v/dataset.csv':
-            new_list_images_carla_dataset.append(image)
-    list_images_carla_dataset = new_list_images_carla_dataset
-
-    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[4].split('.png')[0]))
-
     array_annotations_carla_dataset_1 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_1 = parse_csv(array_annotations_carla_dataset_1)
 
-    images_carla_dataset_1 = get_images(path_to_data + 'carla_dataset_test_31_10_anticlockwise_town_01_previous_v/', images_ids, img_shape)
+    images_carla_dataset_1 = get_images(path_to_data + 'carla_dataset_test_31_10_anticlockwise_town_01_previous_v/',
+                                        images_ids, img_shape)
 
     array_annotations_v = []
     array_annotations_w = []
@@ -72,7 +60,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
         array_annotations_w.append(annotation[1])
         array_annotations_b.append(annotation[2])
         array_annotations_vel.append(annotation[3])
-        
+
     # START NORMALIZE DATA
     array_annotations_v = np.stack(array_annotations_v, axis=0)
     array_annotations_v = array_annotations_v.reshape(-1, 1)
@@ -88,30 +76,16 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
     normalized_annotations = []
     for i in range(0, len(array_annotations_w)):
         normalized_annotations.append([array_annotations_v.item(i), normalized_Y.item(i), array_annotations_b.item(i)])
-        
+
     array_annotations_carla_dataset_1 = normalized_annotations
 
     ######################################### 2 #########################################
     carla_dataset_name_file = path_to_data + 'carla_dataset_test_31_10_clockwise_town_01_previous_v/dataset.csv'
-    carla_dataset_file = open(carla_dataset_name_file, 'r')
-    data_carla_dataset = carla_dataset_file.read()
-    carla_dataset_file.close()
-
-    array_annotations_carla_dataset_2 = []
-    DIR_carla_dataset_images = path_to_data + 'carla_dataset_test_31_10_clockwise_town_01_previous_v/'
-    list_images_carla_dataset = glob.glob(DIR_carla_dataset_images + '*')
-    new_list_images_carla_dataset = []
-    for image in list_images_carla_dataset:
-        if image != path_to_data + 'carla_dataset_test_31_10_clockwise_town_01_previous_v/dataset.csv':
-            new_list_images_carla_dataset.append(image)
-    list_images_carla_dataset = new_list_images_carla_dataset
-
-    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[4].split('.png')[0]))
-
     array_annotations_carla_dataset_2 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_2 = parse_csv(array_annotations_carla_dataset_2)
 
-    images_carla_dataset_2 = get_images(path_to_data + 'carla_dataset_test_31_10_clockwise_town_01_previous_v/', images_ids, img_shape)
+    images_carla_dataset_2 = get_images(path_to_data + 'carla_dataset_test_31_10_clockwise_town_01_previous_v/',
+                                        images_ids, img_shape)
 
     array_annotations_v = []
     array_annotations_w = []
@@ -120,7 +94,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
         array_annotations_v.append(annotation[0])
         array_annotations_w.append(annotation[1])
         array_annotations_b.append(annotation[2])
-        
+
     # START NORMALIZE DATA
     array_annotations_v = np.stack(array_annotations_v, axis=0)
     array_annotations_v = array_annotations_v.reshape(-1, 1)
@@ -136,30 +110,16 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
     normalized_annotations = []
     for i in range(0, len(array_annotations_w)):
         normalized_annotations.append([array_annotations_v.item(i), normalized_Y.item(i), array_annotations_b.item(i)])
-        
+
     array_annotations_carla_dataset_2 = normalized_annotations
 
     ######################################### 3 #########################################
     carla_dataset_name_file = path_to_data + 'carla_dataset_test_04_11_clockwise_town_01_previous_v_extreme/dataset.csv'
-    carla_dataset_file = open(carla_dataset_name_file, 'r')
-    data_carla_dataset = carla_dataset_file.read()
-    carla_dataset_file.close()
-
-    array_annotations_carla_dataset_3 = []
-    DIR_carla_dataset_images = path_to_data + 'carla_dataset_test_04_11_clockwise_town_01_previous_v_extreme/'
-    list_images_carla_dataset = glob.glob(DIR_carla_dataset_images + '*')
-    new_list_images_carla_dataset = []
-    for image in list_images_carla_dataset:
-        if image != path_to_data + 'carla_dataset_test_04_11_clockwise_town_01_previous_v_extreme/dataset.csv':
-            new_list_images_carla_dataset.append(image)
-    list_images_carla_dataset = new_list_images_carla_dataset
-
-    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[4].split('.png')[0]))
-
     array_annotations_carla_dataset_3 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_3 = parse_csv(array_annotations_carla_dataset_3)
 
-    images_carla_dataset_3 = get_images(path_to_data + 'carla_dataset_test_04_11_clockwise_town_01_previous_v_extreme/', images_ids, img_shape)
+    images_carla_dataset_3 = get_images(path_to_data + 'carla_dataset_test_04_11_clockwise_town_01_previous_v_extreme/',
+                                        images_ids, img_shape)
 
     array_annotations_v = []
     array_annotations_w = []
@@ -168,7 +128,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
         array_annotations_v.append(annotation[0])
         array_annotations_w.append(annotation[1])
         array_annotations_b.append(annotation[2])
-        
+
     # START NORMALIZE DATA
     array_annotations_v = np.stack(array_annotations_v, axis=0)
     array_annotations_v = array_annotations_v.reshape(-1, 1)
@@ -181,34 +141,19 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
     array_annotations_b = np.stack(array_annotations_b, axis=0)
     array_annotations_b = array_annotations_b.reshape(-1, 1)
 
-
     normalized_annotations = []
     for i in range(0, len(array_annotations_w)):
         normalized_annotations.append([array_annotations_v.item(i), normalized_Y.item(i), array_annotations_b.item(i)])
-        
+
     array_annotations_carla_dataset_3 = normalized_annotations
 
     ######################################### 4 #########################################
     carla_dataset_name_file = path_to_data + 'carla_dataset_test_04_11_anticlockwise_town_03_previous_v/dataset.csv'
-    carla_dataset_file = open(carla_dataset_name_file, 'r')
-    data_carla_dataset = carla_dataset_file.read()
-    carla_dataset_file.close()
-
-    array_annotations_carla_dataset_4 = []
-    DIR_carla_dataset_images = path_to_data + 'carla_dataset_test_04_11_anticlockwise_town_03_previous_v/'
-    list_images_carla_dataset = glob.glob(DIR_carla_dataset_images + '*')
-    new_list_images_carla_dataset = []
-    for image in list_images_carla_dataset:
-        if image != path_to_data + 'carla_dataset_test_04_11_anticlockwise_town_03_previous_v/dataset.csv':
-            new_list_images_carla_dataset.append(image)
-    list_images_carla_dataset = new_list_images_carla_dataset
-
-    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[4].split('.png')[0]))
-
     array_annotations_carla_dataset_4 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_4 = parse_csv(array_annotations_carla_dataset_4)
 
-    images_carla_dataset_4 = get_images(path_to_data + 'carla_dataset_test_04_11_anticlockwise_town_03_previous_v/', images_ids, img_shape)
+    images_carla_dataset_4 = get_images(path_to_data + 'carla_dataset_test_04_11_anticlockwise_town_03_previous_v/',
+                                        images_ids, img_shape)
 
     array_annotations_v = []
     array_annotations_w = []
@@ -217,7 +162,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
         array_annotations_v.append(annotation[0])
         array_annotations_w.append(annotation[1])
         array_annotations_b.append(annotation[2])
-        
+
     # START NORMALIZE DATA
     array_annotations_v = np.stack(array_annotations_v, axis=0)
     array_annotations_v = array_annotations_v.reshape(-1, 1)
@@ -230,35 +175,20 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
     array_annotations_b = np.stack(array_annotations_b, axis=0)
     array_annotations_b = array_annotations_b.reshape(-1, 1)
 
-
     normalized_annotations = []
     for i in range(0, len(array_annotations_w)):
         normalized_annotations.append([array_annotations_v.item(i), normalized_Y.item(i), array_annotations_b.item(i)])
-        
+
     array_annotations_carla_dataset_4 = normalized_annotations
 
     ######################################### 5 #########################################
 
     carla_dataset_name_file = path_to_data + 'carla_dataset_test_04_11_clockwise_town_03_previous_v/dataset.csv'
-    carla_dataset_file = open(carla_dataset_name_file, 'r')
-    data_carla_dataset = carla_dataset_file.read()
-    carla_dataset_file.close()
-
-    array_annotations_carla_dataset_5 = []
-    DIR_carla_dataset_images = path_to_data + 'carla_dataset_test_04_11_clockwise_town_03_previous_v/'
-    list_images_carla_dataset = glob.glob(DIR_carla_dataset_images + '*')
-    new_list_images_carla_dataset = []
-    for image in list_images_carla_dataset:
-        if image != path_to_data + 'carla_dataset_test_04_11_clockwise_town_03_previous_v/dataset.csv':
-            new_list_images_carla_dataset.append(image)
-    list_images_carla_dataset = new_list_images_carla_dataset
-
-    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[4].split('.png')[0]))
-
     array_annotations_carla_dataset_5 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_5 = parse_csv(array_annotations_carla_dataset_5)
 
-    images_carla_dataset_5 = get_images(path_to_data + 'carla_dataset_test_04_11_clockwise_town_03_previous_v/', images_ids, img_shape)
+    images_carla_dataset_5 = get_images(path_to_data + 'carla_dataset_test_04_11_clockwise_town_03_previous_v/',
+                                        images_ids, img_shape)
 
     array_annotations_v = []
     array_annotations_w = []
@@ -267,7 +197,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
         array_annotations_v.append(annotation[0])
         array_annotations_w.append(annotation[1])
         array_annotations_b.append(annotation[2])
-        
+
     # START NORMALIZE DATA
     array_annotations_v = np.stack(array_annotations_v, axis=0)
     array_annotations_v = array_annotations_v.reshape(-1, 1)
@@ -283,30 +213,16 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
     normalized_annotations = []
     for i in range(0, len(array_annotations_w)):
         normalized_annotations.append([array_annotations_v.item(i), normalized_Y.item(i), array_annotations_b.item(i)])
-        
+
     array_annotations_carla_dataset_5 = normalized_annotations
 
     ######################################### 6 #########################################
     carla_dataset_name_file = path_to_data + 'carla_dataset_test_04_11_anticlockwise_town_05_previous_v/dataset.csv'
-    carla_dataset_file = open(carla_dataset_name_file, 'r')
-    data_carla_dataset = carla_dataset_file.read()
-    carla_dataset_file.close()
-
-    array_annotations_carla_dataset_6 = []
-    DIR_carla_dataset_images = path_to_data + 'carla_dataset_test_04_11_anticlockwise_town_05_previous_v/'
-    list_images_carla_dataset = glob.glob(DIR_carla_dataset_images + '*')
-    new_list_images_carla_dataset = []
-    for image in list_images_carla_dataset:
-        if image != path_to_data + 'carla_dataset_test_04_11_anticlockwise_town_05_previous_v/dataset.csv':
-            new_list_images_carla_dataset.append(image)
-    list_images_carla_dataset = new_list_images_carla_dataset
-
-    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[4].split('.png')[0]))
-
     array_annotations_carla_dataset_6 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_6 = parse_csv(array_annotations_carla_dataset_6)
 
-    images_carla_dataset_6 = get_images(path_to_data + 'carla_dataset_test_04_11_anticlockwise_town_05_previous_v/', images_ids, img_shape)
+    images_carla_dataset_6 = get_images(path_to_data + 'carla_dataset_test_04_11_anticlockwise_town_05_previous_v/',
+                                        images_ids, img_shape)
 
     array_annotations_v = []
     array_annotations_w = []
@@ -315,7 +231,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
         array_annotations_v.append(annotation[0])
         array_annotations_w.append(annotation[1])
         array_annotations_b.append(annotation[2])
-        
+
     # START NORMALIZE DATA
     array_annotations_v = np.stack(array_annotations_v, axis=0)
     array_annotations_v = array_annotations_v.reshape(-1, 1)
@@ -328,34 +244,19 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
     array_annotations_b = np.stack(array_annotations_b, axis=0)
     array_annotations_b = array_annotations_b.reshape(-1, 1)
 
-
     normalized_annotations = []
     for i in range(0, len(array_annotations_w)):
         normalized_annotations.append([array_annotations_v.item(i), normalized_Y.item(i), array_annotations_b.item(i)])
-        
+
     array_annotations_carla_dataset_6 = normalized_annotations
 
     ######################################### 7 #########################################
     carla_dataset_name_file = path_to_data + 'carla_dataset_test_04_11_clockwise_town_05_previous_v/dataset.csv'
-    carla_dataset_file = open(carla_dataset_name_file, 'r')
-    data_carla_dataset = carla_dataset_file.read()
-    carla_dataset_file.close()
-
-    array_annotations_carla_dataset_7 = []
-    DIR_carla_dataset_images = path_to_data + 'carla_dataset_test_04_11_clockwise_town_05_previous_v/'
-    list_images_carla_dataset = glob.glob(DIR_carla_dataset_images + '*')
-    new_list_images_carla_dataset = []
-    for image in list_images_carla_dataset:
-        if image != path_to_data + 'carla_dataset_test_04_11_clockwise_town_05_previous_v/dataset.csv':
-            new_list_images_carla_dataset.append(image)
-    list_images_carla_dataset = new_list_images_carla_dataset
-
-    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[4].split('.png')[0]))
-
     array_annotations_carla_dataset_7 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_7 = parse_csv(array_annotations_carla_dataset_7)
 
-    images_carla_dataset_7 = get_images(path_to_data + 'carla_dataset_test_04_11_clockwise_town_05_previous_v/', images_ids, img_shape)
+    images_carla_dataset_7 = get_images(path_to_data + 'carla_dataset_test_04_11_clockwise_town_05_previous_v/',
+                                        images_ids, img_shape)
 
     array_annotations_v = []
     array_annotations_w = []
@@ -364,7 +265,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
         array_annotations_v.append(annotation[0])
         array_annotations_w.append(annotation[1])
         array_annotations_b.append(annotation[2])
-        
+
     # START NORMALIZE DATA
     array_annotations_v = np.stack(array_annotations_v, axis=0)
     array_annotations_v = array_annotations_v.reshape(-1, 1)
@@ -380,30 +281,16 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
     normalized_annotations = []
     for i in range(0, len(array_annotations_w)):
         normalized_annotations.append([array_annotations_v.item(i), normalized_Y.item(i), array_annotations_b.item(i)])
-        
+
     array_annotations_carla_dataset_7 = normalized_annotations
 
     ######################################### 8 #########################################
     carla_dataset_name_file = path_to_data + 'carla_dataset_test_04_11_anticlockwise_town_07_previous_v/dataset.csv'
-    carla_dataset_file = open(carla_dataset_name_file, 'r')
-    data_carla_dataset = carla_dataset_file.read()
-    carla_dataset_file.close()
-
-    array_annotations_carla_dataset_8 = []
-    DIR_carla_dataset_images = path_to_data + 'carla_dataset_test_04_11_anticlockwise_town_07_previous_v/'
-    list_images_carla_dataset = glob.glob(DIR_carla_dataset_images + '*')
-    new_list_images_carla_dataset = []
-    for image in list_images_carla_dataset:
-        if image != path_to_data + 'carla_dataset_test_04_11_anticlockwise_town_07_previous_v/dataset.csv':
-            new_list_images_carla_dataset.append(image)
-    list_images_carla_dataset = new_list_images_carla_dataset
-
-    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[4].split('.png')[0]))
-
     array_annotations_carla_dataset_8 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_8 = parse_csv(array_annotations_carla_dataset_8)
 
-    images_carla_dataset_8 = get_images(path_to_data + 'carla_dataset_test_04_11_anticlockwise_town_07_previous_v/', images_ids, img_shape)
+    images_carla_dataset_8 = get_images(path_to_data + 'carla_dataset_test_04_11_anticlockwise_town_07_previous_v/',
+                                        images_ids, img_shape)
 
     array_annotations_v = []
     array_annotations_w = []
@@ -412,7 +299,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
         array_annotations_v.append(annotation[0])
         array_annotations_w.append(annotation[1])
         array_annotations_b.append(annotation[2])
-        
+
     # START NORMALIZE DATA
     array_annotations_v = np.stack(array_annotations_v, axis=0)
     array_annotations_v = array_annotations_v.reshape(-1, 1)
@@ -428,30 +315,16 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
     normalized_annotations = []
     for i in range(0, len(array_annotations_w)):
         normalized_annotations.append([array_annotations_v.item(i), normalized_Y.item(i), array_annotations_b.item(i)])
-        
+
     array_annotations_carla_dataset_8 = normalized_annotations
 
     ######################################### 9 #########################################
     carla_dataset_name_file = path_to_data + 'carla_dataset_test_04_11_clockwise_town_07_previous_v/dataset.csv'
-    carla_dataset_file = open(carla_dataset_name_file, 'r')
-    data_carla_dataset = carla_dataset_file.read()
-    carla_dataset_file.close()
-
-    array_annotations_carla_dataset_9 = []
-    DIR_carla_dataset_images = path_to_data + 'carla_dataset_test_04_11_clockwise_town_07_previous_v/'
-    list_images_carla_dataset = glob.glob(DIR_carla_dataset_images + '*')
-    new_list_images_carla_dataset = []
-    for image in list_images_carla_dataset:
-        if image != path_to_data + 'carla_dataset_test_04_11_clockwise_town_07_previous_v/dataset.csv':
-            new_list_images_carla_dataset.append(image)
-    list_images_carla_dataset = new_list_images_carla_dataset
-
-    images_paths_carla_dataset = sorted(list_images_carla_dataset, key=lambda x: int(x.split('/')[4].split('.png')[0]))
-
     array_annotations_carla_dataset_9 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_9 = parse_csv(array_annotations_carla_dataset_9)
 
-    images_carla_dataset_9 = get_images(path_to_data + 'carla_dataset_test_04_11_clockwise_town_07_previous_v/', images_ids, img_shape)
+    images_carla_dataset_9 = get_images(path_to_data + 'carla_dataset_test_04_11_clockwise_town_07_previous_v/',
+                                        images_ids, img_shape)
 
     array_annotations_v = []
     array_annotations_w = []
@@ -460,7 +333,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
         array_annotations_v.append(annotation[0])
         array_annotations_w.append(annotation[1])
         array_annotations_b.append(annotation[2])
-        
+
     # START NORMALIZE DATA
     array_annotations_v = np.stack(array_annotations_v, axis=0)
     array_annotations_v = array_annotations_v.reshape(-1, 1)
@@ -476,7 +349,7 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
     normalized_annotations = []
     for i in range(0, len(array_annotations_w)):
         normalized_annotations.append([array_annotations_v.item(i), normalized_Y.item(i), array_annotations_b.item(i)])
-        
+
     array_annotations_carla_dataset_9 = normalized_annotations
 
     ###########

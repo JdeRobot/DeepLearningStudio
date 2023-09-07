@@ -100,12 +100,12 @@ class DatasetSequence(Sequence):
         a, b = np.stack(new_batch, axis=0), np.array(new_ann_batch)
 
         return a, b
-    
-    
+
+
 def get_augmentations(data_augs):
     if data_augs == 1:
         AUGMENTATIONS_TRAIN = ReplayCompose([
-            Affine(p=0.5, rotate=0, translate_percent={'x':(-0.2, 0.2)}),
+            Affine(p=0.5, rotate=0, translate_percent={'x': (-0.2, 0.2)}),
             RandomBrightnessContrast(),
             HueSaturationValue(),
             FancyPCA(),
@@ -121,6 +121,5 @@ def get_augmentations(data_augs):
     AUGMENTATIONS_TEST = ReplayCompose([
         Normalize()
     ])
-    
-    return AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST
 
+    return AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST

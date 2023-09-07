@@ -47,6 +47,7 @@ class DatasetSequenceAffine(Sequence):
 
         return np.stack(new_img_batch, axis=0), np.array(new_batch_y)
 
+
 class DatasetSequence(Sequence):
     def __init__(self, x_set, y_set, batch_size, augmentations):
         self.x, self.y = x_set, y_set
@@ -58,18 +59,23 @@ class DatasetSequence(Sequence):
 
     def __getitem__(self, idx):
         batch_x = self.x[idx * self.batch_size:(idx + 1) *
-        self.batch_size]
+                                               self.batch_size]
         batch_y = self.y[idx * self.batch_size:(idx + 1) *
-        self.batch_size]
-        
-        aug = self.augment(image=batch_x[0])
-        new_batch = []  
-        
+                                               self.batch_size]
+
+        new_img_batch = []
         for x, img in enumerate(batch_x):
             aug = self.augment(image=img)["image"]
-            new_batch.append(aug)
-            
-        return np.stack(new_batch, axis=0), np.array(batch_y)
+            velocity_dim = np.full((150, 50), batch_y[x][3])
+            new_img_vel = np.dstack((aug, velocity_dim))
+            new_img_batch.append(new_img_vel)
+
+        new_ann_batch = []
+        for x, ann in enumerate(batch_y):
+            new_ann_batch.append(np.array((ann[0], ann[1], ann[2])))
+
+        a, b = np.stack(new_img_batch, axis=0), np.array(new_ann_batch)
+        return a, b
     
     
 def get_augmentations(data_augs):

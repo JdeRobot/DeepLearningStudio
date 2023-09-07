@@ -11,7 +11,6 @@ from sklearn.model_selection import train_test_split
 def get_images(folder_prefix, list_images, image_shape):
     # Read the images
     array_imgs = []
-    image_shape = (66, 200)
     for name in list_images:
         try:
             img = cv2.imread(folder_prefix + name)
@@ -523,6 +522,29 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
         array_annotations_carla_dataset_7 + array_annotations_carla_dataset_8 + array_annotations_carla_dataset_9
 
     return array_imgs, array_annotations
+
+def separate_dataset_into_train_validation(array_x, array_y):
+    images_train, images_validation, annotations_train, annotations_validation = train_test_split(array_x, array_y,
+                                                                                                  test_size=0.30,
+                                                                                                  random_state=42,
+                                                                                                  shuffle=True)
+
+    print('Images train -> ' + str(len(images_train)))
+    print('Images validation -> ' + str(len(images_validation)))
+    print('Annotations train -> ' + str(len(annotations_train)))
+    print('Annotations validation -> ' + str(len(annotations_validation)))
+    # Adapt the data
+    images_train = np.stack(images_train, axis=0)
+    annotations_train = np.stack(annotations_train, axis=0)
+    images_validation = np.stack(images_validation, axis=0)
+    annotations_validation = np.stack(annotations_validation, axis=0)
+
+    print('Images train -> ' + str(images_train.shape))
+    print('Images validation -> ' + str(images_validation.shape))
+    print('Annotations train -> ' + str(annotations_train.shape))
+    print('Annotations validation -> ' + str(annotations_validation.shape))
+
+    return images_train, annotations_train, images_validation, annotations_validation
 
 def process_dataset(path_to_data, type_image, data_type, img_shape, optimize_mode=False):
 

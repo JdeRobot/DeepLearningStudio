@@ -67,7 +67,7 @@ if __name__ == "__main__":
 
     model_name = 'deepest_lstm_tinypilotnet_model'
     model = deepest_lstm_tinypilotnet_model(img_shape, learning_rate)
-    model_filename = timestr + '_deepest_lstm_tinypilotnet_model_100_all_n_extreme_3_albumentations_no_crop'
+    model_filename = timestr + '_deepest_lstm_tinypilotnet_model_trained'
     model_file = model_filename + '.h5'
 
     AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST = get_augmentations(data_augs)

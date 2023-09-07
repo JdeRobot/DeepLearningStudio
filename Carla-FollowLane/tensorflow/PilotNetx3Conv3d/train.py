@@ -67,7 +67,7 @@ if __name__ == "__main__":
 
     model_name = 'pilotnet_x3_conv3d'
     model = pilotnet_x3_conv3d(img_shape, learning_rate)
-    model_filename = timestr + '_pilotnet_x3_conv3d_100_all_n_extreme_3_albumentations_no_crop'
+    model_filename = timestr + '_pilotnet_x3_conv3d_trained'
     model_file = model_filename + '.h5'
 
     AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST = get_augmentations(data_augs)

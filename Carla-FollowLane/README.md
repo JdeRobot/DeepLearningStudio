@@ -9,7 +9,9 @@ Dataset can be downloaded from: https://huggingface.co/datasets/sergiopaniego/Ca
 
 # Models
 
-Download the models from: https://huggingface.co/sergiopaniego/OptimizedPilotNet
+Download the models from: 
+* https://huggingface.co/sergiopaniego/OptimizedPilotNet
+* https://huggingface.co/sergiopaniego/MemoryPilotNet
 
 # Running the code
 

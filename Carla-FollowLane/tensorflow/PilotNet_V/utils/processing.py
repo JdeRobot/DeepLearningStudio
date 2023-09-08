@@ -216,7 +216,6 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
     array_annotations_carla_dataset_4 = normalized_annotations
 
     ######################################### 5 #########################################
-
     carla_dataset_name_file = path_to_data + 'carla_dataset_test_04_11_clockwise_town_03_previous_v/dataset.csv'
     array_annotations_carla_dataset_5 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_5 = parse_csv(array_annotations_carla_dataset_5)
@@ -407,14 +406,33 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
     return array_imgs, array_annotations
 
 
-def process_dataset(path_to_data, type_image, data_type, img_shape, optimize_mode=False):
-    if not optimize_mode:
-        array_imgs, array_annotations = get_images_and_annotations(path_to_data, type_image, img_shape, data_type)
-        images_train, annotations_train, images_validation, annotations_validation = separate_dataset_into_train_validation(
-            array_imgs, array_annotations)
-    else:
-        images_train, annotations_train = get_images_and_annotations(path_to_data, type_image, img_shape, data_type)
-        images_validation, annotations_validation = get_images_and_annotations(path_to_data, type_image, img_shape,
-                                                                               data_type)
+def separate_dataset_into_train_validation(array_x, array_y):
+    images_train, images_validation, annotations_train, annotations_validation = train_test_split(array_x, array_y,
+                                                                                                  test_size=0.30,
+                                                                                                  random_state=42,
+                                                                                                  shuffle=True)
+
+    print('Images train -> ' + str(len(images_train)))
+    print('Images validation -> ' + str(len(images_validation)))
+    print('Annotations train -> ' + str(len(annotations_train)))
+    print('Annotations validation -> ' + str(len(annotations_validation)))
+    # Adapt the data
+    images_train = np.stack(images_train, axis=0)
+    annotations_train = np.stack(annotations_train, axis=0)
+    images_validation = np.stack(images_validation, axis=0)
+    annotations_validation = np.stack(annotations_validation, axis=0)
+
+    print('Images train -> ' + str(images_train.shape))
+    print('Images validation -> ' + str(images_validation.shape))
+    print('Annotations train -> ' + str(annotations_train.shape))
+    print('Annotations validation -> ' + str(annotations_validation.shape))
+
+    return images_train, annotations_train, images_validation, annotations_validation
+
+
+def process_dataset(path_to_data, type_image, data_type, img_shape):
+    array_imgs, array_annotations = get_images_and_annotations(path_to_data, type_image, img_shape, data_type)
+    images_train, annotations_train, images_validation, annotations_validation = separate_dataset_into_train_validation(
+        array_imgs, array_annotations)
 
     return images_train, annotations_train, images_validation, annotations_validation

@@ -216,7 +216,6 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
     array_annotations_carla_dataset_4 = normalized_annotations
 
     ######################################### 5 #########################################
-
     carla_dataset_name_file = path_to_data + 'carla_dataset_test_04_11_clockwise_town_03_previous_v/dataset.csv'
     array_annotations_carla_dataset_5 = pandas.read_csv(carla_dataset_name_file)
     images_ids, array_annotations_carla_dataset_5 = parse_csv(array_annotations_carla_dataset_5)
@@ -396,15 +395,113 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
 
     array_annotations_carla_dataset_9 = normalized_annotations
 
+    ######################################### 10 #########################################
+    carla_dataset_name_file = path_to_data + 'carla_dataset_16_11_clockwise_town_01_extreme_2/dataset.csv'
+    array_annotations_carla_dataset_10 = pandas.read_csv(carla_dataset_name_file)
+    images_ids, array_annotations_carla_dataset_10 = parse_csv(array_annotations_carla_dataset_10)
+
+    images_carla_dataset_10 = get_images(path_to_data + 'carla_dataset_16_11_clockwise_town_01_extreme_2/',
+                                         images_ids, img_shape)
+    images_carla_dataset_10, array_annotations_carla_dataset_10 = add_extreme_data(images_carla_dataset_10,
+                                                                                   array_annotations_carla_dataset_10)
+
+    array_annotations_v = []
+    array_annotations_w = []
+    array_annotations_b = []
+    for annotation in array_annotations_carla_dataset_10:
+        array_annotations_v.append(annotation[0])
+        array_annotations_w.append(annotation[1])
+        array_annotations_b.append(annotation[2])
+
+    # START NORMALIZE DATA
+    array_annotations_v = np.stack(array_annotations_v, axis=0)
+    array_annotations_v = array_annotations_v.reshape(-1, 1)
+
+    array_annotations_w = np.stack(array_annotations_w, axis=0)
+    array_annotations_w = array_annotations_w.reshape(-1, 1)
+
+    normalized_Y = np.interp(array_annotations_w, (-1, 1), (0, 1))
+
+    array_annotations_b = np.stack(array_annotations_b, axis=0)
+    array_annotations_b = array_annotations_b.reshape(-1, 1)
+
+    normalized_annotations = []
+    for i in range(0, len(array_annotations_w)):
+        normalized_annotations.append([array_annotations_v.item(i), normalized_Y.item(i), array_annotations_b.item(i)])
+
+    array_annotations_carla_dataset_10 = normalized_annotations
+
+    ######################################### 11 #########################################
+    carla_dataset_name_file = path_to_data + 'carla_dataset_24_07_anticlockwise_town_01_extreme/dataset.csv'
+    array_annotations_carla_dataset_11 = pandas.read_csv(carla_dataset_name_file)
+    images_ids, array_annotations_carla_dataset_11 = parse_csv(array_annotations_carla_dataset_11)
+
+    images_carla_dataset_11 = get_images(path_to_data + 'carla_dataset_24_07_anticlockwise_town_01_extreme/',
+                                         images_ids, img_shape)
+    images_carla_dataset_11, array_annotations_carla_dataset_11 = add_extreme_data(images_carla_dataset_11,
+                                                                                   array_annotations_carla_dataset_11)
+
+    array_annotations_v = []
+    array_annotations_w = []
+    array_annotations_b = []
+    for annotation in array_annotations_carla_dataset_11:
+        array_annotations_v.append(annotation[0])
+        array_annotations_w.append(annotation[1])
+        array_annotations_b.append(annotation[2])
+
+    # START NORMALIZE DATA
+    array_annotations_v = np.stack(array_annotations_v, axis=0)
+    array_annotations_v = array_annotations_v.reshape(-1, 1)
+
+    array_annotations_w = np.stack(array_annotations_w, axis=0)
+    array_annotations_w = array_annotations_w.reshape(-1, 1)
+
+    normalized_Y = np.interp(array_annotations_w, (-1, 1), (0, 1))
+
+    array_annotations_b = np.stack(array_annotations_b, axis=0)
+    array_annotations_b = array_annotations_b.reshape(-1, 1)
+
+    normalized_annotations = []
+    for i in range(0, len(array_annotations_w)):
+        normalized_annotations.append([array_annotations_v.item(i), normalized_Y.item(i), array_annotations_b.item(i)])
+
+    array_annotations_carla_dataset_11 = normalized_annotations
+
     ###########
 
     array_imgs = images_carla_dataset_1 + images_carla_dataset_2 + images_carla_dataset_3 + images_carla_dataset_4 + \
-                 images_carla_dataset_5 + images_carla_dataset_6 + images_carla_dataset_7 + images_carla_dataset_8 + images_carla_dataset_9
+                 images_carla_dataset_5 + images_carla_dataset_6 + images_carla_dataset_7 + images_carla_dataset_8 + images_carla_dataset_9 + \
+                 images_carla_dataset_10 + images_carla_dataset_11
     array_annotations = array_annotations_carla_dataset_1 + array_annotations_carla_dataset_2 + array_annotations_carla_dataset_3 + \
                         array_annotations_carla_dataset_4 + array_annotations_carla_dataset_5 + array_annotations_carla_dataset_6 + \
-                        array_annotations_carla_dataset_7 + array_annotations_carla_dataset_8 + array_annotations_carla_dataset_9
+                        array_annotations_carla_dataset_7 + array_annotations_carla_dataset_8 + array_annotations_carla_dataset_9 + \
+                        array_annotations_carla_dataset_10 + array_annotations_carla_dataset_11
 
     return array_imgs, array_annotations
+
+
+def separate_dataset_into_train_validation(array_x, array_y):
+    images_train, images_validation, annotations_train, annotations_validation = train_test_split(array_x, array_y,
+                                                                                                  test_size=0.30,
+                                                                                                  random_state=42,
+                                                                                                  shuffle=True)
+
+    print('Images train -> ' + str(len(images_train)))
+    print('Images validation -> ' + str(len(images_validation)))
+    print('Annotations train -> ' + str(len(annotations_train)))
+    print('Annotations validation -> ' + str(len(annotations_validation)))
+    # Adapt the data
+    images_train = np.stack(images_train, axis=0)
+    annotations_train = np.stack(annotations_train, axis=0)
+    images_validation = np.stack(images_validation, axis=0)
+    annotations_validation = np.stack(annotations_validation, axis=0)
+
+    print('Images train -> ' + str(images_train.shape))
+    print('Images validation -> ' + str(images_validation.shape))
+    print('Annotations train -> ' + str(annotations_train.shape))
+    print('Annotations validation -> ' + str(annotations_validation.shape))
+
+    return images_train, annotations_train, images_validation, annotations_validation
 
 
 def process_dataset(path_to_data, type_image, data_type, img_shape, optimize_mode=False):
@@ -414,7 +511,6 @@ def process_dataset(path_to_data, type_image, data_type, img_shape, optimize_mod
             array_imgs, array_annotations)
     else:
         images_train, annotations_train = get_images_and_annotations(path_to_data, type_image, img_shape, data_type)
-        images_validation, annotations_validation = get_images_and_annotations(path_to_data, type_image, img_shape,
-                                                                               data_type)
+        images_validation, annotations_validation = images_train, annotations_train
 
     return images_train, annotations_train, images_validation, annotations_validation

@@ -8,7 +8,7 @@ import numpy as np
 
 from utils.dataset import get_augmentations, DatasetSequence
 from utils.processing import process_dataset
-from utils.pilotnet import pilotnet_model
+from utils.pilotnet_x3_conv3d import pilotnet_x3_conv3d
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard, CSVLogger
 from tensorflow.python.keras.saving import hdf5_format
 
@@ -24,7 +24,7 @@ def parse_args():
     parser.add_argument("--num_epochs", type=int, default=100, help="Number of Epochs")
     parser.add_argument("--batch_size", type=int, default=128, help="Batch size")
     parser.add_argument("--learning_rate", type=float, default=1e-3, help="Learning rate for Policy Net")
-    parser.add_argument("--img_shape", type=str, default=(200, 66, 3), help="Image shape")
+    parser.add_argument("--img_shape", type=str, default=(200, 66, 4), help="Image shape")
 
     args = parser.parse_args()
     return args
@@ -66,9 +66,9 @@ if __name__ == "__main__":
 
     print(hparams)
 
-    model_name = 'pilotnet_model'
-    model = pilotnet_model(img_shape, learning_rate)
-    model_filename = timestr + '_pilotnet_model_trained'
+    model_name = 'pilotnet_x3_conv3d'
+    model = pilotnet_x3_conv3d(img_shape, learning_rate)
+    model_filename = timestr + '_pilotnet_x3_conv3d_previous_speed_trained'
     model_file = model_filename + '.h5'
 
     AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST = get_augmentations(data_augs)

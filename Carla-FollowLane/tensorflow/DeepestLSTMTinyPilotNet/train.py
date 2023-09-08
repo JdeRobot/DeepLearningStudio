@@ -8,7 +8,7 @@ import numpy as np
 
 from utils.dataset import get_augmentations, DatasetSequence
 from utils.processing import process_dataset
-from utils.pilotnet import pilotnet_model
+from utils.deepestlstmtinypilotnet import deepest_lstm_tinypilotnet_model
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard, CSVLogger
 from tensorflow.python.keras.saving import hdf5_format
 
@@ -66,9 +66,9 @@ if __name__ == "__main__":
 
     print(hparams)
 
-    model_name = 'pilotnet_model'
-    model = pilotnet_model(img_shape, learning_rate)
-    model_filename = timestr + '_pilotnet_model_trained'
+    model_name = 'deepest_lstm_tinypilotnet_model'
+    model = deepest_lstm_tinypilotnet_model(img_shape, learning_rate)
+    model_filename = timestr + '_deepest_lstm_tinypilotnet_model_trained'
     model_file = model_filename + '.h5'
 
     AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST = get_augmentations(data_augs)
@@ -100,7 +100,6 @@ if __name__ == "__main__":
         epochs=hparams['n_epochs'],
         verbose=2,
         validation_data=valid_gen,
-        # workers=2, use_multiprocessing=False,
         callbacks=[tensorboard_callback, earlystopping, cp_callback, csv_logger])
 
     # Save model

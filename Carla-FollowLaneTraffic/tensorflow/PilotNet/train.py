@@ -1,16 +1,14 @@
-import os
-import argparse
-import datetime
 import time
 import h5py
+import argparse
+import datetime
 
-import numpy as np
-
-from utils.dataset import get_augmentations, DatasetSequence
-from utils.processing import process_dataset
 from utils.pilotnet import pilotnet_model
-from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard, CSVLogger
+from utils.processing import process_dataset
+from utils.dataset import get_augmentations, DatasetSequence
+
 from tensorflow.python.keras.saving import hdf5_format
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard, CSVLogger
 
 
 def parse_args():

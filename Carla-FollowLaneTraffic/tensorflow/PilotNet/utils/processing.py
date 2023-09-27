@@ -1,67 +1,16 @@
 import os
-import glob
 import cv2
-import sys
+import glob
 import pandas
 import random
 
 import numpy as np
-from PIL import Image
-import tensorflow as tf
 import matplotlib.pyplot as plt
 
-from skimage.io import imread
-from sklearn import preprocessing
-from skimage.transform import resize
 from sklearn.model_selection import train_test_split
 
 
-def delete_ratio(annotations, images, value_min, value_max, x, type):
-    new_annotations = []
-    new_images = []
-
-    annotations_steer = []
-    for annotation in annotations:
-        annotations_steer.append(annotation[type])
-    print(sum(map(lambda i: ((i >= value_min) and (i <= value_max)), annotations_steer)))
-    number_to_delete = np.round(sum(map(lambda i: ((i >= value_min) and (i <= value_max)), annotations_steer)) * x)
-    eliminate = random.sample([i for i, val in enumerate(annotations_steer) if ((val >= value_min) and (val <= value_max))], int(number_to_delete))
-    for index, (annotations_val, images_val) in enumerate(zip(annotations, images)):
-        if index in eliminate:
-            continue
-        else:
-            new_annotations.append(annotations_val)
-            new_images.append(images_val)
-
-    return new_annotations, new_images
-
-
-def delete_until(annotations, images, x, counter, bins, type):
-    new_annotations = []
-    new_images = []
-
-    annotations_steer = []
-    for annotation in annotations:
-        annotations_steer.append(annotation[type])
-
-    total_elimination = []
-    for index, counts in enumerate(counter):
-        if counts > x:
-            number_to_delete = counts - x
-            eliminate = random.sample([i for i, val in enumerate(annotations_steer) if ((val >= bins[index]) and (val <= bins[index+1]))], int(number_to_delete))
-            total_elimination.extend(eliminate)
-
-    for index, (annotations_val, images_val) in enumerate(zip(annotations, images)):
-        if index in total_elimination:
-            continue
-        else:
-            new_annotations.append(annotations_val)
-            new_images.append(images_val)
-
-    return new_annotations, new_images
-
-
-def get_images(list_images, type_image, image_shape, array_annotations):
+def get_images(list_images, type_image, image_shape):
     image_shape = (image_shape[1], image_shape[0])
     # Read the images
     array_imgs = []
@@ -86,18 +35,6 @@ def parse_csv(csv_data):
     for x, linear_speed in enumerate(linear_speeds):
         array.append((float(linear_speed), float(angular_speeds[x]), float(brake[x]), float(prevelocity[x])))
     return array
-
-
-def flip_images(images, array_annotations):
-    flipped_images = []
-    flipped_annotations = []
-    for i, image in enumerate(images):
-        flipped_images.append(cv2.flip(image, 1))
-        flipped_annotations.append((array_annotations[i][0], -array_annotations[i][1]))
-
-    images += flipped_images
-    array_annotations += flipped_annotations
-    return images, array_annotations
 
 
 def add_extreme_data(images, array_annotations):

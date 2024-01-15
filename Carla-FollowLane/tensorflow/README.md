@@ -2,12 +2,14 @@
 
 This folder contains the following model architectures and training files:
 
-* **PilotNet**: including optimization files.
-* **PilotNet previous speed**
-* **DeepestLSTMTinyPilotNet**
-* **DeepestLSTMTinyPilotNet previous speed**
-* **PilotNetx3TimeDistributed**
-* **PilotNetx3TimeDistributed previous speed**
-* **PilotNetx3Conv3d**
-* **PilotNetx3Conv3d previous speed**
+* **PilotNet\***: including optimization files.
+    * **Optimized models**: tensorRT and tensorflow optimized models
+* **PilotNet\* kinematic input**
+* **DeepestLSTMTinyPilotNet\***
+* **DeepestLSTMTinyPilotNet\* kinematic input**
+* **PilotNetx3 (Conv3d)\***
+* **PilotNetx3 (Conv3d)\* kinematic input**
+* **PilotNetx3 (TimeDistributed)\***
+* **PilotNetx3 (TimeDistributed)\* kinematic input**
+
 

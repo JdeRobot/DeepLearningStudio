@@ -7,6 +7,16 @@ This repository contains the deep learning regression and classification models 
 
 ## Structure of the branch
 
+    ├── Carla-FollowLane
+    |   |
+    |   |── pytorch
+    |   |   
+    |   |── tensorflow
+    |   |   
+    ├── Carla-FollowLaneTraffic
+    |   |
+    |   |── pytorch
+    |   |  
     ├── Formula1-FollowLine
     |   |
     |   |── pytorch
@@ -110,3 +120,17 @@ pip install -r requirements.txt
 }
 ```
 
+3. Paniego, Sergio and Paliwal, Nikhil and Cañas, JoséMaría (2023). DeepPilot: Model Optimization in Deep Learning Based Robot Control for Autonomous Driving. [https://doi.org/10.1109/LRA.2023.3336244](https://doi.org/10.1109/LRA.2023.3336244)
+
+```
+@article{Paniego2023,
+    author={Paniego, Sergio and Paliwal, Nikhil and Cañas, JoséMaría},
+    journal={IEEE Robotics and Automation Letters}, 
+    title={Model Optimization in Deep Learning Based Robot Control for Autonomous Driving}, 
+    year={2024},
+    volume={9},
+    number={1},
+    pages={715-722},
+    doi={10.1109/LRA.2023.3336244}
+}
+```
